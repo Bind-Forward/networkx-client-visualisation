@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import graphReducer from './graphReducer';
+import graph from './graphReducer';
 
-const rootReducer = combineReducers(
-	graphReducer
-);
+const rootReducer = combineReducers({
+	graph,
+});
 
 export default rootReducer;

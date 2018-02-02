@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import Navigation from './navigation/Navigation';
-import GraphPage from './graph/GraphPage';
+import React from 'react';
+import Header from './common/Header';
+import MainRoutes from './MainRoutes.js';
 
 import '../styles/App.css';
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <div className="container">
-				<Navigation />
-				<GraphPage />
+				<Header />
+				<MainRoutes />
       </div>
     );
   }

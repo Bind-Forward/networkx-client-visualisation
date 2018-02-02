@@ -6,6 +6,6 @@ import GraphPage from './components/App';
 export default (
 	<Switch>
 		<Route exact path='/' component={App} />
-		<Route exact path='/graph/:id' component={GraphPage} />
+		<Route exact path='/graph/:articleId' component={GraphPage} />
 	</Switch>
 );

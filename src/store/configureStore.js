@@ -8,7 +8,7 @@ export default function configureStore(initialStore) {
 	return createStore (
 		rootReducer,
 		initialStore,
-		applyMiddleware(thunk, reduxImmutableStateInvariant)
+		applyMiddleware(thunk, reduxImmutableStateInvariant())
 	);
 	/* eslint-enable */
 }
