@@ -13,7 +13,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './styles/index.css';
 
 const store = configureStore();
-store.dispatch(loadGraph(initialState.articleId));
+store.dispatch(loadGraph(initialState.articleId, initialState.dictionaryTypes));
 
 ReactDOM.render(
 	<Provider store={store}>

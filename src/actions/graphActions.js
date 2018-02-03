@@ -8,9 +8,9 @@ function loadGraphSuccess(graph) {
 	};
 }
 
-export function loadGraph(articleId) {
+export function loadGraph(articleId, dictionaryTypes) {
 	return dispatch => {
-		GraphApi.getGraph(articleId).then(graph => {
+		GraphApi.getGraph(articleId, dictionaryTypes).then(graph => {
 			return dispatch(loadGraphSuccess(graph));
 		}).catch(error => {
 			throw(error)
