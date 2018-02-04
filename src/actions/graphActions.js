@@ -9,11 +9,12 @@ function loadGraphSuccess(graph) {
 }
 
 export function loadGraph(articleId, dictionaryTypes) {
-	return dispatch => {
-		GraphApi.getGraph(articleId, dictionaryTypes).then(graph => {
-			return dispatch(loadGraphSuccess(graph));
+	return (dispatch, getState) => {
+		return GraphApi.getGraph(articleId, dictionaryTypes).then(graph => {			
+			dispatch(loadGraphSuccess(graph));
 		}).catch(error => {
 			throw(error)
 		});
-	};	
+	};
 }
+

@@ -1,2 +1,6 @@
-// Graph page
+// Graphs
 export const LOAD_GRAPH_SUCCESS = 'LOAD_GRAPH_SUCCESS';
+
+// Articles
+export const LOAD_ARTICLES_SUCCESS = 'LOAD_ARTICLES_SUCCESS';
+export const LOAD_ARTICLE_SUCCESS = 'LOAD_ARTICLE_SUCCESS';
