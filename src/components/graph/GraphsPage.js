@@ -78,7 +78,7 @@ class GraphsPage extends React.Component {
 					<Col xs={12} md={12} lg={5}>
 						<GraphMenu 
 							articles={articles}
-							selectedArticleId={selectedArticle.articleId}
+							selectedArticleId={selectedArticle.id}
 							onMenuAccept={this.onMenuAccept}
 							loading={this.state.loading} />
 					</Col>

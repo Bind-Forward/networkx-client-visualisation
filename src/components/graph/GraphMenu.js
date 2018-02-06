@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel, Button, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
-import ArticlesDropdown from './ArticlesDropdown';
+import Dropdown from '../common/Dropdown';
 
-const GraphMenu = ({ articles, onMenuAccept, loading, articleId }) => {
+const GraphMenu = ({ articles, onMenuAccept, loading, selectedArticleId }) => {
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
@@ -17,9 +17,10 @@ const GraphMenu = ({ articles, onMenuAccept, loading, articleId }) => {
 						<div>
 							<Row>
 								<Col xs={6} sm={6} md={6} lg={6}>
-									<ArticlesDropdown
-										articles={articles}
-										selectedArticleId={articleId} />
+									<Dropdown
+										items={articles}
+										selectedItemId={selectedArticleId}
+										emptyFieldText={"Select article"}/>
 								</Col>
 								<Col xs={6} sm={6} md={6} lg={6}>
 								</Col>
@@ -41,7 +42,7 @@ GraphMenu.propTypes = {
 	articles: PropTypes.array.isRequired,
 	onMenuAccept: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
-	articleId: PropTypes.number
+	selectedArticleId: PropTypes.number
 };
 
 export default GraphMenu;

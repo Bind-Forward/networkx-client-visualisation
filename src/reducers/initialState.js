@@ -5,7 +5,7 @@ export default {
 		name: "",
 		nodes: [],
 		edges: [],
-		articleId: 1
+		articleId: 2
 	},
 	articles: [],	
 	dictionaryTypes: [constants.DICTIONARY_TYPES.NOUN, constants.DICTIONARY_TYPES.VERB]
