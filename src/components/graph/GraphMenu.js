@@ -4,7 +4,7 @@ import { Panel, Button, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import Dropdown from '../common/Dropdown';
 
-const GraphMenu = ({ articles, onMenuAccept, loading, selectedArticleId }) => {
+const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId }) => {
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
@@ -19,8 +19,10 @@ const GraphMenu = ({ articles, onMenuAccept, loading, selectedArticleId }) => {
 								<Col xs={6} sm={6} md={6} lg={6}>
 									<Dropdown
 										items={articles}
+										labelText={"Articles"}
+										onSelectedItemChange={onSelectedArticle}
 										selectedItemId={selectedArticleId}
-										emptyFieldText={"Select article"}/>
+										emptyFieldText={"Select article"} />
 								</Col>
 								<Col xs={6} sm={6} md={6} lg={6}>
 								</Col>
@@ -34,13 +36,20 @@ const GraphMenu = ({ articles, onMenuAccept, loading, selectedArticleId }) => {
 						</div>
 				}
 			</Panel.Body>
+			<Panel.Footer>
+				<Button bsStyle={"primary"}
+					onClick={onMenuAccept}>
+					Submit
+				</Button>
+			</Panel.Footer>
 		</Panel>
 	);
 }
 
 GraphMenu.propTypes = {
 	articles: PropTypes.array.isRequired,
-	onMenuAccept: PropTypes.func.isRequired,
+	onSelectedArticle: PropTypes.func.isRequired,
+	onMenuAccept: PropTypes.func.isRequired,	
 	loading: PropTypes.bool.isRequired,
 	selectedArticleId: PropTypes.number
 };

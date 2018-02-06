@@ -9,6 +9,7 @@ import GraphWindow from './GraphWindow';
 import TextWindow from './TextWindow';
 import GraphMenu from './GraphMenu';
 import graphSettings from '../../constants/graphSettings';
+import * as utility from '../../utility';
 
 class GraphsPage extends React.Component {
 
@@ -22,7 +23,9 @@ class GraphsPage extends React.Component {
 	}
 
 	componentWillReceiveProps = (nextProps) => {
-		console.log(nextProps.graph);
+		this.setState({
+			selectedArticleId: nextProps.selectedArticle.id
+		});
 	}
 
 	onWordMouseOver = (event) => {
@@ -40,28 +43,41 @@ class GraphsPage extends React.Component {
 		el.classList.toggle('word-click');
 	}
 
-	onMenuAccept = (event) => {
-
+	onSelectedArticle = (event) => {
+		this.setState({
+			selectedArticleId: _.toNumber(event.currentTarget.value)
+		});
 	}
 
-	handleClick = (event) => {
+	onMenuAccept = (event) => {
+		debugger;
+		let errorMsgs = [];
+		if (this.state.selectedArticleId < 0) {
+			errorMsgs.push("Select article.")
+		}
+
+		if (!_.isEmpty(errorMsgs)) {
+			utility.displayAlertMessages(errorMsgs);
+			return;
+		}
+
 		this.setState({
 			loading: true
-		});
-
-		this.props.actions.loadGraph(1, ["N", "V"])
+		}, () => {
+			this.props.actions.loadGraph(this.state.selectedArticleId, ['N'])
 			.then(() => {
 				this.setState({
 					loading: false
 				});
-			})
+			});
+		});
 	}
 
 	render = () => {
 		const {
 			graph,
 			articles,
-			selectedArticle		
+			selectedArticle
 		} = this.props;
 
 		return (
@@ -72,13 +88,14 @@ class GraphsPage extends React.Component {
 							graph={graph}
 							loading={this.state.loading}
 							settings={graphSettings}
-							renderer={"webgl"}							
+							renderer={"webgl"}
 							selectedArticle={selectedArticle} />
 					</Col>
 					<Col xs={12} md={12} lg={5}>
-						<GraphMenu 
+						<GraphMenu
 							articles={articles}
 							selectedArticleId={selectedArticle.id}
+							onSelectedArticle={this.onSelectedArticle}
 							onMenuAccept={this.onMenuAccept}
 							loading={this.state.loading} />
 					</Col>
@@ -106,15 +123,15 @@ GraphsPage.propTypes = {
 	articles: PropTypes.array.isRequired
 }
 
-function get_selected_article (articles, graph) {	
+function get_selected_article(articles, graph) {
 	if (graph && !_.isEmpty(articles)) {
-		let selectedArticle = _.find(articles, {id:graph.articleId});
+		let selectedArticle = _.find(articles, { id: graph.articleId });
 		if (selectedArticle) {
 			return selectedArticle;
 		}
 	}
-	
-	return {id: -1, url: "", sentences: [], name: ""};
+
+	return { id: -1, url: "", sentences: [], name: "" };
 }
 
 function mapStateToProps(state, ownProps) {

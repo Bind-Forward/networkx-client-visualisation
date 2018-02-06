@@ -11,6 +11,7 @@ import App from './components/App';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/toastr/build/toastr.css';
 import './styles/styles.css';
 
 const store = configureStore();

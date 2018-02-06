@@ -2,18 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 
-const Dropdown = ({ items, selectedItemId, emptyFieldText }) => {	
+const Dropdown = ({ items, labelText, onSelectedItemChange, selectedItemId, emptyFieldText }) => {	
 	return (
 		<FormGroup controlId="formControlsSelect">
-			<ControlLabel>Articles</ControlLabel>
-			<FormControl componentClass="select" placeholder="select" value={selectedItemId}>
-				<option value={-100}>
-					{emptyFieldText}
+			<ControlLabel>{labelText}</ControlLabel>
+			<FormControl 			
+				componentClass="select" 
+				onChange={onSelectedItemChange}
+				defaultValue={selectedItemId}>
+				<option value={-1}>
+					--- {emptyFieldText} ---
 				</option>
 				{
 					items.map(item => {
 						return (
-							<option key={selectedItemId}
+							<option key={item.id}
 								value={item.id}>
 								{item.name}
 							</option>
@@ -27,14 +30,17 @@ const Dropdown = ({ items, selectedItemId, emptyFieldText }) => {
 }
 
 Dropdown.defaultProps = {
-	emptyFieldText: "Selected item",
+	labelText: "Items",
+	emptyFieldText: "Select item",
 	selectedItemId: -1
 };
 
 Dropdown.propTypes = {
 	items: PropTypes.array.isRequired,
+	labelText: PropTypes.string.isRequired,
+	onSelectedItemChange: PropTypes.func.isRequired,
 	selectedItem: PropTypes.number,
-	emptyFieldText: PropTypes.string,
+	emptyFieldText: PropTypes.string
 };
 
 export default Dropdown;
