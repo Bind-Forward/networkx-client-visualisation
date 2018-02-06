@@ -6,40 +6,40 @@ import _ from 'lodash';
 import SigmaExtender from './SigmaExtender';
 
 
-const GraphWindow = ({ graph, loading, settings, initialSize }) => {
+const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle }) => {
+	let title = (_.isEmpty(graph.nodes) || loading || !selectedArticle) ? "Graph" : selectedArticle.name;
+
 	return (
-		<div>
-			<Panel>
-				<Panel.Heading>
-					<Panel.Title componentClass="h3">{graph.article.name}</Panel.Title>
-				</Panel.Heading>
-				<Panel.Body>
-					{
-						_.isEmpty(graph.nodes) || loading ?
-							<div className="loader">Loading...</div> :
-							<Sigma
-								renderer="webgl"
-								settings={settings}>
-								<SigmaExtender graph={graph} />
-								<RandomizeNodePositions />
-							</Sigma>
-					}
-				</Panel.Body>
-			</Panel>
-		</div>
+		<Panel bsStyle={"primary"}>
+			<Panel.Heading>
+				<Panel.Title componentClass="h3">{title}</Panel.Title>
+			</Panel.Heading>
+			<Panel.Body>
+				{
+					_.isEmpty(graph.nodes) || loading ?
+						<div className="loader">Loading...</div> :
+						<Sigma
+							renderer={renderer}
+							settings={settings}>
+							<SigmaExtender graph={graph} />
+							<RandomizeNodePositions />
+						</Sigma>
+				}
+			</Panel.Body>
+		</Panel>
 	);
 }
 
 GraphWindow.defaultProps = {
-	initialSize: 15
+	renderer: "webgl"
 }
 
 GraphWindow.propTypes = {
 	graph: PropTypes.object.isRequired,
-	loading: PropTypes.bool.isRequired,
+	loading: PropTypes.bool.isRequired,	
 	settings: PropTypes.object,
-	initialSize: PropTypes.number,
-	style: PropTypes.object
+	renderer: PropTypes.string,
+	selectedArticle: PropTypes.object
 }
 
 export default GraphWindow;

@@ -1,10 +1,10 @@
 import * as types from './actionTypes';
 import ArticleApi from '../api/ArticleApi';
 
-function loadArticlesSuccess(articles) {
+function loadArticlesSuccess(articles) {	
 	return {
 		type: types.LOAD_ARTICLES_SUCCESS,
-		articles
+		articles: articles
 	};
 }
 

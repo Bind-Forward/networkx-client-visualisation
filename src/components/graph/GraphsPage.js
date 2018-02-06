@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import _ from 'lodash';
 import * as graphActions from '../../actions/graphActions';
 import GraphWindow from './GraphWindow';
 import TextWindow from './TextWindow';
+import GraphMenu from './GraphMenu';
+import graphSettings from '../../constants/graphSettings';
 
 class GraphsPage extends React.Component {
 
@@ -13,7 +16,8 @@ class GraphsPage extends React.Component {
 		super(props);
 
 		this.state = {
-			loading: false
+			loading: false,
+			selectedArticleId: -1
 		};
 	}
 
@@ -21,7 +25,22 @@ class GraphsPage extends React.Component {
 		console.log(nextProps.graph);
 	}
 
-	componentWillMount = () => {
+	onWordMouseOver = (event) => {
+		const el = event.currentTarget;
+		el.classList.toggle('word-hover');
+	}
+
+	onWordMouseLeave = (event) => {
+		const el = event.currentTarget;
+		el.classList.toggle('word-hover');
+	}
+
+	onWordClick = (event) => {
+		const el = event.currentTarget;
+		el.classList.toggle('word-click');
+	}
+
+	onMenuAccept = (event) => {
 
 	}
 
@@ -39,32 +58,42 @@ class GraphsPage extends React.Component {
 	}
 
 	render = () => {
-
 		const {
 			graph,
-			article,
-			articles
+			articles,
+			selectedArticle		
 		} = this.props;
 
 		return (
 			<div>
 				<Row>
-					<Button onClick={this.handleClick} >Default</Button>
-					<Col xs={12} md={12} lg={8}>
+					<Col xs={12} md={12} lg={7} className="h-resizeable">
 						<GraphWindow
 							graph={graph}
 							loading={this.state.loading}
-							initialSize={30}
-							settings={{ drawEdges: true, drawLabels: true, minEdgeSize: 0.5, maxEdgeSize: 10, clone: false }} />
+							settings={graphSettings}
+							renderer={"webgl"}							
+							selectedArticle={selectedArticle} />
 					</Col>
-					<Col xs={12} md={12} lg={4}>
+					<Col xs={12} md={12} lg={5}>
+						<GraphMenu 
+							articles={articles}
+							selectedArticleId={selectedArticle.articleId}
+							onMenuAccept={this.onMenuAccept}
+							loading={this.state.loading} />
 					</Col>
 				</Row>
 				<Row>
-					<Col xs={12} md={12} lg={8}>
-						<TextWindow							
-							article={graph.article}
-							loading={this.state.loading} />
+					<Col xs={12} md={12} lg={7}>
+						<TextWindow
+							article={selectedArticle}
+							nodes={graph.nodes}
+							loading={this.state.loading}
+							onWordMouseOver={this.onWordMouseOver}
+							onWordMouseLeave={this.onWordMouseLeave}
+							onWordClick={this.onWordClick} />
+					</Col>
+					<Col xs={12} md={12} lg={5}>
 					</Col>
 				</Row>
 			</div>
@@ -77,10 +106,24 @@ GraphsPage.propTypes = {
 	articles: PropTypes.array.isRequired
 }
 
-function mapStateToProps(state, ownProps) {	
+function get_selected_article (articles, graph) {	
+	if (graph && !_.isEmpty(articles)) {
+		let selectedArticle = _.find(articles, {id:graph.articleId});
+		if (selectedArticle) {
+			return selectedArticle;
+		}
+	}
+	
+	return {id: -1, url: "", sentences: [], name: ""};
+}
+
+function mapStateToProps(state, ownProps) {
+	let selectedArticle = get_selected_article(state.articles, state.graph);
+
 	return {
 		graph: state.graph,
-		articles: state.articles
+		articles: state.articles,
+		selectedArticle: selectedArticle
 	};
 }
 

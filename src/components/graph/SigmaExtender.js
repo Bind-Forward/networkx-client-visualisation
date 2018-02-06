@@ -17,4 +17,8 @@ const SigmaExtender = ({ graph, sigma }) => {
 	return <div></div>;
 }
 
+SigmaExtender.propTypes = {
+	graph: PropTypes.object.isRequired
+};
+
 export default SigmaExtender;

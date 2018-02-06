@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.v-resizeable {
+	resize: vertical;
+	overflow: auto;
+}
+
+.h-resizeable {
+	resize: horizontal;
+	overflow: auto;
+}
+
+.resizeable {
+	resize: both;
+	overflow: auto;
+}
+
+.word-hover {
+	cursor: pointer;
+	background-color: darkblue;
+}
+
+.word-click {
+
+}
