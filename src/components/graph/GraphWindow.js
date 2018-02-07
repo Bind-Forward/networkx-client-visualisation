@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Sigma, RandomizeNodePositions } from 'react-sigma';
+import { Sigma, RandomizeNodePositions, EdgeShapes, NodeShapes, NOverlap, ForceAtlas2 } from 'react-sigma';
+import ForceLink from 'react-sigma/lib/ForceLink'
 import { Panel } from 'react-bootstrap';
 import _ from 'lodash';
 import SigmaExtender from './SigmaExtender';
-
 
 const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle }) => {
 	let title = (_.isEmpty(graph.nodes) || loading || !selectedArticle) ? "Graph" : selectedArticle.name;
@@ -22,6 +22,13 @@ const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle }) =>
 							renderer={renderer}
 							settings={settings}>
 							<SigmaExtender graph={graph} />
+							<EdgeShapes default={settings.edgeShapes}/>
+							<NodeShapes default={settings.nodeShapes}/>
+							{/* <ForceLink />							 */}
+							<NOverlap 
+								gridSize={50} 
+								maxIterations={100} 
+								nodeMargin={20} />
 							<RandomizeNodePositions />
 						</Sigma>
 				}

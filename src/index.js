@@ -13,6 +13,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/toastr/build/toastr.css';
 import './styles/styles.css';
+import '../node_modules/react-sigma/sigma/sigma.plugins.dragNodes.js'
 
 const store = configureStore();
 store.dispatch(loadArticles());

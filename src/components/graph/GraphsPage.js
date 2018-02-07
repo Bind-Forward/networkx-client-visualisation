@@ -28,17 +28,17 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onWordMouseOver = (event) => {
+	onNodeMouseOver = (event) => {
 		const el = event.currentTarget;
 		el.classList.toggle('word-hover');
 	}
 
-	onWordMouseLeave = (event) => {
+	onNodeMouseLeave = (event) => {
 		const el = event.currentTarget;
 		el.classList.toggle('word-hover');
 	}
 
-	onWordClick = (event) => {
+	onNodeClick = (event) => {
 		const el = event.currentTarget;
 		el.classList.toggle('word-click');
 	}
@@ -65,11 +65,11 @@ class GraphsPage extends React.Component {
 			loading: true
 		}, () => {
 			this.props.actions.loadGraph(this.state.selectedArticleId, ['N'])
-			.then(() => {
-				this.setState({
-					loading: false
+				.then(() => {
+					this.setState({
+						loading: false
+					});
 				});
-			});
 		});
 	}
 
@@ -83,7 +83,7 @@ class GraphsPage extends React.Component {
 		return (
 			<div>
 				<Row>
-					<Col xs={12} md={12} lg={7} className="h-resizeable">
+					<Col xs={12} md={12} lg={7} className="resizeable">
 						<GraphWindow
 							graph={graph}
 							loading={this.state.loading}
@@ -106,9 +106,9 @@ class GraphsPage extends React.Component {
 							article={selectedArticle}
 							nodes={graph.nodes}
 							loading={this.state.loading}
-							onWordMouseOver={this.onWordMouseOver}
-							onWordMouseLeave={this.onWordMouseLeave}
-							onWordClick={this.onWordClick} />
+							onNodeMouseOver={this.onNodeMouseOver}
+							onNodeMouseLeave={this.onNodeMouseLeave}
+							onNodeClick={this.onNodeClick} />
 					</Col>
 					<Col xs={12} md={12} lg={5}>
 					</Col>

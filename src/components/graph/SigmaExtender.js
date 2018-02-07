@@ -10,7 +10,7 @@ const SigmaExtender = ({ graph, sigma }) => {
 		// Remove assigned methods
 		// sigma.graph.kill();
 
-		sigma.graph.read({nodes: graph.nodes, edges: graph.edges});
+		sigma.graph.read({nodes: graph.nodes, edges: graph.edges}); 
 		sigma.refresh();
 	}
 

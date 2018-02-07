@@ -1,31 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import _ from 'lodash';
 import Word from './Word';
 
-const Sentence = ({ sentence, nodes, onWordMouseOver, onWordMouseLeave, onWordClick }) => {
-	const isWordInNodes = (word) => {
-		return nodes.findIndex(node =>
-			node.id === word
-		) > -1;
+const Sentence = ({ sentence, nodes, onNodeMouseOver, onNodeMouseLeave, onNodeClick }) => {
+	const getNode = (word) => {
+		return _.find(nodes, {id: word})
 	}
 
 	return (
 		<p>
 			{
 				sentence.split(" ").map((word, idx) => {
-					// Check if word is graph node
-					let isNode = isWordInNodes(word);
-					let dataTipId = isNode ? `${word}-${idx}` : "";
+					let node = getNode(word); 
+					let dataTipId = !_.isEmpty(node) ? `${word}-${idx}` : "";
 
 					return (
 						<Word key={idx}
 							word={word}
-							isNode={isNode}
+							node={node}
 							dataTipId={dataTipId}
-							onWordMouseOver={onWordMouseOver}
-							onWordMouseLeave={onWordMouseLeave}
-							onWordClick={onWordClick} />			
+							onNodeMouseOver={onNodeMouseOver}
+							onNodeMouseLeave={onNodeMouseLeave}
+							onNodeClick={onNodeClick} />			
 					);
 				})
 			}
@@ -35,9 +32,9 @@ const Sentence = ({ sentence, nodes, onWordMouseOver, onWordMouseLeave, onWordCl
 
 Sentence.propTypes = {
 	sentence: PropTypes.string.isRequired,
-	onWordMouseOver: PropTypes.func.isRequired,
-	onWordMouseLeave: PropTypes.func.isRequired,
-	onWordClick: PropTypes.func.isRequired,
+	onNodeMouseOver: PropTypes.func.isRequired,
+	onNodeMouseLeave: PropTypes.func.isRequired,
+	onNodeClick: PropTypes.func.isRequired,
 };
 
 export default Sentence;

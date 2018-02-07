@@ -4,7 +4,7 @@ import { Panel } from 'react-bootstrap';
 import _ from 'lodash';
 import Sentence from './Sentence';
 
-const TextWindow = ({ article, nodes, loading, onWordMouseOver, onWordMouseLeave, onWordClick }) => {
+const TextWindow = ({ article, nodes, loading, onNodeMouseOver, onNodeMouseLeave, onNodeClick }) => {
 	return (
 		<Panel className="resizeable" bsStyle={"primary"}>
 			<Panel.Heading>
@@ -21,9 +21,9 @@ const TextWindow = ({ article, nodes, loading, onWordMouseOver, onWordMouseLeave
 										key={idx}
 										sentence={sentence}
 										nodes={nodes}
-										onWordMouseOver={onWordMouseOver}
-										onWordMouseLeave={onWordMouseLeave}
-										onWordClick={onWordClick} />
+										onNodeMouseOver={onNodeMouseOver}
+										onNodeMouseLeave={onNodeMouseLeave}
+										onNodeClick={onNodeClick} />
 								})
 							}
 						</div>
@@ -37,9 +37,9 @@ TextWindow.propTypes = {
 	article: PropTypes.object.isRequired,
 	nodes: PropTypes.array.isRequired,
 	loading: PropTypes.bool.isRequired,
-	onWordMouseOver: PropTypes.func.isRequired,
-	onWordMouseLeave: PropTypes.func.isRequired,
-	onWordClick: PropTypes.func.isRequired,
+	onNodeMouseOver: PropTypes.func.isRequired,
+	onNodeMouseLeave: PropTypes.func.isRequired,
+	onNodeClick: PropTypes.func.isRequired,
 };
 
 export default TextWindow;

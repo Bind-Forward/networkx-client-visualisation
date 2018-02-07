@@ -1,30 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
+import _ from 'lodash';
 
-const Word = ({ word, isNode, onWordMouseOver, onWordMouseLeave, onWordClick, dataTipId }) => {
+const Word = ({ word, onNodeMouseOver, onNodeMouseLeave, onNodeClick, node, dataTipId }) => {
 	// todo: Add popover
 	return (
 		<span>
 			{
-				isNode ?
+				!_.isEmpty(node) ?
 					<span>
 						<a
-							onMouseOver={onWordMouseOver}
-							onMouseLeave={onWordMouseLeave}
-							onClick={onWordClick}
+							onMouseOver={onNodeMouseOver}
+							onMouseLeave={onNodeMouseLeave}
+							onClick={onNodeClick}
 							className={"badge"}
-							data-node-id={word.id}
+							data-node-id={node.id}
 							data-tip
 							data-for={dataTipId}>
 							{word}
 						</a>
 						<ReactTooltip id={dataTipId} aria-haspopup='true' wrapper="span">
-							<ul>
-								<li>Word</li>
-								<li>Chart</li>
-								<li>Else</li>
-							</ul>
+							<p>Degree Centrality: {node.degreeCentrality}</p>
+							<p>Betweenness Centrality: {node.betweennessCentrality}</p>
+							<p>Pagerank: {node.pagerank}</p>
 						</ReactTooltip>
 					</span>
 					:
@@ -38,12 +37,12 @@ const Word = ({ word, isNode, onWordMouseOver, onWordMouseLeave, onWordClick, da
 }
 
 Word.propTypes = {
-	word: PropTypes.string.isRequired,
-	isNode: PropTypes.bool.isRequired,
-	onWordMouseOver: PropTypes.func.isRequired,
-	onWordMouseLeave: PropTypes.func.isRequired,
-	onWordClick: PropTypes.func.isRequired,
-	dataTipId: PropTypes.string
+	word: PropTypes.string.isRequired,	
+	onNodeMouseOver: PropTypes.func.isRequired,
+	onNodeMouseLeave: PropTypes.func.isRequired,
+	onNodeClick: PropTypes.func.isRequired,
+	node: PropTypes.object,
+	dataTipId: PropTypes.string,
 };
 
 export default Word;
