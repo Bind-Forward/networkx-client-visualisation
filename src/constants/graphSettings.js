@@ -5,8 +5,8 @@ export default {
 	drawLabels: true, 
 	minEdgeSize: 0.5, 
 	maxEdgeSize: 5, 
-	minNodeSize: 1,
-	maxNodeSize: 8,
+	minNodeSize: 5,
+	maxNodeSize: 20,
 	clone: false, 
 	defaultNodeType: "def",
 	defaultEdgeType: "def",
@@ -23,8 +23,13 @@ export default {
 	labelThreshold: 5, // The minimum size a node must have on screen to see its label displayed. This does not affect hovering behavior.
 	defaultNodeBorderColor: "#000",//Any color of your choice
 	defaultBorderView: "always", //apply the default color to all nodes always (normal+hover)
-	minArrowSize: 5,
+	minArrowSize: 8,
 	// appearance of hovered nodes
 	nodeHoverColor: "#000",
-	scalingMode: "outside" // inside
+	scalingMode: "outside", // inside
+	// Node overlap settings
+	nodeMargin: 5,
+	maxIterations: 100,
+	gridSize: 30,
+	// 
 }

@@ -6,7 +6,7 @@ import { Panel } from 'react-bootstrap';
 import _ from 'lodash';
 import SigmaExtender from './SigmaExtender';
 
-const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle }) => {
+const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, dispatchEventName, hoveredWordNode }) => {
 	let title = (_.isEmpty(graph.nodes) || loading || !selectedArticle) ? "Graph" : selectedArticle.name;
 
 	return (
@@ -21,14 +21,16 @@ const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle }) =>
 						<Sigma
 							renderer={renderer}
 							settings={settings}>
-							<SigmaExtender graph={graph} />
-							<EdgeShapes default={settings.edgeShapes}/>
-							<NodeShapes default={settings.nodeShapes}/>
+							<SigmaExtender graph={graph}
+								dispatchEventName={dispatchEventName}
+								hoveredWordNode={hoveredWordNode} />
+							<EdgeShapes default={settings.edgeShapes} />
+							<NodeShapes default={settings.nodeShapes} />
 							{/* <ForceLink />							 */}
-							<NOverlap 
-								gridSize={50} 
-								maxIterations={100} 
-								nodeMargin={20} />
+							<NOverlap
+								gridSize={settings.gridSize}
+								maxIterations={settings.maxIterations}
+								nodeMargin={settings.nodeMargin} />
 							<RandomizeNodePositions />
 						</Sigma>
 				}
@@ -43,10 +45,12 @@ GraphWindow.defaultProps = {
 
 GraphWindow.propTypes = {
 	graph: PropTypes.object.isRequired,
-	loading: PropTypes.bool.isRequired,	
+	loading: PropTypes.bool.isRequired,
 	settings: PropTypes.object,
 	renderer: PropTypes.string,
-	selectedArticle: PropTypes.object
+	selectedArticle: PropTypes.object,
+	dispatchEventName: PropTypes.string,
+	hoveredWordNode: PropTypes.string
 }
 
 export default GraphWindow;

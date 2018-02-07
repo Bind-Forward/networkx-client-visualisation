@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 
-const Word = ({ word, onNodeMouseOver, onNodeMouseLeave, onNodeClick, node, dataTipId }) => {
+const Word = ({ word, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick, node, dataTipId }) => {
 	// todo: Add popover
 	return (
 		<span>
@@ -11,19 +11,19 @@ const Word = ({ word, onNodeMouseOver, onNodeMouseLeave, onNodeClick, node, data
 				!_.isEmpty(node) ?
 					<span>
 						<a
-							onMouseOver={onNodeMouseOver}
-							onMouseLeave={onNodeMouseLeave}
-							onClick={onNodeClick}
+							onMouseOver={onWordNodeMouseOver}
+							onMouseLeave={onWordNodeMouseLeave}
+							onClick={onWordNodeClick}
 							className={"badge"}
 							data-node-id={node.id}
 							data-tip
 							data-for={dataTipId}>
 							{word}
 						</a>
-						<ReactTooltip id={dataTipId} aria-haspopup='true' wrapper="span">
-							<p>Degree Centrality: {node.degreeCentrality}</p>
-							<p>Betweenness Centrality: {node.betweennessCentrality}</p>
-							<p>Pagerank: {node.pagerank}</p>
+						<ReactTooltip id={dataTipId} data-place="top" aria-haspopup='true' wrapper="span">
+							<span>Degree Centrality: {node.degreeCentrality}</span><br/>
+							<span>Betweenness Centrality: {node.betweennessCentrality}</span><br/>
+							<span>Pagerank: {node.pagerank}</span>
 						</ReactTooltip>
 					</span>
 					:
@@ -38,9 +38,9 @@ const Word = ({ word, onNodeMouseOver, onNodeMouseLeave, onNodeClick, node, data
 
 Word.propTypes = {
 	word: PropTypes.string.isRequired,	
-	onNodeMouseOver: PropTypes.func.isRequired,
-	onNodeMouseLeave: PropTypes.func.isRequired,
-	onNodeClick: PropTypes.func.isRequired,
+	onWordNodeMouseOver: PropTypes.func.isRequired,
+	onWordNodeMouseLeave: PropTypes.func.isRequired,
+	onWordNodeClick: PropTypes.func.isRequired,
 	node: PropTypes.object,
 	dataTipId: PropTypes.string,
 };

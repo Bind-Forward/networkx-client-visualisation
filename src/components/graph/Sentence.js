@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Word from './Word';
 
-const Sentence = ({ sentence, nodes, onNodeMouseOver, onNodeMouseLeave, onNodeClick }) => {
+const Sentence = ({ sentence, nodes, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick }) => {
 	const getNode = (word) => {
 		return _.find(nodes, {id: word})
 	}
@@ -20,9 +20,9 @@ const Sentence = ({ sentence, nodes, onNodeMouseOver, onNodeMouseLeave, onNodeCl
 							word={word}
 							node={node}
 							dataTipId={dataTipId}
-							onNodeMouseOver={onNodeMouseOver}
-							onNodeMouseLeave={onNodeMouseLeave}
-							onNodeClick={onNodeClick} />			
+							onWordNodeMouseOver={onWordNodeMouseOver}
+							onWordNodeMouseLeave={onWordNodeMouseLeave}
+							onWordNodeClick={onWordNodeClick} />			
 					);
 				})
 			}
@@ -32,9 +32,9 @@ const Sentence = ({ sentence, nodes, onNodeMouseOver, onNodeMouseLeave, onNodeCl
 
 Sentence.propTypes = {
 	sentence: PropTypes.string.isRequired,
-	onNodeMouseOver: PropTypes.func.isRequired,
-	onNodeMouseLeave: PropTypes.func.isRequired,
-	onNodeClick: PropTypes.func.isRequired,
+	onWordNodeMouseOver: PropTypes.func.isRequired,
+	onWordNodeMouseLeave: PropTypes.func.isRequired,
+	onWordNodeClick: PropTypes.func.isRequired,
 };
 
 export default Sentence;
