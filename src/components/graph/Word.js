@@ -15,7 +15,8 @@ const Word = ({ word, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick
 							onMouseLeave={onWordNodeMouseLeave}
 							onClick={onWordNodeClick}
 							className={"badge"}
-							data-node-id={node.id}
+							data-original={node.original}
+							data-nominative={node.id}
 							data-tip
 							data-for={dataTipId}>
 							{word}

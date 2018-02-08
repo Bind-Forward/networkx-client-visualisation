@@ -10,6 +10,7 @@ import TextWindow from './TextWindow';
 import GraphMenu from './GraphMenu';
 import graphSettings from '../../constants/graphSettings';
 import * as utility from '../../utility';
+import graphEvents from '../../constants/graphEvents';
 
 class GraphsPage extends React.Component {
 
@@ -34,8 +35,8 @@ class GraphsPage extends React.Component {
 		const el = event.currentTarget;
 		el.classList.toggle('word-hover');
 		this.setState({
-			dispatchEventName: 'overNode',
-			hoveredWordNode: el.text
+			dispatchEventName: graphEvents.overNode,
+			hoveredWordNode: el.dataset.nominative
 		});
 	}
 
@@ -43,7 +44,7 @@ class GraphsPage extends React.Component {
 		const el = event.currentTarget;
 		el.classList.toggle('word-hover');
 		this.setState({
-			dispatchEventName: 'outNode'
+			dispatchEventName: graphEvents.outNode
 		});
 	}
 

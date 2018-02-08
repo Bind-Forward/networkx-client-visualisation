@@ -5,7 +5,7 @@ import Word from './Word';
 
 const Sentence = ({ sentence, nodes, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick }) => {
 	const getNode = (word) => {
-		return _.find(nodes, {id: word})
+		return _.find(nodes, (node) => node.original.toLowerCase() === word.toLowerCase())
 	}
 
 	return (

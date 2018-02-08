@@ -13,7 +13,7 @@ export function loadGraph(articleId, dictionaryTypes) {
 		return GraphApi.getGraph(articleId, dictionaryTypes).then(graph => {
 			dispatch(loadGraphSuccess(graph));
 		}).catch(error => {
-			throw(error)
+			throw(error);
 		});
 	};
 }
