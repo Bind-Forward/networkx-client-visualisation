@@ -6,7 +6,7 @@ import { Panel } from 'react-bootstrap';
 import _ from 'lodash';
 import SigmaExtender from './SigmaExtender';
 
-const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, dispatchEventName, hoveredWordNode }) => {
+const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, dispatchEventName, actionNode }) => {
 	let title = (_.isEmpty(graph.nodes) || loading || !selectedArticle) ? "Graph" : selectedArticle.name;
 
 	return (
@@ -23,7 +23,7 @@ const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, disp
 							settings={settings}>
 							<SigmaExtender graph={graph}
 								dispatchEventName={dispatchEventName}
-								hoveredWordNode={hoveredWordNode} />
+								actionNode={actionNode} />
 							<EdgeShapes default={settings.edgeShapes} />
 							<NodeShapes default={settings.nodeShapes} />
 							{/* <ForceLink />							 */}
@@ -50,7 +50,7 @@ GraphWindow.propTypes = {
 	renderer: PropTypes.string,
 	selectedArticle: PropTypes.object,
 	dispatchEventName: PropTypes.string,
-	hoveredWordNode: PropTypes.string
+	actionNode: PropTypes.string
 }
 
 export default GraphWindow;

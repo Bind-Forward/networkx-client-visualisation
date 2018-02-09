@@ -21,10 +21,12 @@ body {
 
 .word-hover {
 	cursor: pointer;
-	background-color: darkblue;
-	font-size: 1.1em;
+	background-color: #00B2EE;
+	/* font-size: 1em; */
 }
 
 .word-click {
-
+	cursor: pointer;
+	background-color: #09a709;
+	/* font-size: 1em; */
 }

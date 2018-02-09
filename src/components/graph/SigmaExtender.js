@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import graphEvents from '../../constants/graphEvents';
 import graphSettings from '../../constants/graphSettings';
+import * as utility from '../../utility';
 
-const SigmaExtender = ({ graph, sigma, dispatchEventName, hoveredWordNode }) => {
+const SigmaExtender = ({ graph, sigma, dispatchEventName, actionNode }) => {
 	if (!(_.isEmpty(graph) && _.isEmpty(graph.nodes))) {
 		// Remove nodes and edges
 		sigma.graph.clear();
@@ -12,7 +13,7 @@ const SigmaExtender = ({ graph, sigma, dispatchEventName, hoveredWordNode }) => 
 
 		sigma.graph.read({ nodes: graph.nodes, edges: graph.edges });
 
-		dispatchEvent(sigma, dispatchEventName, hoveredWordNode);
+		dispatchEvent(sigma, dispatchEventName, actionNode);
 		sigma.refresh({ skipIndexation: true });
 	}
 
@@ -24,50 +25,43 @@ function dispatchEvent(sigma, event, nodeId) {
 	let renderer = sigma.renderers[0];
 	if (!_.isEmpty(node)) {
 		renderer.dispatchEvent(event, { node: node });
-		doAfterDispatchedAfterEvent(sigma.graph, event, node);
+		doAfterDispatchedAfterEvent(sigma, event, node);
 	}
 }
 
-function doAfterDispatchedAfterEvent(graph, event, sigmaNode) {
+function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 	switch (event) {
 		case graphEvents.overNode:
-			setNodeStyle(sigmaNode, graphSettings.nodeHoverColor, sigmaNode.size * 2);
-			setStyleToAdjacentEdges(graph, sigmaNode, graphSettings.edgeHoverColor, graphSettings.adjacentNodeHoverColor, (size) => size * 2);			
+			utility.setNodeStyle(sigmaNode, graphSettings.nodeHoverColor, sigmaNode.size);
+			utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeHoverColor, graphSettings.adjacentNodeHoverColor, (size) => size);
+			sigma.cameras[0].goTo({x: sigmaNode["read_cam0:x"], y: sigmaNode["read_cam0:y"], ratio: 1});
 			break;
 		case graphEvents.outNode:
-			setNodeStyle(sigmaNode, graphSettings.defaultNodeColor, sigmaNode.size / 2);
-			setStyleToAdjacentEdges(graph, sigmaNode, graphSettings.defaultEdgeColor, graphSettings.defaultNodeColor, (size) => size / 2);		
+			utility.setNodeStyle(sigmaNode, graphSettings.defaultNodeColor, sigmaNode.size);
+			utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.defaultEdgeColor, graphSettings.defaultNodeColor, (size) => size);
+			break;
+		case graphEvents.clickNode:
+			if (sigmaNode.isClicked) {
+				sigmaNode.isClicked = false;
+				utility.setNodeStyle(sigmaNode, graphSettings.nodeHoverColor, sigmaNode.size);
+				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeHoverColor, graphSettings.adjacentNodeHoverColor, (size) => size);
+			} else {
+				sigmaNode.isClicked = true;
+				utility.setNodeStyle(sigmaNode, graphSettings.nodeClickColor, sigmaNode.size);
+				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeClickColor, graphSettings.nodeClickColor, (size) => size);			
+				sigma.cameras[0].goTo({x: sigmaNode["read_cam0:x"], y: sigmaNode["read_cam0:y"], ratio: graphSettings.zoomRatio});					
+			}
 			break;
 		default:
 			return;
 	}
 }
 
-function setNodeStyle(sigmaNode, color, size) {
-	sigmaNode.color = color;
-	sigmaNode.size = size;
-}
-
-function setStyleToAdjacentEdges(graph, sourceNode, edgeColor, adjacentNodeColor, sizeCallback) {
-	let adjacentEdges = _.filter(graph.edges(), edge => edge.source === sourceNode.id);
-	if (!_.isEmpty(adjacentEdges)) {
-		adjacentEdges.map(edge => {
-			edge.color = edgeColor;
-			edge.size = sizeCallback(edge.size);
-			let targetNode = _.find(graph.nodes(), { id: edge.target });
-			if (targetNode) {
-				targetNode.color = adjacentNodeColor;
-				targetNode.size = sizeCallback(targetNode.size);
-			}
-		});
-	}	
-}
-
 SigmaExtender.propTypes = {
 	graph: PropTypes.object.isRequired,
 	sigma: PropTypes.object,
 	dispatchEventName: PropTypes.string,
-	hoveredWordNode: PropTypes.string
+	actionNode: PropTypes.string
 };
 
 export default SigmaExtender;

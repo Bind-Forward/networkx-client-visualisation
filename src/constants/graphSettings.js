@@ -32,5 +32,9 @@ export default {
 	// appearance of hovered nodes and edges
 	nodeHoverColor: "#00B2EE",	
 	edgeHoverColor: "#00B2EE",
-	adjacentNodeHoverColor: "#00B2EE",	
+	nodeClickColor: "#09a709",
+	edgeClickColor: "#09a709",
+	adjacentNodeHoverColor: "#00B2EE",
+	// camera settings
+	zoomRatio: 0.5
 }

@@ -1,4 +1,5 @@
 import toastr from 'toastr';
+import _ from 'lodash';
 
 const toastrOptions = {
 	closeButton: true,
@@ -28,5 +29,24 @@ export function displayAlertMessage(message, header, type) {
 		default:
 			toastr.error(message, header);
 	}
+}
 
+export function setNodeStyle(sigmaNode, color, size) {
+	sigmaNode.color = color;
+	sigmaNode.size = size;
+}
+
+export function setStyleToAdjacentEdges(graph, sourceNode, edgeColor, adjacentNodeColor, sizeCallback) {
+	let adjacentEdges = _.filter(graph.edges(), edge => edge.source === sourceNode.id);
+	if (!_.isEmpty(adjacentEdges)) {
+		adjacentEdges.map(edge => {
+			edge.color = edgeColor;
+			edge.size = sizeCallback(edge.size);
+			let targetNode = _.find(graph.nodes(), { id: edge.target });
+			if (targetNode) {
+				targetNode.color = adjacentNodeColor;
+				targetNode.size = sizeCallback(targetNode.size);
+			}
+		});
+	}	
 }

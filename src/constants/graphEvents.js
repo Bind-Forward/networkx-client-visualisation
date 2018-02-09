@@ -8,5 +8,6 @@ export default {
 	outEdge: "outEdge",
 	outEdges: "outEdges",
 	clickNode: "clickNode",
-	clickNodes: "clickNodes"
+	clickNodes: "clickNodes",
+	unClickNode: "unClickNode"
 };

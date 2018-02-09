@@ -21,7 +21,7 @@ class GraphsPage extends React.Component {
 			loading: false,
 			selectedArticleId: -1,
 			dispatchEventName: '',
-			hoveredWordNode: ''
+			actionNode: ''
 		};
 	}
 
@@ -33,15 +33,23 @@ class GraphsPage extends React.Component {
 
 	onWordNodeMouseOver = (event) => {
 		const el = event.currentTarget;
+		const wasClicked = !_.isEmpty(el.dataset.clicked);
+		if (wasClicked)
+			return;
+
 		el.classList.toggle('word-hover');
 		this.setState({
 			dispatchEventName: graphEvents.overNode,
-			hoveredWordNode: el.dataset.nominative
+			actionNode: el.dataset.nominative
 		});
 	}
 
 	onWordNodeMouseLeave = (event) => {
 		const el = event.currentTarget;
+		if (el.dataset.clicked === '1') {
+			return false;
+		}
+			
 		el.classList.toggle('word-hover');
 		this.setState({
 			dispatchEventName: graphEvents.outNode
@@ -51,6 +59,12 @@ class GraphsPage extends React.Component {
 	onWordNodeClick = (event) => {
 		const el = event.currentTarget;
 		el.classList.toggle('word-click');
+		el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
+		
+		this.setState(prevState => ({
+			dispatchEventName: graphEvents.clickNode,
+			actionNode: el.dataset.nominative
+		}));
 	}
 
 	onSelectedArticle = (event) => {
@@ -100,7 +114,7 @@ class GraphsPage extends React.Component {
 							renderer={"webgl"}
 							selectedArticle={selectedArticle}
 							dispatchEventName={this.state.dispatchEventName}
-							hoveredWordNode={this.state.hoveredWordNode} />
+							actionNode={this.state.actionNode} />
 					</Col>
 					<Col xs={12} md={12} lg={5}>
 						<GraphMenu
