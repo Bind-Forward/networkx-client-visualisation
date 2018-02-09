@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from './store/configureStore';
 import registerServiceWorker from './registerServiceWorker';
 import toastr from 'toastr';
-import { loadGraph } from './actions/graphActions';
+import { loadGraph, addDictionaryType } from './actions/graphActions';
 import { loadArticles } from './actions/articleActions';
 import initialState from './reducers/initialState';
 import App from './components/App';
@@ -25,6 +25,8 @@ store.dispatch(loadGraph(initialState.graph.articleId, initialState.dictionaryTy
 	.catch(error => {
 		toastr.error(error, 'Error');
 	});
+	
+store.dispatch(addDictionaryType(initialState.dictionaryTypes));
 
 ReactDOM.render(
 	<Provider store={store}>

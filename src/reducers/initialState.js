@@ -8,5 +8,5 @@ export default {
 		articleId: 1
 	},
 	articles: [],	
-	dictionaryTypes: [constants.DICTIONARY_TYPES.NOUN, constants.DICTIONARY_TYPES.VERB]
+	dictionaryTypes: [constants.DICTIONARY_TYPE.NOUN, constants.DICTIONARY_TYPE.VERB, constants.DICTIONARY_TYPE.ADVERB]
 };

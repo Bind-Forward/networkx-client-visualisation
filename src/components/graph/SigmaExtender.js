@@ -31,7 +31,7 @@ function dispatchEvent(sigma, event, nodeId) {
 
 function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 	switch (event) {
-		case graphEvents.overNode:
+		case graphEvents.overNode:		
 			utility.setNodeStyle(sigmaNode, graphSettings.nodeHoverColor, sigmaNode.size);
 			utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeHoverColor, graphSettings.adjacentNodeHoverColor, (size) => size);
 			sigma.cameras[0].goTo({x: sigmaNode["read_cam0:x"], y: sigmaNode["read_cam0:y"], ratio: 1});
@@ -42,15 +42,16 @@ function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 			break;
 		case graphEvents.clickNode:
 			if (sigmaNode.isClicked) {
-				sigmaNode.isClicked = false;
+				
 				utility.setNodeStyle(sigmaNode, graphSettings.nodeHoverColor, sigmaNode.size);
 				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeHoverColor, graphSettings.adjacentNodeHoverColor, (size) => size);
 			} else {
-				sigmaNode.isClicked = true;
 				utility.setNodeStyle(sigmaNode, graphSettings.nodeClickColor, sigmaNode.size);
 				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeClickColor, graphSettings.nodeClickColor, (size) => size);			
 				sigma.cameras[0].goTo({x: sigmaNode["read_cam0:x"], y: sigmaNode["read_cam0:y"], ratio: graphSettings.zoomRatio});					
 			}
+			debugger;
+			sigmaNode.isClicked = !sigmaNode.isClicked;
 			break;
 		default:
 			return;

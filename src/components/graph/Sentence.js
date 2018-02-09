@@ -5,7 +5,10 @@ import Word from './Word';
 
 const Sentence = ({ sentence, nodes, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick }) => {
 	const getNode = (word) => {
-		return _.find(nodes, (node) => node.original.toLowerCase() === word.toLowerCase())
+		return _.find(nodes, (node) => {
+			// if (node.original.includes('medij') && word.includes('medij')) { debugger;}
+			return node.original.toLowerCase() === word.toLowerCase()
+		})
 	}
 
 	return (

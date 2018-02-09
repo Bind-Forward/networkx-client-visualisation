@@ -73,10 +73,26 @@ class GraphsPage extends React.Component {
 		});
 	}
 
+	onDictionaryTypeChange = (event) => {
+		const el = event.currentTarget;
+		
+		if (_.includes(this.props.dictionaryTypes, el.value)) {
+			this.props.actions.removeDictionaryType(el.value);
+			el.checked = false;
+		} else {
+			this.props.actions.addDictionaryType(el.value);
+			el.checked = true;
+		}
+	}
+
 	onMenuAccept = (event) => {
 		let errorMsgs = [];
 		if (this.state.selectedArticleId < 0) {
 			errorMsgs.push("Select article.")
+		}
+
+		if (_.isEmpty(this.props.dictionaryTypes)) {
+			errorMsgs.push("Select word type.")
 		}
 
 		if (!_.isEmpty(errorMsgs)) {
@@ -87,7 +103,7 @@ class GraphsPage extends React.Component {
 		this.setState({
 			loading: true
 		}, () => {
-			this.props.actions.loadGraph(this.state.selectedArticleId, ['N'])
+			this.props.actions.loadGraph(this.state.selectedArticleId, this.props.dictionaryTypes)
 				.then(() => {
 					this.setState({
 						loading: false
@@ -100,9 +116,10 @@ class GraphsPage extends React.Component {
 		const {
 			graph,
 			articles,
-			selectedArticle
+			selectedArticle,
+			dictionaryTypes
 		} = this.props;
-
+		
 		return (
 			<div>
 				<Row>
@@ -122,7 +139,9 @@ class GraphsPage extends React.Component {
 							selectedArticleId={selectedArticle.id}
 							onSelectedArticle={this.onSelectedArticle}
 							onMenuAccept={this.onMenuAccept}
-							loading={this.state.loading} />
+							loading={this.state.loading}
+							selectedDictionaryTypes={dictionaryTypes}
+							onDictionaryTypeChange={this.onDictionaryTypeChange} />
 					</Col>
 				</Row>
 				<Row>
@@ -145,7 +164,8 @@ class GraphsPage extends React.Component {
 
 GraphsPage.propTypes = {
 	graph: PropTypes.object.isRequired,
-	articles: PropTypes.array.isRequired
+	articles: PropTypes.array.isRequired,
+	dictionaryTypes: PropTypes.array.isRequired
 }
 
 function get_selected_article(articles, graph) {
@@ -165,7 +185,8 @@ function mapStateToProps(state, ownProps) {
 	return {
 		graph: state.graph,
 		articles: state.articles,
-		selectedArticle: selectedArticle
+		selectedArticle: selectedArticle,
+		dictionaryTypes: state.dictionaryTypes
 	};
 }
 

@@ -18,3 +18,16 @@ export function loadGraph(articleId, dictionaryTypes) {
 	};
 }
 
+export function addDictionaryType(dictionaryType) {
+	return {
+		type: types.ADD_DICTIONARY_TYPE,
+		dictionaryType
+	}
+}
+
+export function removeDictionaryType(dictionaryType) {
+	return {
+		type: types.REMOVE_DICTIONARY_TYPE,
+		dictionaryType
+	}
+}
