@@ -50,7 +50,6 @@ function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeClickColor, graphSettings.nodeClickColor, (size) => size);			
 				sigma.cameras[0].goTo({x: sigmaNode["read_cam0:x"], y: sigmaNode["read_cam0:y"], ratio: graphSettings.zoomRatio});					
 			}
-			debugger;
 			sigmaNode.isClicked = !sigmaNode.isClicked;
 			break;
 		default:

@@ -13,3 +13,11 @@ export const DICTIONARY_TYPE = {
 	RESIDUAL: "X",
 	PUNCTUATION: "Z"
 }
+
+export const LAYOUT_TYPE = {
+	Random: 'Random',
+	ForceAtlas2: 'ForceAtlas2',
+	ForceLink: 'ForceLink',
+	Dagre: 'Dagre',
+	NOverlap: 'NOverlap'
+}

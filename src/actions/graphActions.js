@@ -31,3 +31,10 @@ export function removeDictionaryType(dictionaryType) {
 		dictionaryType
 	}
 }
+
+export function setLayout(layoutType) {
+	return {
+		type: types.SET_LAYOUT,
+		layoutType
+	}
+}

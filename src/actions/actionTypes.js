@@ -8,3 +8,6 @@ export const LOAD_ARTICLE_SUCCESS = 'LOAD_ARTICLE_SUCCESS';
 // Dictionary types
 export const ADD_DICTIONARY_TYPE = 'ADD_DICTIONARY_TYPE';
 export const REMOVE_DICTIONARY_TYPE = 'REMOVE_DICTIONARY_TYPE';
+
+// Layout type
+export const SET_LAYOUT = 'SET_LAYOUT';

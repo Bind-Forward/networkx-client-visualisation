@@ -85,6 +85,12 @@ class GraphsPage extends React.Component {
 		}
 	}
 
+	onLayoutChange = (event) => {
+		const el = event.currentTarget;
+		el.checked = true;
+		this.props.actions.setLayout(el.value);
+	}
+
 	onMenuAccept = (event) => {
 		let errorMsgs = [];
 		if (this.state.selectedArticleId < 0) {
@@ -117,7 +123,8 @@ class GraphsPage extends React.Component {
 			graph,
 			articles,
 			selectedArticle,
-			dictionaryTypes
+			dictionaryTypes,
+			layoutType
 		} = this.props;
 		
 		return (
@@ -128,10 +135,11 @@ class GraphsPage extends React.Component {
 							graph={graph}
 							loading={this.state.loading}
 							settings={graphSettings}
-							renderer={"webgl"}
+							renderer={"canvas"}
 							selectedArticle={selectedArticle}
 							dispatchEventName={this.state.dispatchEventName}
-							actionNode={this.state.actionNode} />
+							actionNode={this.state.actionNode}
+							layoutType={layoutType} />
 					</Col>
 					<Col xs={12} md={12} lg={5}>
 						<GraphMenu
@@ -141,7 +149,9 @@ class GraphsPage extends React.Component {
 							onMenuAccept={this.onMenuAccept}
 							loading={this.state.loading}
 							selectedDictionaryTypes={dictionaryTypes}
-							onDictionaryTypeChange={this.onDictionaryTypeChange} />
+							onDictionaryTypeChange={this.onDictionaryTypeChange}
+							layoutType={layoutType}							
+							onLayoutChange={this.onLayoutChange} />
 					</Col>
 				</Row>
 				<Row>
@@ -165,7 +175,8 @@ class GraphsPage extends React.Component {
 GraphsPage.propTypes = {
 	graph: PropTypes.object.isRequired,
 	articles: PropTypes.array.isRequired,
-	dictionaryTypes: PropTypes.array.isRequired
+	dictionaryTypes: PropTypes.array.isRequired,
+	layoutType: PropTypes.string.isRequired
 }
 
 function get_selected_article(articles, graph) {
@@ -186,7 +197,8 @@ function mapStateToProps(state, ownProps) {
 		graph: state.graph,
 		articles: state.articles,
 		selectedArticle: selectedArticle,
-		dictionaryTypes: state.dictionaryTypes
+		dictionaryTypes: state.dictionaryTypes,
+		layoutType: state.layoutType
 	};
 }
 

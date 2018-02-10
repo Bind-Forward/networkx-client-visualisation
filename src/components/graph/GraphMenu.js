@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, Button, Row, Col, Checkbox } from 'react-bootstrap';
+import { Panel, Button, Row, Col, FormGroup, Checkbox, ControlLabel, Radio } from 'react-bootstrap';
 import _ from 'lodash';
 import Dropdown from '../common/Dropdown';
 import * as constants from '../../constants/appConstants';
 
-const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, onDictionaryTypeChange }) => {
+const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, onDictionaryTypeChange, layoutType, onLayoutChange }) => {
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
@@ -18,33 +18,82 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 						<div>
 							<Row>
 								<Col xs={6} sm={6} md={6} lg={6}>
-									<Dropdown
-										items={articles}
-										labelText={"Articles"}
-										onSelectedItemChange={onSelectedArticle}
-										selectedItemId={selectedArticleId}
-										emptyFieldText={"Select article"} />
+									<FormGroup>
+										<Dropdown
+											items={articles}
+											labelText={"Articles"}
+											onSelectedItemChange={onSelectedArticle}
+											selectedItemId={selectedArticleId}
+											emptyFieldText={"Select article"} />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Select Graph Layout</ControlLabel>
+										<Panel style={{ maxHeight: '150px', overflow: 'auto' }}>
+											<Panel.Body>
+												{
+													Object.keys(constants.LAYOUT_TYPE).map(key => {
+														let value = constants.LAYOUT_TYPE[key];
+														const checked = layoutType === value;
+														return (
+															<Radio key={key}
+																value={value}
+																name="layoutType"
+																checked={checked}
+																onChange={onLayoutChange}
+																id={value}>
+																{value}
+    										</Radio>
+														);
+													})
+												}
+												{/* <Radio
+													value={constants.LAYOUT_TYPE.Random}
+													name="layoutType"
+													checked={layoutType === constants.LAYOUT_TYPE.Random}
+													onChange={onLayoutChange}>
+													Random
+    										</Radio>
+												<Radio
+													value={constants.LAYOUT_TYPE.ForceAtlas2}
+													name="layoutType"
+													checked={layoutType === constants.LAYOUT_TYPE.ForceAtlas2}
+													onChange={onLayoutChange}>
+													ForceAtlas2
+    										</Radio>
+												<Radio
+													value={constants.LAYOUT_TYPE.ForceLink}
+													name="layoutType"
+													checked={layoutType === constants.LAYOUT_TYPE.ForceLink}
+													onChange={onLayoutChange}>
+													ForceLink
+    										</Radio> */}
+											</Panel.Body>
+										</Panel>
+									</FormGroup>
 								</Col>
 								<Col xs={6} sm={6} md={6} lg={6}>
-									<Panel style={{maxHeight: '150px'}}>
-										<Panel.Body>
-											{
-												Object.keys(constants.DICTIONARY_TYPE).map(key => {
-													const value = constants.DICTIONARY_TYPE[key];
-													let checked = _.indexOf(selectedDictionaryTypes, value) > -1;
-													return (
-														<Checkbox key={key}
-															value={value}
-															checked={checked}
-															onChange={onDictionaryTypeChange}
-															id={value}>
-															{key}
-														</Checkbox>
-													);
-												})
-											}
-										</Panel.Body>
-									</Panel>
+									<FormGroup>
+										<ControlLabel>Select Word Types</ControlLabel>
+										<Panel style={{ maxHeight: '150px', overflow: 'auto' }}>
+											<Panel.Body>
+												{
+													Object.keys(constants.DICTIONARY_TYPE).map(key => {
+														const value = constants.DICTIONARY_TYPE[key];
+														let checked = _.indexOf(selectedDictionaryTypes, value) > -1;
+														return (
+															<Checkbox key={key}
+																value={value}
+																checked={checked}
+																onChange={onDictionaryTypeChange}
+																id={value}>
+																{key}
+															</Checkbox>
+														);
+													})
+												}
+											</Panel.Body>
+										</Panel>
+									</FormGroup>
 								</Col>
 							</Row>
 							<Row>
@@ -73,7 +122,9 @@ GraphMenu.propTypes = {
 	loading: PropTypes.bool.isRequired,
 	selectedArticleId: PropTypes.number,
 	selectedDictionaryTypes: PropTypes.array,
-	onDictionaryTypeChange: PropTypes.func
+	onDictionaryTypeChange: PropTypes.func,
+	layoutType: PropTypes.string,
+	onLayoutChange: PropTypes.func
 };
 
 export default GraphMenu;
