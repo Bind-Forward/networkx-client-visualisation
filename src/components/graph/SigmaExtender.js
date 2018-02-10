@@ -9,7 +9,7 @@ const SigmaExtender = ({ graph, sigma, dispatchEventName, actionNode }) => {
 	if (!(_.isEmpty(graph) && _.isEmpty(graph.nodes))) {
 		// Remove nodes and edges
 		sigma.graph.clear();
-		sigma.refresh();
+		// sigma.refresh();
 
 		sigma.graph.read({ nodes: graph.nodes, edges: graph.edges });
 

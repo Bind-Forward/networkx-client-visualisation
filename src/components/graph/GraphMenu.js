@@ -46,27 +46,6 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 														);
 													})
 												}
-												{/* <Radio
-													value={constants.LAYOUT_TYPE.Random}
-													name="layoutType"
-													checked={layoutType === constants.LAYOUT_TYPE.Random}
-													onChange={onLayoutChange}>
-													Random
-    										</Radio>
-												<Radio
-													value={constants.LAYOUT_TYPE.ForceAtlas2}
-													name="layoutType"
-													checked={layoutType === constants.LAYOUT_TYPE.ForceAtlas2}
-													onChange={onLayoutChange}>
-													ForceAtlas2
-    										</Radio>
-												<Radio
-													value={constants.LAYOUT_TYPE.ForceLink}
-													name="layoutType"
-													checked={layoutType === constants.LAYOUT_TYPE.ForceLink}
-													onChange={onLayoutChange}>
-													ForceLink
-    										</Radio> */}
 											</Panel.Body>
 										</Panel>
 									</FormGroup>

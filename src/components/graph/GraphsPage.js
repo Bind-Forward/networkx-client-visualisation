@@ -21,7 +21,9 @@ class GraphsPage extends React.Component {
 			loading: false,
 			selectedArticleId: -1,
 			dispatchEventName: '',
-			actionNode: ''
+			actionNode: '',
+			graphHeight: '400px',
+			graphWidth: 'inherit'
 		};
 	}
 
@@ -118,6 +120,15 @@ class GraphsPage extends React.Component {
 		});
 	}
 
+	onChangeGraphSize = (event) => {
+		const el = event.currentTarget;	
+		const height = this.state.graphHeight === '400px' ? '750px' : '400px';
+		
+		this.setState({
+			graphHeight: height
+		});
+	}
+
 	render = () => {
 		const {
 			graph,
@@ -139,7 +150,10 @@ class GraphsPage extends React.Component {
 							selectedArticle={selectedArticle}
 							dispatchEventName={this.state.dispatchEventName}
 							actionNode={this.state.actionNode}
-							layoutType={layoutType} />
+							layoutType={layoutType}
+							graphHeight={this.state.graphHeight}
+							graphWidth={this.state.graphWidth}
+							onChangeGraphSize={this.onChangeGraphSize} />
 					</Col>
 					<Col xs={12} md={12} lg={5}>
 						<GraphMenu
