@@ -22,8 +22,7 @@ class GraphsPage extends React.Component {
 			selectedArticleId: -1,
 			dispatchEventName: '',
 			actionNode: '',
-			graphHeight: '400px',
-			graphWidth: 'inherit'
+			isFullscreen: false
 		};
 	}
 
@@ -122,12 +121,10 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onChangeGraphSize = (event) => {
-		const height = this.state.graphHeight === '400px' ? '750px' : '400px';
-		
-		this.setState({
-			graphHeight: height
-		});
+	onChangeGraphSize = (event) => {		
+		this.setState(prevState => ({
+			isFullscreen: !prevState.isFullscreen
+		}));
 	}
 
 	render = () => {
@@ -142,7 +139,7 @@ class GraphsPage extends React.Component {
 		return (
 			<div>
 				<Row>
-					<Col xs={12} md={12} lg={7} className="resizeable">
+					<Col xs={12} md={this.state.isFullscreen ? 12 : 8} lg={this.state.isFullscreen ? 12 : 7} className="resizeable">
 						<GraphWindow
 							graph={graph}
 							loading={this.state.loading}
@@ -152,11 +149,10 @@ class GraphsPage extends React.Component {
 							dispatchEventName={this.state.dispatchEventName}
 							actionNode={this.state.actionNode}
 							layoutType={layoutType}
-							graphHeight={this.state.graphHeight}
-							graphWidth={this.state.graphWidth}
+							isFullscreen={this.state.isFullscreen}
 							onChangeGraphSize={this.onChangeGraphSize} />
 					</Col>
-					<Col xs={12} md={12} lg={5}>
+					<Col xs={12} md={this.state.isFullscreen ? 12 : 4} lg={this.state.isFullscreen ? 12 : 5}>
 						<GraphMenu
 							articles={articles}
 							selectedArticleId={selectedArticle.id}
@@ -167,6 +163,7 @@ class GraphsPage extends React.Component {
 							onDictionaryTypeChange={this.onDictionaryTypeChange}
 							layoutType={layoutType}							
 							onLayoutChange={this.onLayoutChange} />
+							
 					</Col>
 				</Row>
 				<Row>
