@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
-import articleApi from '../api/articleApi';
+// import articleApi from '../api/articleApi';
+import articleApi from '../api/mockArticleApi';
 
 function loadArticlesSuccess(articles) {	
 	return {
