@@ -1,5 +1,5 @@
 import * as types from './actionTypes';
-import ArticleApi from '../api/ArticleApi';
+import articleApi from '../api/articleApi';
 
 function loadArticlesSuccess(articles) {	
 	return {
@@ -17,7 +17,7 @@ function loadArticleSuccess(article) {
 
 export function loadArticles() {
 	return dispatch => {
-		return ArticleApi.getAllArticles().then(articles => {
+		return articleApi.getAllArticles().then(articles => {
 			dispatch(loadArticlesSuccess(articles));
 		}).catch(error => {
 			throw error;
@@ -27,7 +27,7 @@ export function loadArticles() {
 
 export function loadArticle(articleId) {
 	return dispatch => {
-		return ArticleApi.getArticle(articleId).then(article => {
+		return articleApi.getArticle(articleId).then(article => {
 			dispatch(loadArticleSuccess(article));
 		}).catch(error => {
 			throw(error);

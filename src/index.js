@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from './store/configureStore';
 import registerServiceWorker from './registerServiceWorker';
-import toastr from 'toastr';
+import * as utility from './utility';
 import { loadGraph, addDictionaryType, setLayout } from './actions/graphActions';
 import { loadArticles } from './actions/articleActions';
 import initialState from './reducers/initialState';
@@ -19,11 +19,11 @@ import '../node_modules/react-sigma/sigma/sigma.plugins.dragNodes.js'
 const store = configureStore();
 store.dispatch(loadArticles())
 	.catch(error => {
-		toastr.error(error, 'Error');
+		utility.displayAlertMessage(error, 'Error');
 	});
 store.dispatch(loadGraph(initialState.graph.articleId, initialState.dictionaryTypes))
 	.catch(error => {
-		toastr.error(error, 'Error');
+		utility.displayAlertMessage(error, 'Error');
 	});
 
 store.dispatch(addDictionaryType(initialState.dictionaryTypes));

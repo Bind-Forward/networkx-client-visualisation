@@ -30,7 +30,7 @@ const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, disp
 				{
 					_.isEmpty(graph.nodes) || loading ?
 						<div className="loader">Loading...</div> :
-						<Sigma style={{ maxWidth: graphWidth, height: `${graphHeight}` }}
+						<Sigma style={{ maxWidth: graphWidth, height: graphHeight }}
 							renderer={renderer}
 							settings={settings}>
 							<SigmaExtender graph={graph}
@@ -61,6 +61,8 @@ function getGraphLayout(layoutType, settings) {
 				gridSize={settings.gridSize}
 				maxIterations={settings.maxIterations}
 				nodeMargin={settings.nodeMargin} />;
+			default:
+				alert("Undefined type");
 	}
 }
 
@@ -79,7 +81,7 @@ GraphWindow.propTypes = {
 	layoutType: PropTypes.string,
 	onChangeGraphSize: PropTypes.func,
 	graphHeight: PropTypes.string,
-	graphHeight: PropTypes.string
+	graphWidth: PropTypes.string
 }
 
 export default GraphWindow;

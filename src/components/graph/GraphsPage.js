@@ -116,12 +116,13 @@ class GraphsPage extends React.Component {
 					this.setState({
 						loading: false
 					});
+				}).catch(error => {
+					utility.displayAlertMessage(error, 'Error');
 				});
 		});
 	}
 
 	onChangeGraphSize = (event) => {
-		const el = event.currentTarget;	
 		const height = this.state.graphHeight === '400px' ? '750px' : '400px';
 		
 		this.setState({

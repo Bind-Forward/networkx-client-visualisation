@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
-import GraphApi from '../api/GraphApi';
+// import graphApi from '../api/graphApi'; // Uncomment to fetch data from web
+import graphApi from '../api/mockGraphApi'; // Comment to fetch data from web
 
 function loadGraphSuccess(graph) {	
 	return {
@@ -10,7 +11,7 @@ function loadGraphSuccess(graph) {
 
 export function loadGraph(articleId, dictionaryTypes) {
 	return (dispatch, getState) => {
-		return GraphApi.getGraph(articleId, dictionaryTypes).then(graph => {
+		return graphApi.getGraph(articleId, dictionaryTypes).then(graph => {
 			dispatch(loadGraphSuccess(graph));
 		}).catch(error => {
 			throw(error);

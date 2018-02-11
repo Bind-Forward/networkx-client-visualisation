@@ -17,7 +17,7 @@ export function displayAlertMessages(messages = [], header = "Error", type = 3) 
 	})
 }
 
-export function displayAlertMessage(message, header, type) {
+export function displayAlertMessage(message, header, type = 3) {
 	toastr.options = toastrOptions;
 	switch (type) {
 		case 1:
@@ -47,6 +47,7 @@ export function setStyleToAdjacentEdges(graph, sourceNode, edgeColor, adjacentNo
 				targetNode.color = adjacentNodeColor;
 				targetNode.size = sizeCallback(targetNode.size);
 			}
+			return edge;
 		});
 	}	
 }
