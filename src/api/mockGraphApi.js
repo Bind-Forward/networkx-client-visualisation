@@ -1,4 +1,5 @@
 import mockData from './mockGraphData.json';
+// import mockData from './mockGraphDataSmall.json'; // USed for CodeSandbox
 import _ from 'lodash';
 
 class MockGraphApi {
@@ -15,6 +16,7 @@ class MockGraphApi {
 
 				if (_.isEmpty(newGraph)) {
 					reject("Unable to find graph");
+					return;
 				}
 
 				newGraph.nodes = newGraph.nodes.filter((node) => {
