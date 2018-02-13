@@ -52,7 +52,7 @@ class GraphsPage extends React.Component {
 		if (el.dataset.clicked === '1') {
 			return false;
 		}
-			
+
 		el.classList.toggle('word-hover');
 		this.setState({
 			dispatchEventName: graphEvents.outNode
@@ -63,11 +63,61 @@ class GraphsPage extends React.Component {
 		const el = event.currentTarget;
 		el.classList.toggle('word-click');
 		el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
-		
+
 		this.setState(prevState => ({
 			dispatchEventName: graphEvents.clickNode,
 			actionNode: el.dataset.nominative
 		}));
+	}
+
+	onTableRowMouseOver = (event) => {
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				const wasClicked = !_.isEmpty(el.dataset.clicked);
+				if (wasClicked)
+					return;
+				const id = el.cells[0].innerText;
+				this.setState({
+					dispatchEventName: graphEvents.overNode,
+					actionNode: id
+				});
+				break;
+			default:
+		}
+	}
+
+	onTableRowMouseLeave = (event) => {
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				if (el.dataset.clicked === '1') {
+					return false;
+				}
+				this.setState({
+					dispatchEventName: graphEvents.outNode
+				});
+				break;
+			default:
+		}
+	}
+
+	onTableRowClicked = (event) => {
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
+				const id = el.cells[0].innerText;
+				this.setState(prevState => ({
+					dispatchEventName: graphEvents.clickNode,
+					actionNode: id
+				}));
+				break;
+			default:
+		}
 	}
 
 	onSelectedArticle = (event) => {
@@ -78,7 +128,7 @@ class GraphsPage extends React.Component {
 
 	onDictionaryTypeChange = (event) => {
 		const el = event.currentTarget;
-		
+
 		if (_.includes(this.props.dictionaryTypes, el.value)) {
 			this.props.actions.removeDictionaryType(el.value);
 			el.checked = false;
@@ -100,10 +150,6 @@ class GraphsPage extends React.Component {
 			errorMsgs.push("Select article.")
 		}
 
-		if (_.isEmpty(this.props.dictionaryTypes)) {
-			errorMsgs.push("Select word type.")
-		}
-
 		if (!_.isEmpty(errorMsgs)) {
 			utility.displayAlertMessages(errorMsgs);
 			return;
@@ -123,7 +169,7 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onChangeGraphSize = (event) => {		
+	onChangeGraphSize = (event) => {
 		this.setState(prevState => ({
 			isFullscreen: !prevState.isFullscreen
 		}));
@@ -143,7 +189,7 @@ class GraphsPage extends React.Component {
 			dictionaryTypes,
 			layoutType
 		} = this.props;
-		
+
 		return (
 			<div>
 				<Row>
@@ -169,9 +215,9 @@ class GraphsPage extends React.Component {
 							loading={this.state.loading}
 							selectedDictionaryTypes={dictionaryTypes}
 							onDictionaryTypeChange={this.onDictionaryTypeChange}
-							layoutType={layoutType}							
+							layoutType={layoutType}
 							onLayoutChange={this.onLayoutChange} />
-							
+
 					</Col>
 				</Row>
 				<Row>
@@ -185,11 +231,14 @@ class GraphsPage extends React.Component {
 							onWordNodeClick={this.onWordNodeClick} />
 					</Col>
 					<Col xs={12} md={12} lg={6}>
-						<GraphDetails 
+						<GraphDetails
 							graph={graph}
 							loading={this.state.loading}
 							activeTabKey={this.state.activeTabKey}
-							onSelectedTab={this.onSelectedTab} />
+							onSelectedTab={this.onSelectedTab}							
+							onTableRowMouseOver={this.onTableRowMouseOver}
+							onTableRowMouseLeave={this.onTableRowMouseLeave}
+							onTableRowClicked={this.onTableRowClicked} />
 					</Col>
 				</Row>
 			</div>

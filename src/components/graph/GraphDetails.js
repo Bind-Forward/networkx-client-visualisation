@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Panel, Tabs, Tab } from 'react-bootstrap';
 import TabNodes from './TabNodes';
 
-const GraphDetails = ({ graph, loading, activeTabKey, onSelectedTab }) => {
+const GraphDetails = ({ graph, loading, activeTabKey, onSelectedTab, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked }) => {
 
 	return (
 		<Panel bsStyle="info">
@@ -21,7 +21,10 @@ const GraphDetails = ({ graph, loading, activeTabKey, onSelectedTab }) => {
 							id="graph-details-tab">
 							<Tab eventKey={1} title="Nodes">
 								<TabNodes
-									nodes={graph.nodes} />
+									nodes={graph.nodes}
+									onTableRowMouseOver={onTableRowMouseOver}
+									onTableRowMouseLeave={onTableRowMouseLeave}
+									onTableRowClicked={onTableRowClicked} />
 							</Tab>
 							<Tab eventKey={2} title="Edges">
 
@@ -48,7 +51,10 @@ GraphDetails.propTypes = {
 	graph: PropTypes.object,
 	loading: PropTypes.bool,
 	activeTabKey: PropTypes.number,
-	onSelectedTab: PropTypes.func
+	onSelectedTab: PropTypes.func,
+	onTableRowMouseOver: PropTypes.func,
+	onTableRowMouseLeave: PropTypes.func,
+	onTableRowClicked: PropTypes.func
 };
 
 export default GraphDetails;

@@ -5,14 +5,20 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
-const TabNodes = ({ nodes }) => {
+const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked }) => {
+	const rowEvents = setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked);
+
 	return (
 		<Row>
 			<BootstrapTable keyField="id"
 				data={nodes}
 				columns={getColumns()}
 				pagination={paginationFactory()}
-				filter={ filterFactory() } />
+				filter={filterFactory()}
+				rowEvents={rowEvents}
+				striped
+				hover
+				condensed />
 		</Row>
 	);
 }
@@ -43,8 +49,25 @@ function getColumns() {
 	}];
 }
 
+function setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked) {
+	return {
+		onClick: (e) => {
+			onTableRowClicked(e);
+		},
+		onMouseOver: (e) => {
+			onTableRowMouseOver(e);
+		},
+		onMouseLeave: (e) => {
+			onTableRowMouseLeave(e);
+		}
+	}
+}
+
 TabNodes.propTypes = {
-	nodes: PropTypes.array
+	nodes: PropTypes.array,
+	onTableRowMouseOver: PropTypes.func,
+	onTableRowMouseLeave: PropTypes.func,
+	onTableRowClicked: PropTypes.func
 };
 
 export default TabNodes;
