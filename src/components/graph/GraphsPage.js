@@ -11,6 +11,7 @@ import GraphMenu from './GraphMenu';
 import graphSettings from '../../constants/graphSettings';
 import * as utility from '../../utility';
 import graphEvents from '../../constants/graphEvents';
+import GraphDetails from './GraphDetails';
 
 class GraphsPage extends React.Component {
 
@@ -22,7 +23,8 @@ class GraphsPage extends React.Component {
 			selectedArticleId: -1,
 			dispatchEventName: '',
 			actionNode: '',
-			isFullscreen: false
+			isFullscreen: false,
+			activeTabKey: 1
 		};
 	}
 
@@ -127,6 +129,12 @@ class GraphsPage extends React.Component {
 		}));
 	}
 
+	onSelectedTab = (key) => {
+		this.setState({
+			activeTabKey: key
+		});
+	}
+
 	render = () => {
 		const {
 			graph,
@@ -139,7 +147,7 @@ class GraphsPage extends React.Component {
 		return (
 			<div>
 				<Row>
-					<Col xs={12} md={this.state.isFullscreen ? 12 : 8} lg={this.state.isFullscreen ? 12 : 7} className="resizeable">
+					<Col xs={12} md={this.state.isFullscreen ? 12 : 8} lg={this.state.isFullscreen ? 12 : 8}>
 						<GraphWindow
 							graph={graph}
 							loading={this.state.loading}
@@ -152,7 +160,7 @@ class GraphsPage extends React.Component {
 							isFullscreen={this.state.isFullscreen}
 							onChangeGraphSize={this.onChangeGraphSize} />
 					</Col>
-					<Col xs={12} md={this.state.isFullscreen ? 12 : 4} lg={this.state.isFullscreen ? 12 : 5}>
+					<Col xs={12} md={this.state.isFullscreen ? 12 : 4} lg={this.state.isFullscreen ? 12 : 4}>
 						<GraphMenu
 							articles={articles}
 							selectedArticleId={selectedArticle.id}
@@ -167,7 +175,7 @@ class GraphsPage extends React.Component {
 					</Col>
 				</Row>
 				<Row>
-					<Col xs={12} md={12} lg={7}>
+					<Col xs={12} md={12} lg={6}>
 						<TextWindow
 							article={selectedArticle}
 							nodes={graph.nodes}
@@ -176,7 +184,12 @@ class GraphsPage extends React.Component {
 							onWordNodeMouseLeave={this.onWordNodeMouseLeave}
 							onWordNodeClick={this.onWordNodeClick} />
 					</Col>
-					<Col xs={12} md={12} lg={5}>
+					<Col xs={12} md={12} lg={6}>
+						<GraphDetails 
+							graph={graph}
+							loading={this.state.loading}
+							activeTabKey={this.state.activeTabKey}
+							onSelectedTab={this.onSelectedTab} />
 					</Col>
 				</Row>
 			</div>

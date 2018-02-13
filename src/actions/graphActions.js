@@ -1,6 +1,6 @@
 import * as types from './actionTypes';
-// import graphApi from '../api/graphApi'; // Uncomment to fetch data from web
-import graphApi from '../api/mockGraphApi'; // Comment to fetch data from web
+import graphApi from '../api/graphApi'; // Uncomment to fetch data from web
+// import graphApi from '../api/mockGraphApi'; // Comment to fetch data from web
 
 function loadGraphSuccess(graph) {	
 	return {

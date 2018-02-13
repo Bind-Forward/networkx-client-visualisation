@@ -53,7 +53,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 								<Col xs={6} sm={6} md={6} lg={6}>
 									<FormGroup>
 										<ControlLabel>Select Word Types</ControlLabel>
-										<Panel style={{ maxHeight: '150px', overflow: 'auto' }}>
+										<Panel style={{ maxHeight: '225px', overflow: 'auto' }}>
 											<Panel.Body>
 												{
 													Object.keys(constants.DICTIONARY_TYPE).map(key => {
