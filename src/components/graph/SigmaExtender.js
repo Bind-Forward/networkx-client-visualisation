@@ -5,13 +5,16 @@ import graphEvents from '../../constants/graphEvents';
 import graphSettings from '../../constants/graphSettings';
 import * as utility from '../../utility';
 
-const SigmaExtender = ({ graph, sigma, dispatchEventName, actionNode }) => {
+const SigmaExtender = ({ graph, sigma, dispatchEventName, actionNode, centralitySort }) => {
 	if (!(_.isEmpty(graph) && _.isEmpty(graph.nodes))) {
 		// Remove nodes and edges
 		sigma.graph.clear();
-		// sigma.refresh();
 
-		sigma.graph.read({ nodes: graph.nodes, edges: graph.edges });
+		// Read graph nodes and edges
+		sigma.graph.read({ 
+			nodes: utility.setNodesByCentralitySort(graph.nodes, centralitySort),
+			edges: graph.edges 
+		});
 
 		dispatchEvent(sigma, dispatchEventName, actionNode);
 		sigma.refresh({ skipIndexation: true });
@@ -61,7 +64,8 @@ SigmaExtender.propTypes = {
 	graph: PropTypes.object.isRequired,
 	sigma: PropTypes.object,
 	dispatchEventName: PropTypes.string,
-	actionNode: PropTypes.string
+	actionNode: PropTypes.string,
+	centralitySort: PropTypes.string
 };
 
 export default SigmaExtender;

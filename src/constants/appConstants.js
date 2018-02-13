@@ -21,3 +21,9 @@ export const LAYOUT_TYPE = {
 	Dagre: 'Dagre',
 	NOverlap: 'NOverlap'
 }
+
+export const CENTRALITY = {
+	DegreeCentrality: 'Degree Centrality',
+	BetweennessCentrality: 'Betweenness Centrality',
+	Pagerank: 'pagerank'
+} 

@@ -8,7 +8,7 @@ import _ from 'lodash';
 import SigmaExtender from './SigmaExtender';
 import * as constants from '../../constants/appConstants';
 
-const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, dispatchEventName, actionNode, layoutType, isFullscreen, onChangeGraphSize }) => {
+const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, dispatchEventName, actionNode, layoutType, isFullscreen, onChangeGraphSize, centralitySort }) => {
 	let title = (_.isEmpty(graph.nodes) || loading || !selectedArticle) ? "Graph" : selectedArticle.name;
 
 	const graphHeight = isFullscreen ? '750px' : '400px';
@@ -37,7 +37,8 @@ const GraphWindow = ({ graph, loading, settings, renderer, selectedArticle, disp
 							settings={settings}>
 							<SigmaExtender graph={graph}
 								dispatchEventName={dispatchEventName}
-								actionNode={actionNode} />
+								actionNode={actionNode}
+								centralitySort={centralitySort} />
 							<EdgeShapes default={settings.edgeShapes} />
 							<NodeShapes default={settings.nodeShapes} />
 							{getGraphLayout(layoutType, settings)}
@@ -82,7 +83,8 @@ GraphWindow.propTypes = {
 	actionNode: PropTypes.string,
 	layoutType: PropTypes.string,
 	isFullscreen: PropTypes.bool,
-	onChangeGraphSize: PropTypes.func
+	onChangeGraphSize: PropTypes.func,
+	centralitySort: PropTypes.string
 }
 
 export default GraphWindow;

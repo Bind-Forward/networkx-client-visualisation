@@ -39,3 +39,10 @@ export function setLayout(layoutType) {
 		layoutType
 	}
 }
+
+export function selectCentralitySort(centrality) {
+	return {
+		type: types.SELECT_CENTRALITY_SORT,
+		centrality
+	}
+}

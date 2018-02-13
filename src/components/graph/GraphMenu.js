@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Dropdown from '../common/Dropdown';
 import * as constants from '../../constants/appConstants';
 
-const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, onDictionaryTypeChange, layoutType, onLayoutChange }) => {
+const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, onDictionaryTypeChange, layoutType, onLayoutChange, centralitySort, onCentralitySortChange }) => {	
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
@@ -42,7 +42,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 																onChange={onLayoutChange}
 																id={value}>
 																{value}
-    										</Radio>
+															</Radio>
 														);
 													})
 												}
@@ -76,9 +76,31 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 								</Col>
 							</Row>
 							<Row>
-								<Col xs={6} sm={6} md={6} lg={6}>
-								</Col>
-								<Col xs={6} sm={6} md={6} lg={6}>
+								<Col xs={12} sm={12} md={12} lg={12}>
+									<FormGroup>
+										<ControlLabel>Select Sort By Centrality</ControlLabel>
+										<Panel>
+											<Panel.Body>
+												{
+													Object.keys(constants.CENTRALITY).map(key => {
+														const value = constants.CENTRALITY[key];
+														const checked = centralitySort === value;
+														return (
+															<Radio key={key}
+																value={value}
+																name="centralitySort"
+																checked={checked}
+																onChange={onCentralitySortChange}
+																id={value}
+																inline>
+																{key}
+															</Radio>
+														);
+													})
+												}
+											</Panel.Body>
+										</Panel>
+									</FormGroup>
 								</Col>
 							</Row>
 						</div>
@@ -103,7 +125,9 @@ GraphMenu.propTypes = {
 	selectedDictionaryTypes: PropTypes.array,
 	onDictionaryTypeChange: PropTypes.func,
 	layoutType: PropTypes.string,
-	onLayoutChange: PropTypes.func
+	onLayoutChange: PropTypes.func,
+	centralitySort: PropTypes.string,
+	onCentralitySortChange: PropTypes.func
 };
 
 export default GraphMenu;

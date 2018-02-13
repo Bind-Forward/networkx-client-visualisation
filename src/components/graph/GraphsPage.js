@@ -186,13 +186,20 @@ class GraphsPage extends React.Component {
 		});
 	}
 
+	onCentralitySortChange = (event) => {
+		const el = event.currentTarget;
+		el.checked = true;
+		this.props.actions.selectCentralitySort(el.value);
+	}
+
 	render = () => {
 		const {
 			graph,
 			articles,
 			selectedArticle,
 			dictionaryTypes,
-			layoutType
+			layoutType,
+			centralitySort
 		} = this.props;
 
 		return (
@@ -209,7 +216,8 @@ class GraphsPage extends React.Component {
 							actionNode={this.state.actionNode}
 							layoutType={layoutType}
 							isFullscreen={this.state.isFullscreen}
-							onChangeGraphSize={this.onChangeGraphSize} />
+							onChangeGraphSize={this.onChangeGraphSize}
+							centralitySort={centralitySort} />
 					</Col>
 					<Col xs={12} md={this.state.isFullscreen ? 12 : 4} lg={this.state.isFullscreen ? 12 : 4}>
 						<GraphMenu
@@ -221,7 +229,9 @@ class GraphsPage extends React.Component {
 							selectedDictionaryTypes={dictionaryTypes}
 							onDictionaryTypeChange={this.onDictionaryTypeChange}
 							layoutType={layoutType}
-							onLayoutChange={this.onLayoutChange} />
+							onLayoutChange={this.onLayoutChange}
+							centralitySort={centralitySort}
+							onCentralitySortChange={this.onCentralitySortChange} />
 
 					</Col>
 				</Row>
@@ -243,7 +253,8 @@ class GraphsPage extends React.Component {
 							onSelectedTab={this.onSelectedTab}
 							onTableRowMouseOver={this.onTableRowMouseOver}
 							onTableRowMouseLeave={this.onTableRowMouseLeave}
-							onTableRowClicked={this.onTableRowClicked} />
+							onTableRowClicked={this.onTableRowClicked}
+							centralitySort={centralitySort} />
 					</Col>
 				</Row>
 			</div>
@@ -277,7 +288,8 @@ function mapStateToProps(state, ownProps) {
 		articles: state.articles,
 		selectedArticle: selectedArticle,
 		dictionaryTypes: state.dictionaryTypes,
-		layoutType: state.layoutType
+		layoutType: state.layoutType,
+		centralitySort: state.centralitySort
 	};
 }
 
