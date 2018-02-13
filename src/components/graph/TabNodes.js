@@ -7,15 +7,16 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked }) => {
 	const rowEvents = setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked);
-
+	
 	return (
 		<Row>
 			<BootstrapTable keyField="id"
 				data={nodes}
-				columns={getColumns()}
+				columns={setColumns()}
 				pagination={paginationFactory()}
 				filter={filterFactory()}
 				rowEvents={rowEvents}
+				selectRow={ setSelectRow() }
 				striped
 				hover
 				condensed />
@@ -23,7 +24,7 @@ const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRow
 	);
 }
 
-function getColumns() {
+function setColumns() {
 	return [{
 		dataField: 'id',
 		text: 'Id',
@@ -61,6 +62,14 @@ function setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClick
 			onTableRowMouseLeave(e);
 		}
 	}
+}
+
+function setSelectRow() {
+	return {
+		mode: 'checkbox',
+		clickToSelect: true,
+		style: { backgroundColor: '#c8e6c9' }
+	};
 }
 
 TabNodes.propTypes = {

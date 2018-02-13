@@ -78,7 +78,9 @@ class GraphsPage extends React.Component {
 				const wasClicked = !_.isEmpty(el.dataset.clicked);
 				if (wasClicked)
 					return;
-				const id = el.cells[0].innerText;
+				const id = el.cells[1].innerText;
+				el.classList.toggle('node-row-hover');
+				el.style.cssText="background-color: #BFEFFF;";
 				this.setState({
 					dispatchEventName: graphEvents.overNode,
 					actionNode: id
@@ -96,6 +98,8 @@ class GraphsPage extends React.Component {
 				if (el.dataset.clicked === '1') {
 					return false;
 				}
+				el.classList.toggle('node-row-hover');
+				el.style.cssText="";
 				this.setState({
 					dispatchEventName: graphEvents.outNode
 				});
@@ -109,8 +113,9 @@ class GraphsPage extends React.Component {
 
 		switch (this.state.activeTabKey) {
 			case 1:
+				const id = el.cells[1].innerText;
+
 				el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
-				const id = el.cells[0].innerText;
 				this.setState(prevState => ({
 					dispatchEventName: graphEvents.clickNode,
 					actionNode: id
@@ -235,7 +240,7 @@ class GraphsPage extends React.Component {
 							graph={graph}
 							loading={this.state.loading}
 							activeTabKey={this.state.activeTabKey}
-							onSelectedTab={this.onSelectedTab}							
+							onSelectedTab={this.onSelectedTab}
 							onTableRowMouseOver={this.onTableRowMouseOver}
 							onTableRowMouseLeave={this.onTableRowMouseLeave}
 							onTableRowClicked={this.onTableRowClicked} />
