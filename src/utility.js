@@ -76,3 +76,10 @@ export function setNodesByCentralitySort(nodes, centralitySort) {
 		return node;
 	})
 }
+
+export function setEdgesByWeight(edges, sizeCallback) {
+	return edges.map(edge => {
+		edge.size = sizeCallback(edge.weight);
+		return edge;
+	})
+}

@@ -13,9 +13,9 @@ const SigmaExtender = ({ graph, sigma, dispatchEventName, actionNode, centrality
 		// Read graph nodes and edges
 		sigma.graph.read({ 
 			nodes: utility.setNodesByCentralitySort(graph.nodes, centralitySort),
-			edges: graph.edges 
+			edges: utility.setEdgesByWeight(graph.edges, (weight) => weight * 1.5)
 		});
-
+		
 		dispatchEvent(sigma, dispatchEventName, actionNode);
 		sigma.refresh({ skipIndexation: true });
 	}
@@ -46,8 +46,8 @@ function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 		case graphEvents.clickNode:
 			if (sigmaNode.isClicked) {
 				
-				utility.setNodeStyle(sigmaNode, graphSettings.nodeHoverColor, sigmaNode.size);
-				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeHoverColor, graphSettings.adjacentNodeHoverColor, (size) => size);
+				utility.setNodeStyle(sigmaNode, graphSettings.defaultNodeColor, sigmaNode.size);
+				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.defaultEdgeColor, graphSettings.defaultNodeColor, (size) => size);
 			} else {
 				utility.setNodeStyle(sigmaNode, graphSettings.nodeClickColor, sigmaNode.size);
 				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeClickColor, graphSettings.nodeClickColor, (size) => size);			

@@ -4,7 +4,7 @@ export default {
 	drawEdges: true,
 	drawLabels: true,
 	minEdgeSize: 0.5,
-	maxEdgeSize: 5,
+	maxEdgeSize: 8,
 	minNodeSize: 5,
 	maxNodeSize: 20,
 	clone: false,

@@ -5,19 +5,28 @@ import _ from 'lodash';
 import Dropdown from '../common/Dropdown';
 import * as constants from '../../constants/appConstants';
 
-const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, onDictionaryTypeChange, layoutType, onLayoutChange, centralitySort, onCentralitySortChange }) => {	
+const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, 
+		onDictionaryTypeChange, layoutType, onLayoutChange, centralitySort, onCentralitySortChange }) => {
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
 				<Panel.Title componentClass="h3">Graph Menu</Panel.Title>
 			</Panel.Heading>
-			<Panel.Body>
+			<Panel.Body  style={{maxHeight: '750px', overflowY: 'auto'}}>
 				{
 					_.isEmpty(articles) || loading ?
 						<div className="loader">Loading...</div> :
 						<div>
 							<Row>
-								<Col xs={6} sm={6} md={6} lg={6}>
+								<Button bsStyle={"default"}
+									onClick={onMenuAccept}
+									style={{width: '100%'}}>
+									Submit
+								</Button>
+							</Row>
+							<hr />
+							<Row>
+								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
 										<Dropdown
 											items={articles}
@@ -50,7 +59,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 										</Panel>
 									</FormGroup>
 								</Col>
-								<Col xs={6} sm={6} md={6} lg={6}>
+								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
 										<ControlLabel>Select Word Types</ControlLabel>
 										<Panel style={{ maxHeight: '225px', overflow: 'auto' }}>
@@ -91,8 +100,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 																name="centralitySort"
 																checked={checked}
 																onChange={onCentralitySortChange}
-																id={value}
-																inline>
+																id={value}>
 																{key}
 															</Radio>
 														);
@@ -106,12 +114,6 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 						</div>
 				}
 			</Panel.Body>
-			<Panel.Footer>
-				<Button bsStyle={"primary"}
-					onClick={onMenuAccept}>
-					Submit
-				</Button>
-			</Panel.Footer>
 		</Panel>
 	);
 }

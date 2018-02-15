@@ -24,7 +24,11 @@ class GraphsPage extends React.Component {
 			dispatchEventName: '',
 			actionNode: '',
 			isFullscreen: false,
-			activeTabKey: 1
+			activeTabKey: 1,
+			shouldHoverWordTrigger: false,
+			shouldClickWordTrigger: false,
+			shouldHoverTableTrigger: false,
+			shouldClickTableTrigger: false,
 		};
 	}
 
@@ -34,10 +38,10 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onWordNodeMouseOver = (event) => {
+	onWordNodeMouseOver = (event) => {		
 		const el = event.currentTarget;
 		const wasClicked = !_.isEmpty(el.dataset.clicked);
-		if (wasClicked)
+		if (wasClicked || !this.state.shouldHoverWordTrigger)
 			return;
 
 		el.classList.toggle('word-hover');
@@ -49,8 +53,8 @@ class GraphsPage extends React.Component {
 
 	onWordNodeMouseLeave = (event) => {
 		const el = event.currentTarget;
-		if (el.dataset.clicked === '1') {
-			return false;
+		if (el.dataset.clicked === '1' || !this.state.shouldHoverWordTrigger) {
+			return;
 		}
 
 		el.classList.toggle('word-hover');
@@ -60,6 +64,10 @@ class GraphsPage extends React.Component {
 	}
 
 	onWordNodeClick = (event) => {
+		if (!this.state.shouldClickWordTrigger) {
+			return;
+		}
+
 		const el = event.currentTarget;
 		el.classList.toggle('word-click');
 		el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
@@ -70,17 +78,33 @@ class GraphsPage extends React.Component {
 		}));
 	}
 
+	onShouldHoverWordChange = (event) => {
+		this.setState(prevState => ({
+			shouldHoverWordTrigger: !prevState.shouldHoverWordTrigger
+		}));
+	}
+
+	onShouldClickWordChange = (event) => {
+		this.setState(prevState => ({
+			shouldClickWordTrigger: !prevState.shouldClickWordTrigger
+		}));
+	}
+
 	onTableRowMouseOver = (event) => {
+		if (!this.state.shouldHoverTableTrigger) {
+			return;
+		}
+
 		const el = event.currentTarget;
 
 		switch (this.state.activeTabKey) {
 			case 1:
-				const wasClicked = !_.isEmpty(el.dataset.clicked);
+				const wasClicked = !_.isEmpty(el.dataset.clicked) || el.dataset.clicked === '1';
 				if (wasClicked)
 					return;
 				const id = el.cells[1].innerText;
 				el.classList.toggle('node-row-hover');
-				el.style.cssText="background-color: #BFEFFF;";
+				el.style.cssText = "background-color: #BFEFFF;";
 				this.setState({
 					dispatchEventName: graphEvents.overNode,
 					actionNode: id
@@ -91,15 +115,19 @@ class GraphsPage extends React.Component {
 	}
 
 	onTableRowMouseLeave = (event) => {
+		if (!this.state.shouldHoverTableTrigger) {
+			return;
+		}
+
 		const el = event.currentTarget;
 
 		switch (this.state.activeTabKey) {
 			case 1:
 				if (el.dataset.clicked === '1') {
-					return false;
+					return;
 				}
 				el.classList.toggle('node-row-hover');
-				el.style.cssText="";
+				el.style.cssText = "";
 				this.setState({
 					dispatchEventName: graphEvents.outNode
 				});
@@ -109,6 +137,10 @@ class GraphsPage extends React.Component {
 	}
 
 	onTableRowClicked = (event) => {
+		if (!this.state.shouldClickTableTrigger) {
+			return;
+		}
+
 		const el = event.currentTarget;
 
 		switch (this.state.activeTabKey) {
@@ -123,6 +155,18 @@ class GraphsPage extends React.Component {
 				break;
 			default:
 		}
+	}
+
+	onShouldHoverTableChange = (event) => {	
+		this.setState(prevState => ({
+			shouldHoverTableTrigger: !prevState.shouldHoverTableTrigger
+		}));
+	}
+
+	onShouldClickTableChange = (event) => {	
+		this.setState(prevState => ({
+			shouldClickTableTrigger: !prevState.shouldClickTableTrigger
+		}));
 	}
 
 	onSelectedArticle = (event) => {
@@ -205,56 +249,68 @@ class GraphsPage extends React.Component {
 		return (
 			<div>
 				<Row>
-					<Col xs={12} md={this.state.isFullscreen ? 12 : 8} lg={this.state.isFullscreen ? 12 : 8}>
-						<GraphWindow
-							graph={graph}
-							loading={this.state.loading}
-							settings={graphSettings}
-							renderer={"canvas"}
-							selectedArticle={selectedArticle}
-							dispatchEventName={this.state.dispatchEventName}
-							actionNode={this.state.actionNode}
-							layoutType={layoutType}
-							isFullscreen={this.state.isFullscreen}
-							onChangeGraphSize={this.onChangeGraphSize}
-							centralitySort={centralitySort} />
+					<Col xs={8} sm={8} md={10} lg={10}>
+						<Col xs={12} sm={12} md={this.state.isFullscreen ? 12 : 6} lg={this.state.isFullscreen ? 12 : 6}>
+							<Row>
+								<GraphWindow
+									graph={graph}
+									loading={this.state.loading}
+									settings={graphSettings}
+									renderer={"canvas"}
+									selectedArticle={selectedArticle}
+									dispatchEventName={this.state.dispatchEventName}
+									actionNode={this.state.actionNode}
+									layoutType={layoutType}
+									onChangeGraphSize={this.onChangeGraphSize}
+									centralitySort={centralitySort} />
+							</Row>
+						</Col>
+						<Col xs={12} sm={12} md={this.state.isFullscreen ? 12 : 6} lg={this.state.isFullscreen ? 12 : 6}>
+							<Row>
+								<GraphDetails
+									graph={graph}
+									loading={this.state.loading}
+									activeTabKey={this.state.activeTabKey}
+									onSelectedTab={this.onSelectedTab}
+									onTableRowMouseOver={this.onTableRowMouseOver}
+									onTableRowMouseLeave={this.onTableRowMouseLeave}
+									onTableRowClicked={this.onTableRowClicked}
+									centralitySort={centralitySort}
+									shouldHoverTableTrigger={this.state.shouldHoverTableTrigger}
+									onShouldHoverTableChange={this.onShouldHoverTableChange}
+									shouldClickTableTrigger={this.state.shouldClickTableTrigger}								
+									onShouldClickTableChange={this.onShouldClickTableChange} />
+							</Row>
+							<Row>
+								<TextWindow
+									article={selectedArticle}
+									nodes={graph.nodes}
+									loading={this.state.loading}
+									onWordNodeMouseOver={this.onWordNodeMouseOver}
+									onWordNodeMouseLeave={this.onWordNodeMouseLeave}
+									onWordNodeClick={this.onWordNodeClick}
+									shouldHoverWordTrigger={this.state.shouldHoverWordTrigger}
+									onShouldHoverWordChange={this.onShouldHoverWordChange}
+									shouldClickWordTrigger={this.state.shouldClickWordTrigger}								
+									onShouldClickWordChange={this.onShouldClickWordChange} />
+							</Row>
+						</Col>
 					</Col>
-					<Col xs={12} md={this.state.isFullscreen ? 12 : 4} lg={this.state.isFullscreen ? 12 : 4}>
-						<GraphMenu
-							articles={articles}
-							selectedArticleId={selectedArticle.id}
-							onSelectedArticle={this.onSelectedArticle}
-							onMenuAccept={this.onMenuAccept}
-							loading={this.state.loading}
-							selectedDictionaryTypes={dictionaryTypes}
-							onDictionaryTypeChange={this.onDictionaryTypeChange}
-							layoutType={layoutType}
-							onLayoutChange={this.onLayoutChange}
-							centralitySort={centralitySort}
-							onCentralitySortChange={this.onCentralitySortChange} />
-
-					</Col>
-				</Row>
-				<Row>
-					<Col xs={12} md={12} lg={6}>
-						<TextWindow
-							article={selectedArticle}
-							nodes={graph.nodes}
-							loading={this.state.loading}
-							onWordNodeMouseOver={this.onWordNodeMouseOver}
-							onWordNodeMouseLeave={this.onWordNodeMouseLeave}
-							onWordNodeClick={this.onWordNodeClick} />
-					</Col>
-					<Col xs={12} md={12} lg={6}>
-						<GraphDetails
-							graph={graph}
-							loading={this.state.loading}
-							activeTabKey={this.state.activeTabKey}
-							onSelectedTab={this.onSelectedTab}
-							onTableRowMouseOver={this.onTableRowMouseOver}
-							onTableRowMouseLeave={this.onTableRowMouseLeave}
-							onTableRowClicked={this.onTableRowClicked}
-							centralitySort={centralitySort} />
+					<Col xs={4} sm={4} md={2} lg={2}>
+						<Row>
+							<GraphMenu
+								articles={articles}
+								selectedArticleId={selectedArticle.id}
+								onSelectedArticle={this.onSelectedArticle}
+								onMenuAccept={this.onMenuAccept}
+								loading={this.state.loading}
+								selectedDictionaryTypes={dictionaryTypes}
+								onDictionaryTypeChange={this.onDictionaryTypeChange}
+								layoutType={layoutType}
+								onLayoutChange={this.onLayoutChange}
+								centralitySort={centralitySort}
+								onCentralitySortChange={this.onCentralitySortChange} />
+						</Row>
 					</Col>
 				</Row>
 			</div>
