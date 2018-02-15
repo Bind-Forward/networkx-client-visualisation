@@ -11,3 +11,6 @@ export const REMOVE_DICTIONARY_TYPE = 'REMOVE_DICTIONARY_TYPE';
 
 // Layout type
 export const SET_LAYOUT = 'SET_LAYOUT';
+
+// Centrality sort
+export const SELECT_CENTRALITY_SORT = 'SELECT_CENTRALITY_SORT';

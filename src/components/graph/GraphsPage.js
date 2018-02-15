@@ -11,6 +11,7 @@ import GraphMenu from './GraphMenu';
 import graphSettings from '../../constants/graphSettings';
 import * as utility from '../../utility';
 import graphEvents from '../../constants/graphEvents';
+import GraphDetails from './GraphDetails';
 
 class GraphsPage extends React.Component {
 
@@ -22,7 +23,12 @@ class GraphsPage extends React.Component {
 			selectedArticleId: -1,
 			dispatchEventName: '',
 			actionNode: '',
-			isFullscreen: false
+			isFullscreen: false,
+			activeTabKey: 1,
+			shouldHoverWordTrigger: true,
+			shouldClickWordTrigger: true,
+			shouldHoverTableTrigger: false,
+			shouldClickTableTrigger: true,
 		};
 	}
 
@@ -32,10 +38,10 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onWordNodeMouseOver = (event) => {
+	onWordNodeMouseOver = (event) => {		
 		const el = event.currentTarget;
 		const wasClicked = !_.isEmpty(el.dataset.clicked);
-		if (wasClicked)
+		if (wasClicked || !this.state.shouldHoverWordTrigger)
 			return;
 
 		el.classList.toggle('word-hover');
@@ -47,10 +53,10 @@ class GraphsPage extends React.Component {
 
 	onWordNodeMouseLeave = (event) => {
 		const el = event.currentTarget;
-		if (el.dataset.clicked === '1') {
-			return false;
+		if (el.dataset.clicked === '1' || !this.state.shouldHoverWordTrigger) {
+			return;
 		}
-			
+
 		el.classList.toggle('word-hover');
 		this.setState({
 			dispatchEventName: graphEvents.outNode
@@ -58,13 +64,108 @@ class GraphsPage extends React.Component {
 	}
 
 	onWordNodeClick = (event) => {
+		if (!this.state.shouldClickWordTrigger) {
+			return;
+		}
+
 		const el = event.currentTarget;
 		el.classList.toggle('word-click');
 		el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
-		
+
 		this.setState(prevState => ({
 			dispatchEventName: graphEvents.clickNode,
 			actionNode: el.dataset.nominative
+		}));
+	}
+
+	onShouldHoverWordChange = (event) => {
+		this.setState(prevState => ({
+			shouldHoverWordTrigger: !prevState.shouldHoverWordTrigger
+		}));
+	}
+
+	onShouldClickWordChange = (event) => {
+		this.setState(prevState => ({
+			shouldClickWordTrigger: !prevState.shouldClickWordTrigger
+		}));
+	}
+
+	onTableRowMouseOver = (event) => {
+		if (!this.state.shouldHoverTableTrigger) {
+			return;
+		}
+
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				const wasClicked = !_.isEmpty(el.dataset.clicked) || el.dataset.clicked === '1';
+				if (wasClicked)
+					return;
+				const id = el.cells[1].innerText;
+				el.classList.toggle('node-row-hover');
+				el.style.cssText = "background-color: #BFEFFF;";
+				this.setState({
+					dispatchEventName: graphEvents.overNode,
+					actionNode: id
+				});
+				break;
+			default:
+		}
+	}
+
+	onTableRowMouseLeave = (event) => {
+		if (!this.state.shouldHoverTableTrigger) {
+			return;
+		}
+
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				if (el.dataset.clicked === '1') {
+					return;
+				}
+				el.classList.toggle('node-row-hover');
+				el.style.cssText = "";
+				this.setState({
+					dispatchEventName: graphEvents.outNode
+				});
+				break;
+			default:
+		}
+	}
+
+	onTableRowClicked = (event) => {
+		if (!this.state.shouldClickTableTrigger) {
+			return;
+		}
+
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				const id = el.cells[1].innerText;
+
+				el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
+				this.setState(prevState => ({
+					dispatchEventName: graphEvents.clickNode,
+					actionNode: id
+				}));
+				break;
+			default:
+		}
+	}
+
+	onShouldHoverTableChange = (event) => {	
+		this.setState(prevState => ({
+			shouldHoverTableTrigger: !prevState.shouldHoverTableTrigger
+		}));
+	}
+
+	onShouldClickTableChange = (event) => {	
+		this.setState(prevState => ({
+			shouldClickTableTrigger: !prevState.shouldClickTableTrigger
 		}));
 	}
 
@@ -76,7 +177,7 @@ class GraphsPage extends React.Component {
 
 	onDictionaryTypeChange = (event) => {
 		const el = event.currentTarget;
-		
+
 		if (_.includes(this.props.dictionaryTypes, el.value)) {
 			this.props.actions.removeDictionaryType(el.value);
 			el.checked = false;
@@ -98,10 +199,6 @@ class GraphsPage extends React.Component {
 			errorMsgs.push("Select article.")
 		}
 
-		if (_.isEmpty(this.props.dictionaryTypes)) {
-			errorMsgs.push("Select word type.")
-		}
-
 		if (!_.isEmpty(errorMsgs)) {
 			utility.displayAlertMessages(errorMsgs);
 			return;
@@ -121,10 +218,22 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onChangeGraphSize = (event) => {		
+	onChangeGraphSize = (event) => {
 		this.setState(prevState => ({
 			isFullscreen: !prevState.isFullscreen
 		}));
+	}
+
+	onSelectedTab = (key) => {
+		this.setState({
+			activeTabKey: key
+		});
+	}
+
+	onCentralitySortChange = (event) => {
+		const el = event.currentTarget;
+		el.checked = true;
+		this.props.actions.selectCentralitySort(el.value);
 	}
 
 	render = () => {
@@ -133,50 +242,75 @@ class GraphsPage extends React.Component {
 			articles,
 			selectedArticle,
 			dictionaryTypes,
-			layoutType
+			layoutType,
+			centralitySort
 		} = this.props;
-		
+
 		return (
 			<div>
 				<Row>
-					<Col xs={12} md={this.state.isFullscreen ? 12 : 8} lg={this.state.isFullscreen ? 12 : 7} className="resizeable">
-						<GraphWindow
-							graph={graph}
-							loading={this.state.loading}
-							settings={graphSettings}
-							renderer={"canvas"}
-							selectedArticle={selectedArticle}
-							dispatchEventName={this.state.dispatchEventName}
-							actionNode={this.state.actionNode}
-							layoutType={layoutType}
-							isFullscreen={this.state.isFullscreen}
-							onChangeGraphSize={this.onChangeGraphSize} />
+					<Col xs={8} sm={8} md={10} lg={10}>
+						<Col xs={12} sm={12} md={this.state.isFullscreen ? 12 : 6} lg={this.state.isFullscreen ? 12 : 6}>
+							<Row>
+								<GraphWindow
+									graph={graph}
+									loading={this.state.loading}
+									settings={graphSettings}
+									renderer={"canvas"}
+									selectedArticle={selectedArticle}
+									dispatchEventName={this.state.dispatchEventName}
+									actionNode={this.state.actionNode}
+									layoutType={layoutType}
+									onChangeGraphSize={this.onChangeGraphSize}
+									centralitySort={centralitySort} />
+							</Row>
+						</Col>
+						<Col xs={12} sm={12} md={this.state.isFullscreen ? 12 : 6} lg={this.state.isFullscreen ? 12 : 6}>
+							<Row style={{paddingLeft: '5px'}}>
+								<GraphDetails
+									graph={graph}
+									loading={this.state.loading}
+									activeTabKey={this.state.activeTabKey}
+									onSelectedTab={this.onSelectedTab}
+									onTableRowMouseOver={this.onTableRowMouseOver}
+									onTableRowMouseLeave={this.onTableRowMouseLeave}
+									onTableRowClicked={this.onTableRowClicked}
+									centralitySort={centralitySort}
+									shouldHoverTableTrigger={this.state.shouldHoverTableTrigger}
+									onShouldHoverTableChange={this.onShouldHoverTableChange}
+									shouldClickTableTrigger={this.state.shouldClickTableTrigger}								
+									onShouldClickTableChange={this.onShouldClickTableChange} />
+							</Row>
+							<Row style={{paddingLeft: '5px'}}>
+								<TextWindow
+									article={selectedArticle}
+									nodes={graph.nodes}
+									loading={this.state.loading}
+									onWordNodeMouseOver={this.onWordNodeMouseOver}
+									onWordNodeMouseLeave={this.onWordNodeMouseLeave}
+									onWordNodeClick={this.onWordNodeClick}
+									shouldHoverWordTrigger={this.state.shouldHoverWordTrigger}
+									onShouldHoverWordChange={this.onShouldHoverWordChange}
+									shouldClickWordTrigger={this.state.shouldClickWordTrigger}								
+									onShouldClickWordChange={this.onShouldClickWordChange} />
+							</Row>
+						</Col>
 					</Col>
-					<Col xs={12} md={this.state.isFullscreen ? 12 : 4} lg={this.state.isFullscreen ? 12 : 5}>
-						<GraphMenu
-							articles={articles}
-							selectedArticleId={selectedArticle.id}
-							onSelectedArticle={this.onSelectedArticle}
-							onMenuAccept={this.onMenuAccept}
-							loading={this.state.loading}
-							selectedDictionaryTypes={dictionaryTypes}
-							onDictionaryTypeChange={this.onDictionaryTypeChange}
-							layoutType={layoutType}							
-							onLayoutChange={this.onLayoutChange} />
-							
-					</Col>
-				</Row>
-				<Row>
-					<Col xs={12} md={12} lg={7}>
-						<TextWindow
-							article={selectedArticle}
-							nodes={graph.nodes}
-							loading={this.state.loading}
-							onWordNodeMouseOver={this.onWordNodeMouseOver}
-							onWordNodeMouseLeave={this.onWordNodeMouseLeave}
-							onWordNodeClick={this.onWordNodeClick} />
-					</Col>
-					<Col xs={12} md={12} lg={5}>
+					<Col xs={4} sm={4} md={2} lg={2}>
+						<Row>
+							<GraphMenu
+								articles={articles}
+								selectedArticleId={selectedArticle.id}
+								onSelectedArticle={this.onSelectedArticle}
+								onMenuAccept={this.onMenuAccept}
+								loading={this.state.loading}
+								selectedDictionaryTypes={dictionaryTypes}
+								onDictionaryTypeChange={this.onDictionaryTypeChange}
+								layoutType={layoutType}
+								onLayoutChange={this.onLayoutChange}
+								centralitySort={centralitySort}
+								onCentralitySortChange={this.onCentralitySortChange} />
+						</Row>
 					</Col>
 				</Row>
 			</div>
@@ -210,7 +344,8 @@ function mapStateToProps(state, ownProps) {
 		articles: state.articles,
 		selectedArticle: selectedArticle,
 		dictionaryTypes: state.dictionaryTypes,
-		layoutType: state.layoutType
+		layoutType: state.layoutType,
+		centralitySort: state.centralitySort
 	};
 }
 

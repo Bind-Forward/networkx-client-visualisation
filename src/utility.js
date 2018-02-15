@@ -1,5 +1,6 @@
 import toastr from 'toastr';
 import _ from 'lodash';
+import * as constants from './constants/appConstants';
 
 const toastrOptions = {
 	closeButton: true,
@@ -11,7 +12,7 @@ const toastrOptions = {
 	extendedTimeOut: 10
 };
 
-export function displayAlertMessages(messages = [], header = "Error", type = 3) {	
+export function displayAlertMessages(messages = [], header = "Error", type = 3) {
 	messages.map(msg => {
 		return displayAlertMessage(msg, header, type)
 	})
@@ -49,5 +50,36 @@ export function setStyleToAdjacentEdges(graph, sourceNode, edgeColor, adjacentNo
 			}
 			return edge;
 		});
-	}	
+	}
+}
+
+export function setNodesByCentralitySort(nodes, centralitySort) {
+	let centrality;
+
+	switch (centralitySort) {
+		case constants.CENTRALITY.DegreeCentrality:
+			centrality = 'degreeCentrality';
+			break;
+		case constants.CENTRALITY.BetweennessCentrality:
+			centrality = 'betweennessCentrality';
+			break;
+		case constants.CENTRALITY.Pagerank:
+			centrality = 'pagerank';
+			break;
+		default:
+			alert('Unknown centrality sort type.')
+			return;
+	}
+	
+	return nodes.map((node) => {
+		node.size = node[centrality] * 20;
+		return node;
+	})
+}
+
+export function setEdgesByWeight(edges, sizeCallback) {
+	return edges.map(edge => {
+		edge.size = sizeCallback(edge.weight);
+		return edge;
+	})
 }

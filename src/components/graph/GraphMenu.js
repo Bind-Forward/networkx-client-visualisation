@@ -5,19 +5,28 @@ import _ from 'lodash';
 import Dropdown from '../common/Dropdown';
 import * as constants from '../../constants/appConstants';
 
-const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, onDictionaryTypeChange, layoutType, onLayoutChange }) => {
+const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, 
+		onDictionaryTypeChange, layoutType, onLayoutChange, centralitySort, onCentralitySortChange }) => {
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
 				<Panel.Title componentClass="h3">Graph Menu</Panel.Title>
 			</Panel.Heading>
-			<Panel.Body>
+			<Panel.Body  style={{maxHeight: '750px', overflowY: 'auto'}}>
 				{
 					_.isEmpty(articles) || loading ?
 						<div className="loader">Loading...</div> :
 						<div>
 							<Row>
-								<Col xs={6} sm={6} md={6} lg={6}>
+								<Button bsStyle={"default"}
+									onClick={onMenuAccept}
+									style={{width: '100%'}}>
+									Submit
+								</Button>
+							</Row>
+							<hr />
+							<Row>
+								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
 										<Dropdown
 											items={articles}
@@ -42,7 +51,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 																onChange={onLayoutChange}
 																id={value}>
 																{value}
-    										</Radio>
+															</Radio>
 														);
 													})
 												}
@@ -50,10 +59,10 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 										</Panel>
 									</FormGroup>
 								</Col>
-								<Col xs={6} sm={6} md={6} lg={6}>
+								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
 										<ControlLabel>Select Word Types</ControlLabel>
-										<Panel style={{ maxHeight: '150px', overflow: 'auto' }}>
+										<Panel style={{ maxHeight: '225px', overflow: 'auto' }}>
 											<Panel.Body>
 												{
 													Object.keys(constants.DICTIONARY_TYPE).map(key => {
@@ -76,20 +85,35 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 								</Col>
 							</Row>
 							<Row>
-								<Col xs={6} sm={6} md={6} lg={6}>
-								</Col>
-								<Col xs={6} sm={6} md={6} lg={6}>
+								<Col xs={12} sm={12} md={12} lg={12}>
+									<FormGroup>
+										<ControlLabel>Select Sort By Centrality</ControlLabel>
+										<Panel>
+											<Panel.Body>
+												{
+													Object.keys(constants.CENTRALITY).map(key => {
+														const value = constants.CENTRALITY[key];
+														const checked = centralitySort === value;
+														return (
+															<Radio key={key}
+																value={value}
+																name="centralitySort"
+																checked={checked}
+																onChange={onCentralitySortChange}
+																id={value}>
+																{key}
+															</Radio>
+														);
+													})
+												}
+											</Panel.Body>
+										</Panel>
+									</FormGroup>
 								</Col>
 							</Row>
 						</div>
 				}
 			</Panel.Body>
-			<Panel.Footer>
-				<Button bsStyle={"primary"}
-					onClick={onMenuAccept}>
-					Submit
-				</Button>
-			</Panel.Footer>
 		</Panel>
 	);
 }
@@ -103,7 +127,9 @@ GraphMenu.propTypes = {
 	selectedDictionaryTypes: PropTypes.array,
 	onDictionaryTypeChange: PropTypes.func,
 	layoutType: PropTypes.string,
-	onLayoutChange: PropTypes.func
+	onLayoutChange: PropTypes.func,
+	centralitySort: PropTypes.string,
+	onCentralitySortChange: PropTypes.func
 };
 
 export default GraphMenu;

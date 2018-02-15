@@ -1,6 +1,6 @@
 import * as types from './actionTypes';
-// import graphApi from '../api/graphApi'; // Uncomment to fetch data from web
-import graphApi from '../api/mockGraphApi'; // Comment to fetch data from web
+import graphApi from '../api/graphApi'; // Uncomment to fetch data from web
+// import graphApi from '../api/mockGraphApi'; // Comment to fetch data from web
 
 function loadGraphSuccess(graph) {	
 	return {
@@ -37,5 +37,12 @@ export function setLayout(layoutType) {
 	return {
 		type: types.SET_LAYOUT,
 		layoutType
+	}
+}
+
+export function selectCentralitySort(centrality) {
+	return {
+		type: types.SELECT_CENTRALITY_SORT,
+		centrality
 	}
 }
