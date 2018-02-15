@@ -50,7 +50,8 @@ const GraphDetails = ({ graph, loading, activeTabKey, onSelectedTab, onTableRowM
 									onTableRowMouseOver={onTableRowMouseOver}
 									onTableRowMouseLeave={onTableRowMouseLeave}
 									onTableRowClicked={onTableRowClicked}
-									centralitySort={centralitySort} />
+									centralitySort={centralitySort}
+									shouldClickTableTrigger={shouldClickTableTrigger} />
 							</Tab>
 							<Tab eventKey={2} title="Edges">
 								<TabEdges

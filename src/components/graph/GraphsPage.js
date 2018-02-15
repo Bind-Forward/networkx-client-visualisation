@@ -25,10 +25,10 @@ class GraphsPage extends React.Component {
 			actionNode: '',
 			isFullscreen: false,
 			activeTabKey: 1,
-			shouldHoverWordTrigger: false,
-			shouldClickWordTrigger: false,
+			shouldHoverWordTrigger: true,
+			shouldClickWordTrigger: true,
 			shouldHoverTableTrigger: false,
-			shouldClickTableTrigger: false,
+			shouldClickTableTrigger: true,
 		};
 	}
 
@@ -266,7 +266,7 @@ class GraphsPage extends React.Component {
 							</Row>
 						</Col>
 						<Col xs={12} sm={12} md={this.state.isFullscreen ? 12 : 6} lg={this.state.isFullscreen ? 12 : 6}>
-							<Row>
+							<Row style={{paddingLeft: '5px'}}>
 								<GraphDetails
 									graph={graph}
 									loading={this.state.loading}
@@ -281,7 +281,7 @@ class GraphsPage extends React.Component {
 									shouldClickTableTrigger={this.state.shouldClickTableTrigger}								
 									onShouldClickTableChange={this.onShouldClickTableChange} />
 							</Row>
-							<Row>
+							<Row style={{paddingLeft: '5px'}}>
 								<TextWindow
 									article={selectedArticle}
 									nodes={graph.nodes}

@@ -6,7 +6,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import * as constants from '../../constants/appConstants';
 
-const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centralitySort }) => {
+const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centralitySort, shouldClickTableTrigger }) => {
 	const rowEvents = setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked);
 
 	return (
@@ -17,7 +17,7 @@ const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRow
 				pagination={paginationFactory(setPaginationOptions())}
 				filter={filterFactory()}
 				rowEvents={rowEvents}
-				selectRow={setSelectRow()}
+				selectRow={shouldClickTableTrigger && setSelectRow()}
 				striped
 				hover
 				condensed />
@@ -111,7 +111,8 @@ TabNodes.propTypes = {
 	onTableRowMouseOver: PropTypes.func,
 	onTableRowMouseLeave: PropTypes.func,
 	onTableRowClicked: PropTypes.func,
-	centralitySort: PropTypes.string
+	centralitySort: PropTypes.string,
+	shouldClickTableTrigger: PropTypes.bool
 };
 
 export default TabNodes;
