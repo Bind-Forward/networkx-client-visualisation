@@ -38,7 +38,7 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onWordNodeMouseOver = (event) => {		
+	onWordNodeMouseOver = (event) => {
 		const el = event.currentTarget;
 		const wasClicked = !_.isEmpty(el.dataset.clicked);
 		if (wasClicked || !this.state.shouldHoverWordTrigger)
@@ -157,13 +157,13 @@ class GraphsPage extends React.Component {
 		}
 	}
 
-	onShouldHoverTableChange = (event) => {	
+	onShouldHoverTableChange = (event) => {
 		this.setState(prevState => ({
 			shouldHoverTableTrigger: !prevState.shouldHoverTableTrigger
 		}));
 	}
 
-	onShouldClickTableChange = (event) => {	
+	onShouldClickTableChange = (event) => {
 		this.setState(prevState => ({
 			shouldClickTableTrigger: !prevState.shouldClickTableTrigger
 		}));
@@ -266,7 +266,7 @@ class GraphsPage extends React.Component {
 							</Row>
 						</Col>
 						<Col xs={12} sm={12} md={this.state.isFullscreen ? 12 : 6} lg={this.state.isFullscreen ? 12 : 6}>
-							<Row style={{paddingLeft: '5px'}}>
+							<Row style={{ paddingLeft: '5px' }}>
 								<GraphDetails
 									graph={graph}
 									loading={this.state.loading}
@@ -278,10 +278,10 @@ class GraphsPage extends React.Component {
 									centralitySort={centralitySort}
 									shouldHoverTableTrigger={this.state.shouldHoverTableTrigger}
 									onShouldHoverTableChange={this.onShouldHoverTableChange}
-									shouldClickTableTrigger={this.state.shouldClickTableTrigger}								
+									shouldClickTableTrigger={this.state.shouldClickTableTrigger}
 									onShouldClickTableChange={this.onShouldClickTableChange} />
 							</Row>
-							<Row style={{paddingLeft: '5px'}}>
+							<Row style={{ paddingLeft: '5px' }}>
 								<TextWindow
 									article={selectedArticle}
 									nodes={graph.nodes}
@@ -291,7 +291,7 @@ class GraphsPage extends React.Component {
 									onWordNodeClick={this.onWordNodeClick}
 									shouldHoverWordTrigger={this.state.shouldHoverWordTrigger}
 									onShouldHoverWordChange={this.onShouldHoverWordChange}
-									shouldClickWordTrigger={this.state.shouldClickWordTrigger}								
+									shouldClickWordTrigger={this.state.shouldClickWordTrigger}
 									onShouldClickWordChange={this.onShouldClickWordChange} />
 							</Row>
 						</Col>

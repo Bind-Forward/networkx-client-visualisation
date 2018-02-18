@@ -7,7 +7,7 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 const TabEdges = ({ edges, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centralitySort }) => {
 	const rowEvents = setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked);
-	console.log(edges)	
+	
 	let tmpEdges = Object.assign([], edges.map((edge, idx) => {
 		edge.id = idx + 1;
 		return edge;

@@ -5,72 +5,91 @@ import { Panel, Tabs, Tab, Row, Col, Checkbox } from 'react-bootstrap';
 import TabNodes from './TabNodes';
 import TabEdges from './TabEdges';
 
-const GraphDetails = ({ graph, loading, activeTabKey, onSelectedTab, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centralitySort,
-	shouldHoverTableTrigger, onShouldHoverTableChange, shouldClickTableTrigger, onShouldClickTableChange }) => {
+class GraphDetails extends React.Component {
 
-	return (
-		<Panel bsStyle="info">
-			<Panel.Heading>
-				<Row>
-					<Col xs={6} sm={6} md={6} lg={6}>
-						<Panel.Title componentClass="h3">Graph Details</Panel.Title>
-					</Col>
-					<Col xs={6} sm={6} md={6} lg={6}>
-						<Panel style={{ color: '#000' }}>
-							<Checkbox
-								value={1}
-								checked={shouldHoverTableTrigger}
-								onChange={onShouldHoverTableChange}
-								inline>
-								Show on mouse hover
-							</Checkbox>
-							<Checkbox
-								value={1}
-								checked={shouldClickTableTrigger}
-								onChange={onShouldClickTableChange}
-								inline>
-								Show on mouse click
-							</Checkbox>
-						</Panel>
-					</Col>
-				</Row>
+	constructor(props) {
+		super(props);
+	}
 
-			</Panel.Heading>
-			<Panel.Body style={{ maxHeight: '450px', overflowY: 'auto' }}>
-				{
-					_.isEmpty(graph) || loading ?
-						<div className="loader"></div> :
-						<Tabs
-							activeKey={activeTabKey}
-							onSelect={onSelectedTab}
-							id="graph-details-tab">
-							<Tab eventKey={1} title="Nodes">
-								<TabNodes
-									nodes={graph.nodes}
-									onTableRowMouseOver={onTableRowMouseOver}
-									onTableRowMouseLeave={onTableRowMouseLeave}
-									onTableRowClicked={onTableRowClicked}
-									centralitySort={centralitySort}
-									shouldClickTableTrigger={shouldClickTableTrigger} />
-							</Tab>
-							<Tab eventKey={2} title="Edges">
-								<TabEdges
-									edges={graph.edges}
-									onTableRowMouseOver={onTableRowMouseOver}
-									onTableRowMouseLeave={onTableRowMouseLeave}
-									onTableRowClicked={onTableRowClicked} />
-							</Tab>
-							<Tab eventKey={3} title="Keywords">
+	shouldComponentUpdate = (nextProps, nextState) => {	
+		const {
+			graph,
+			loading
+		} = this.props;
 
-							</Tab>
-							<Tab eventKey={4} title="Details">
+		if (!_.isEqual(graph, nextProps.graph) || loading !== nextProps.loading) {
+			return true;
+		}
+		return false;
+	}	
+	
+	render() {
+		debugger;
+		let s = this.props.shouldHoverTableTrigger;
+		return (
+			<Panel bsStyle="info">
+				<Panel.Heading>
+					<Row>
+						<Col xs={6} sm={6} md={6} lg={6}>
+							<Panel.Title componentClass="h3">Graph Details</Panel.Title>
+						</Col>
+						<Col xs={6} sm={6} md={6} lg={6}>
+							<Panel style={{ color: '#000' }}>
+								<Checkbox
+									value={1}
+									checked={this.props.shouldHoverTableTrigger}
+									onChange={this.props.onShouldHoverTableChange}
+									inline>
+									Show on mouse hover
+								</Checkbox>
+								<Checkbox
+									value={1}
+									checked={this.props.shouldClickTableTrigger}
+									onChange={this.props.onShouldClickTableChange}
+									inline>
+									Show on mouse click
+								</Checkbox>
+							</Panel>
+						</Col>
+					</Row>
 
-							</Tab>
-						</Tabs>
-				}
-			</Panel.Body>
-		</Panel>
-	);
+				</Panel.Heading>
+				<Panel.Body style={{ maxHeight: '450px', overflowY: 'auto' }}>
+					{
+						_.isEmpty(this.props.graph) || this.props.loading ?
+							<div className="loader"></div> :
+							<Tabs
+								activeKey={this.props.activeTabKey}
+								onSelect={this.props.onSelectedTab}
+								id="graph-details-tab">
+								<Tab eventKey={1} title="Nodes">
+									<TabNodes
+										nodes={this.props.graph.nodes}
+										onTableRowMouseOver={this.props.onTableRowMouseOver}
+										onTableRowMouseLeave={this.props.onTableRowMouseLeave}
+										onTableRowClicked={this.props.onTableRowClicked}
+										centralitySort={this.props.centralitySort}
+										shouldClickTableTrigger={this.props.shouldClickTableTrigger} />
+								</Tab>
+								<Tab eventKey={2} title="Edges">
+									<TabEdges
+										edges={this.props.graph.edges}
+										onTableRowMouseOver={this.props.onTableRowMouseOver}
+										onTableRowMouseLeave={this.props.onTableRowMouseLeave}
+										onTableRowClicked={this.props.onTableRowClicked} />
+								</Tab>
+								<Tab eventKey={3} title="Keywords">
+
+								</Tab>
+								<Tab eventKey={4} title="Details">
+
+								</Tab>
+							</Tabs>
+					}
+				</Panel.Body>
+			</Panel>
+		);
+	}
 }
 
 GraphDetails.defaultProps = {
