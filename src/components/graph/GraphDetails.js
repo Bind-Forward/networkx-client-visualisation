@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Panel, Tabs, Tab, Row, Col, Checkbox } from 'react-bootstrap';
+import graphEvents from '../../constants/graphEvents';
 import TabNodes from './TabNodes';
 import TabEdges from './TabEdges';
 
@@ -9,23 +10,131 @@ class GraphDetails extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			activeTabKey: 1,
+			shouldHoverTableTrigger: false,
+			shouldClickTableTrigger: true
+		};
 	}
 
-	shouldComponentUpdate = (nextProps, nextState) => {	
+	/* --- Lifecycle methods --- */
+	shouldComponentUpdate = (nextProps, nextState) => {
 		const {
 			graph,
 			loading
 		} = this.props;
 
-		if (!_.isEqual(graph, nextProps.graph) || loading !== nextProps.loading) {
+		if (!_.isEqual(graph, nextProps.graph) || 
+			loading !== nextProps.loading ||
+			!_.isEqual(this.state, nextState)) {
 			return true;
 		}
 		return false;
-	}	
+	}
+
+	/* --- Private methods --- */
+	_handleTabNodesRowMouseOver = (htmlElement) => {
+		if (htmlElement.dataset.clicked === '1') {
+			return;
+		}
+
+		const id = htmlElement.cells[1].innerText;
+		htmlElement.classList.toggle('node-row-hover');
+		htmlElement.style.cssText = "background-color: #BFEFFF;";
+		this.props.dispatchGraphEventOnNode(graphEvents.overNode, id);
+	}
+
+	_handleTabNodesMouseLeave = (htmlElement) => {
+		if (htmlElement.dataset.clicked === '1') {
+			return;
+		}
+
+		const id = htmlElement.cells[1].innerText;
+		htmlElement.classList.toggle('node-row-hover');
+		htmlElement.style.cssText = "";				
+		this.props.dispatchGraphEventOnNode(graphEvents.outNode, id);
+	}
+
+	/* --- Public methods --- */
+	onTableRowMouseOver = (event) => {
+		if (!this.state.shouldHoverTableTrigger) {
+			return;
+		}
+
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				this._handleTabNodesRowMouseOver(el);
+				break;
+			default:
+				break;
+		}
+	}
+
+	onTableRowMouseLeave = (event) => {
+		if (!this.state.shouldHoverTableTrigger) {
+			return;
+		}
+
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				this._handleTabNodesMouseLeave(el);
+				break;
+			default:
+				break;
+		}
+	}
+
+	onTableRowClicked = (event) => {
+		if (!this.state.shouldClickTableTrigger) {
+			return;
+		}
+
+		const el = event.currentTarget;
+
+		switch (this.state.activeTabKey) {
+			case 1:
+				const id = el.cells[1].innerText;
+				el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
+
+				this.props.dispatchGraphEventOnNode(graphEvents.clickNode, id);
+				break;
+			default:
+				break;
+		}
+	}
+
+	onShouldHoverTableChange = (event) => {
+		const el = event.currentTarget;
+		el.checked = true;
+		this.setState(prevState => ({
+			shouldHoverTableTrigger: !prevState.shouldHoverTableTrigger
+		}));
+	}
+
+	onShouldClickTableChange = (event) => {
+		this.setState(prevState => ({
+			shouldClickTableTrigger: !prevState.shouldClickTableTrigger
+		}));
+	}
 	
+	onSelectedTab = (key) => {
+		this.setState({
+			activeTabKey: key
+		});
+	}
+
 	render() {
-		debugger;
-		let s = this.props.shouldHoverTableTrigger;
+		const {
+			graph,
+			loading,
+			centralitySort
+		} = this.props;
+
 		return (
 			<Panel bsStyle="info">
 				<Panel.Heading>
@@ -37,15 +146,15 @@ class GraphDetails extends React.Component {
 							<Panel style={{ color: '#000' }}>
 								<Checkbox
 									value={1}
-									checked={this.props.shouldHoverTableTrigger}
-									onChange={this.props.onShouldHoverTableChange}
+									checked={this.state.shouldHoverTableTrigger}
+									onChange={this.onShouldHoverTableChange}
 									inline>
 									Show on mouse hover
 								</Checkbox>
 								<Checkbox
 									value={1}
-									checked={this.props.shouldClickTableTrigger}
-									onChange={this.props.onShouldClickTableChange}
+									checked={this.state.shouldClickTableTrigger}
+									onChange={this.onShouldClickTableChange}
 									inline>
 									Show on mouse click
 								</Checkbox>
@@ -56,27 +165,27 @@ class GraphDetails extends React.Component {
 				</Panel.Heading>
 				<Panel.Body style={{ maxHeight: '450px', overflowY: 'auto' }}>
 					{
-						_.isEmpty(this.props.graph) || this.props.loading ?
+						_.isEmpty(graph) || loading ?
 							<div className="loader"></div> :
 							<Tabs
-								activeKey={this.props.activeTabKey}
-								onSelect={this.props.onSelectedTab}
+								activeKey={this.state.activeTabKey}
+								onSelect={this.onSelectedTab}
 								id="graph-details-tab">
 								<Tab eventKey={1} title="Nodes">
 									<TabNodes
-										nodes={this.props.graph.nodes}
-										onTableRowMouseOver={this.props.onTableRowMouseOver}
-										onTableRowMouseLeave={this.props.onTableRowMouseLeave}
-										onTableRowClicked={this.props.onTableRowClicked}
-										centralitySort={this.props.centralitySort}
-										shouldClickTableTrigger={this.props.shouldClickTableTrigger} />
+										nodes={graph.nodes}
+										centralitySort={centralitySort}
+										onTableRowMouseOver={this.onTableRowMouseOver}
+										onTableRowMouseLeave={this.onTableRowMouseLeave}
+										onTableRowClicked={this.onTableRowClicked}
+										shouldClickTableTrigger={this.state.shouldClickTableTrigger} />
 								</Tab>
 								<Tab eventKey={2} title="Edges">
 									<TabEdges
-										edges={this.props.graph.edges}
-										onTableRowMouseOver={this.props.onTableRowMouseOver}
-										onTableRowMouseLeave={this.props.onTableRowMouseLeave}
-										onTableRowClicked={this.props.onTableRowClicked} />
+										edges={graph.edges}
+										onTableRowMouseOver={this.onTableRowMouseOver}
+										onTableRowMouseLeave={this.onTableRowMouseLeave}
+										onTableRowClicked={this.onTableRowClicked} />
 								</Tab>
 								<Tab eventKey={3} title="Keywords">
 
@@ -93,23 +202,14 @@ class GraphDetails extends React.Component {
 }
 
 GraphDetails.defaultProps = {
-	loading: true,
-	activeTabKey: 1
+	loading: true
 }
 
 GraphDetails.propTypes = {
-	graph: PropTypes.object,
-	loading: PropTypes.bool,
-	activeTabKey: PropTypes.number,
-	onSelectedTab: PropTypes.func,
-	onTableRowMouseOver: PropTypes.func,
-	onTableRowMouseLeave: PropTypes.func,
-	onTableRowClicked: PropTypes.func,
-	centralitySort: PropTypes.string,
-	shouldHoverTableTrigger: PropTypes.bool.isRequired,
-	onShouldHoverTableChange: PropTypes.func.isRequired,
-	shouldClickTableTrigger: PropTypes.bool.isRequired,
-	onShouldClickTableChange: PropTypes.func.isRequired
+	graph: PropTypes.object.isRequired,
+	loading: PropTypes.bool.isRequired,
+	centralitySort: PropTypes.string.isRequired,
+	dispatchGraphEventOnNode: PropTypes.func.isRequired
 };
 
 export default GraphDetails;

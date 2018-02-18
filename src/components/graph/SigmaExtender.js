@@ -27,9 +27,9 @@ function dispatchEvent(sigma, event, nodeId) {
 	let node = _.find(sigma.graph.nodes(), { id: nodeId });
 	let renderer = sigma.renderers[0];
 	if (!_.isEmpty(node)) {
-		renderer.dispatchEvent(event, { node: node });
+		renderer.dispatchEvent(event, { node: node });		
 		doAfterDispatchedAfterEvent(sigma, event, node);
-	}
+	}	
 }
 
 function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
@@ -39,7 +39,7 @@ function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 			utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeHoverColor, graphSettings.adjacentNodeHoverColor, (size) => size);
 			sigma.cameras[0].goTo({x: sigmaNode["read_cam0:x"], y: sigmaNode["read_cam0:y"], ratio: 1});
 			break;
-		case graphEvents.outNode:
+		case graphEvents.outNode:		
 			utility.setNodeStyle(sigmaNode, graphSettings.defaultNodeColor, sigmaNode.size);
 			utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.defaultEdgeColor, graphSettings.defaultNodeColor, (size) => size);
 			break;

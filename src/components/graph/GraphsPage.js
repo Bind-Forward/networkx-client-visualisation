@@ -10,7 +10,6 @@ import TextWindow from './TextWindow';
 import GraphMenu from './GraphMenu';
 import graphSettings from '../../constants/graphSettings';
 import * as utility from '../../utility';
-import graphEvents from '../../constants/graphEvents';
 import GraphDetails from './GraphDetails';
 
 class GraphsPage extends React.Component {
@@ -23,150 +22,23 @@ class GraphsPage extends React.Component {
 			selectedArticleId: -1,
 			dispatchEventName: '',
 			actionNode: '',
-			isFullscreen: false,
-			activeTabKey: 1,
-			shouldHoverWordTrigger: true,
-			shouldClickWordTrigger: true,
-			shouldHoverTableTrigger: false,
-			shouldClickTableTrigger: true,
+			isFullscreen: false		
 		};
 	}
 
+	/* --- Lifecycle methods --- */
 	componentWillReceiveProps = (nextProps) => {
 		this.setState({
 			selectedArticleId: nextProps.selectedArticle.id
 		});
 	}
 
-	onWordNodeMouseOver = (event) => {
-		const el = event.currentTarget;
-		const wasClicked = !_.isEmpty(el.dataset.clicked);
-		if (wasClicked || !this.state.shouldHoverWordTrigger)
-			return;
-
-		el.classList.toggle('word-hover');
+	/* --- Public methods --- */
+	dispatchGraphEventOnNode = (eventName, nodeId) => {		
 		this.setState({
-			dispatchEventName: graphEvents.overNode,
-			actionNode: el.dataset.nominative
+			dispatchEventName: eventName,
+			actionNode: nodeId
 		});
-	}
-
-	onWordNodeMouseLeave = (event) => {
-		const el = event.currentTarget;
-		if (el.dataset.clicked === '1' || !this.state.shouldHoverWordTrigger) {
-			return;
-		}
-
-		el.classList.toggle('word-hover');
-		this.setState({
-			dispatchEventName: graphEvents.outNode
-		});
-	}
-
-	onWordNodeClick = (event) => {
-		if (!this.state.shouldClickWordTrigger) {
-			return;
-		}
-
-		const el = event.currentTarget;
-		el.classList.toggle('word-click');
-		el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
-
-		this.setState(prevState => ({
-			dispatchEventName: graphEvents.clickNode,
-			actionNode: el.dataset.nominative
-		}));
-	}
-
-	onShouldHoverWordChange = (event) => {
-		this.setState(prevState => ({
-			shouldHoverWordTrigger: !prevState.shouldHoverWordTrigger
-		}));
-	}
-
-	onShouldClickWordChange = (event) => {
-		this.setState(prevState => ({
-			shouldClickWordTrigger: !prevState.shouldClickWordTrigger
-		}));
-	}
-
-	onTableRowMouseOver = (event) => {
-		if (!this.state.shouldHoverTableTrigger) {
-			return;
-		}
-
-		const el = event.currentTarget;
-
-		switch (this.state.activeTabKey) {
-			case 1:
-				const wasClicked = !_.isEmpty(el.dataset.clicked) || el.dataset.clicked === '1';
-				if (wasClicked)
-					return;
-				const id = el.cells[1].innerText;
-				el.classList.toggle('node-row-hover');
-				el.style.cssText = "background-color: #BFEFFF;";
-				this.setState({
-					dispatchEventName: graphEvents.overNode,
-					actionNode: id
-				});
-				break;
-			default:
-		}
-	}
-
-	onTableRowMouseLeave = (event) => {
-		if (!this.state.shouldHoverTableTrigger) {
-			return;
-		}
-
-		const el = event.currentTarget;
-
-		switch (this.state.activeTabKey) {
-			case 1:
-				if (el.dataset.clicked === '1') {
-					return;
-				}
-				el.classList.toggle('node-row-hover');
-				el.style.cssText = "";
-				this.setState({
-					dispatchEventName: graphEvents.outNode
-				});
-				break;
-			default:
-		}
-	}
-
-	onTableRowClicked = (event) => {
-		if (!this.state.shouldClickTableTrigger) {
-			return;
-		}
-
-		const el = event.currentTarget;
-
-		switch (this.state.activeTabKey) {
-			case 1:
-				const id = el.cells[1].innerText;
-
-				el.dataset.clicked = el.dataset.clicked === '1' ? '0' : '1';
-				this.setState(prevState => ({
-					dispatchEventName: graphEvents.clickNode,
-					actionNode: id
-				}));
-				break;
-			default:
-		}
-	}
-
-	onShouldHoverTableChange = (event) => {
-		this.setState(prevState => ({
-			shouldHoverTableTrigger: !prevState.shouldHoverTableTrigger
-		}));
-	}
-
-	onShouldClickTableChange = (event) => {
-		this.setState(prevState => ({
-			shouldClickTableTrigger: !prevState.shouldClickTableTrigger
-		}));
 	}
 
 	onSelectedArticle = (event) => {
@@ -224,12 +96,6 @@ class GraphsPage extends React.Component {
 		}));
 	}
 
-	onSelectedTab = (key) => {
-		this.setState({
-			activeTabKey: key
-		});
-	}
-
 	onCentralitySortChange = (event) => {
 		const el = event.currentTarget;
 		el.checked = true;
@@ -269,30 +135,16 @@ class GraphsPage extends React.Component {
 							<Row style={{ paddingLeft: '5px' }}>
 								<GraphDetails
 									graph={graph}
-									loading={this.state.loading}
-									activeTabKey={this.state.activeTabKey}
-									onSelectedTab={this.onSelectedTab}
-									onTableRowMouseOver={this.onTableRowMouseOver}
-									onTableRowMouseLeave={this.onTableRowMouseLeave}
-									onTableRowClicked={this.onTableRowClicked}
 									centralitySort={centralitySort}
-									shouldHoverTableTrigger={this.state.shouldHoverTableTrigger}
-									onShouldHoverTableChange={this.onShouldHoverTableChange}
-									shouldClickTableTrigger={this.state.shouldClickTableTrigger}
-									onShouldClickTableChange={this.onShouldClickTableChange} />
+									loading={this.state.loading}									
+									dispatchGraphEventOnNode={this.dispatchGraphEventOnNode} />
 							</Row>
 							<Row style={{ paddingLeft: '5px' }}>
 								<TextWindow
 									article={selectedArticle}
 									nodes={graph.nodes}
 									loading={this.state.loading}
-									onWordNodeMouseOver={this.onWordNodeMouseOver}
-									onWordNodeMouseLeave={this.onWordNodeMouseLeave}
-									onWordNodeClick={this.onWordNodeClick}
-									shouldHoverWordTrigger={this.state.shouldHoverWordTrigger}
-									onShouldHoverWordChange={this.onShouldHoverWordChange}
-									shouldClickWordTrigger={this.state.shouldClickWordTrigger}
-									onShouldClickWordChange={this.onShouldClickWordChange} />
+									dispatchGraphEventOnNode={this.dispatchGraphEventOnNode} />
 							</Row>
 						</Col>
 					</Col>
