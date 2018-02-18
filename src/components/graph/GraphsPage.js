@@ -21,7 +21,8 @@ class GraphsPage extends React.Component {
 			selectedArticleId: -1,
 			dispatchEventName: '',
 			actionNode: '',
-			isFullscreen: false		
+			isFullscreen: false,
+			highlightCentralityNodesNum: 5
 		};
 	}
 
@@ -33,7 +34,7 @@ class GraphsPage extends React.Component {
 	}
 
 	/* --- Public methods --- */
-	dispatchGraphEventOnNode = (eventName, nodeId) => {		
+	dispatchGraphEventOnNode = (eventName, nodeId) => {
 		this.setState({
 			dispatchEventName: eventName,
 			actionNode: nodeId
@@ -62,6 +63,22 @@ class GraphsPage extends React.Component {
 		const el = event.currentTarget;
 		el.checked = true;
 		this.props.actions.setLayout(el.value);
+	}
+
+	onHighlightCentralityNodesNumChange = (event) => {
+		const el = event.currentTarget;
+
+		let number = 0;
+
+		if (!el.value || isNaN(el.value) || parseInt(el.value, 10) < 0) {
+			number = 0;
+		} else {
+			number = parseInt(el.value, 10);
+		}
+
+		this.setState({
+			highlightCentralityNodesNum: number
+		});
 	}
 
 	onMenuAccept = (event) => {
@@ -125,7 +142,8 @@ class GraphsPage extends React.Component {
 									actionNode={this.state.actionNode}
 									layoutType={layoutType}
 									onChangeGraphSize={this.onChangeGraphSize}
-									centralitySort={centralitySort} />
+									centralitySort={centralitySort}
+									highlightCentralityNodesNum={this.state.highlightCentralityNodesNum} />
 							</Row>
 						</Col>
 						<Col xs={12} sm={12} md={this.state.isFullscreen ? 12 : 6} lg={this.state.isFullscreen ? 12 : 6}>
@@ -133,7 +151,7 @@ class GraphsPage extends React.Component {
 								<GraphDetails
 									graph={graph}
 									centralitySort={centralitySort}
-									loading={this.state.loading}									
+									loading={this.state.loading}
 									dispatchGraphEventOnNode={this.dispatchGraphEventOnNode} />
 							</Row>
 							<Row style={{ paddingLeft: '5px' }}>
@@ -150,15 +168,17 @@ class GraphsPage extends React.Component {
 							<GraphMenu
 								articles={articles}
 								selectedArticleId={selectedArticle.id}
+								layoutType={layoutType}
+								selectedDictionaryTypes={dictionaryTypes}
+								centralitySort={centralitySort}
 								onSelectedArticle={this.onSelectedArticle}
 								onMenuAccept={this.onMenuAccept}
 								loading={this.state.loading}
-								selectedDictionaryTypes={dictionaryTypes}
 								onDictionaryTypeChange={this.onDictionaryTypeChange}
-								layoutType={layoutType}
 								onLayoutChange={this.onLayoutChange}
-								centralitySort={centralitySort}
-								onCentralitySortChange={this.onCentralitySortChange} />
+								onCentralitySortChange={this.onCentralitySortChange}
+								highlightCentralityNodesNum={this.state.highlightCentralityNodesNum}
+								onHighlightCentralityNodesNumChange={this.onHighlightCentralityNodesNumChange} />
 						</Row>
 					</Col>
 				</Row>

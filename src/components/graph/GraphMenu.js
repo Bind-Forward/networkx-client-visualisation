@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, Button, Row, Col, FormGroup, Checkbox, ControlLabel, Radio } from 'react-bootstrap';
+import { Panel, Button, Row, Col, FormGroup, Checkbox, ControlLabel, Radio, FormControl } from 'react-bootstrap';
 import _ from 'lodash';
 import Dropdown from '../common/Dropdown';
 import * as constants from '../../constants/appConstants';
 
-const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes, 
-		onDictionaryTypeChange, layoutType, onLayoutChange, centralitySort, onCentralitySortChange }) => {
+const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes,
+	onDictionaryTypeChange, layoutType, onLayoutChange, centralitySort, onCentralitySortChange, highlightCentralityNodesNum, onHighlightCentralityNodesNumChange }) => {
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
 				<Panel.Title componentClass="h3">Graph Menu</Panel.Title>
 			</Panel.Heading>
-			<Panel.Body  style={{maxHeight: '750px', overflowY: 'auto'}}>
+			<Panel.Body style={{ maxHeight: '750px', overflowY: 'auto' }}>
 				{
 					_.isEmpty(articles) || loading ?
 						<div className="loader">Loading...</div> :
@@ -20,7 +20,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 							<Row>
 								<Button bsStyle={"default"}
 									onClick={onMenuAccept}
-									style={{width: '100%'}}>
+									style={{ width: '100%' }}>
 									Submit
 								</Button>
 							</Row>
@@ -87,9 +87,19 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 							<Row>
 								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
-										<ControlLabel>Select Sort By Centrality</ControlLabel>
+										<ControlLabel>Centrality</ControlLabel>
 										<Panel>
 											<Panel.Body>
+												<ControlLabel>Number of highlighted nodes</ControlLabel>												
+												<FormControl
+													type="number"
+													min="0"
+													value={highlightCentralityNodesNum}
+													placeholder="Enter number"
+													onChange={onHighlightCentralityNodesNumChange}
+												/>
+												<hr />
+												<ControlLabel>Select Sort By Centrality</ControlLabel>												
 												{
 													Object.keys(constants.CENTRALITY).map(key => {
 														const value = constants.CENTRALITY[key];
@@ -129,7 +139,9 @@ GraphMenu.propTypes = {
 	layoutType: PropTypes.string,
 	onLayoutChange: PropTypes.func,
 	centralitySort: PropTypes.string,
-	onCentralitySortChange: PropTypes.func
+	onCentralitySortChange: PropTypes.func,
+	highlightCentralityNodesNum: PropTypes.number,
+	onHighlightCentralityNodesNumChange: PropTypes.func
 };
 
 export default GraphMenu;

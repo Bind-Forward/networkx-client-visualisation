@@ -26,6 +26,7 @@ export default {
 	defaultBorderView: "always", //apply the default color to all nodes always (normal+hover)
 	minArrowSize: 8,
 	scalingMode: "outside", // inside
+	highlightCentralityNodeColor: '#EE3A8C',
 	// Node overlap settings
 	nodeMargin: 5,
 	maxIterations: 100,

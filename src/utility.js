@@ -1,6 +1,7 @@
 import toastr from 'toastr';
 import _ from 'lodash';
 import * as constants from './constants/appConstants';
+import graphSettings from './constants/graphSettings';
 
 const toastrOptions = {
 	closeButton: true,
@@ -53,7 +54,7 @@ export function setStyleToAdjacentEdges(graph, sourceNode, edgeColor, adjacentNo
 	}
 }
 
-export function setNodesByCentralitySort(nodes, centralitySort) {
+export function setNodesByCentralitySort(nodes, centralitySort, highlightCentralityNodesNum) {
 	let centrality;
 
 	switch (centralitySort) {
@@ -70,11 +71,19 @@ export function setNodesByCentralitySort(nodes, centralitySort) {
 			alert('Unknown centrality sort type.')
 			return;
 	}
-	
-	return nodes.map((node) => {
-		node.size = node[centrality] * 20;
-		return node;
-	})
+
+	return _.sortBy(nodes, [centrality])
+		.reverse()
+		.map((node, idx) => {			
+			if (idx < highlightCentralityNodesNum) {
+				node.color = graphSettings.highlightCentralityNodeColor;
+			} else {
+				node.color = graphSettings.defaultNodeColor;
+			}
+
+			node.size = node[centrality] * 20;
+			return node;
+		})
 }
 
 export function setEdgesByWeight(edges, sizeCallback) {

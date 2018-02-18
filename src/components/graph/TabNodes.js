@@ -6,7 +6,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import * as constants from '../../constants/appConstants';
 
-const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centralitySort, shouldClickTableTrigger }) => {
+const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centralitySort, shouldClickTableTrigger, handleTableChange }) => {
 	const rowEvents = setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked);
 
 	return (
@@ -69,10 +69,12 @@ function setSelectRow() {
 	return {
 		mode: 'checkbox',
 		clickToSelect: true,
-		style: { backgroundColor: '#c8e6c9' }
+		style: { backgroundColor: '#c8e6c9' },
+		onChange: () => console.log('Clicked')
 	};
 }
 
+// eslint-disable-next-line
 function setDefaultSort(centralitySort) {
 	let centrality;
 	switch (centralitySort) {
@@ -91,7 +93,7 @@ function setDefaultSort(centralitySort) {
 
 	return [{
 		dataField: centrality,
-		order: 'asc'
+		order: 'desc'
 	}];
 }
 
@@ -107,12 +109,12 @@ function setPaginationOptions() {
 }
 
 TabNodes.propTypes = {
-	nodes: PropTypes.array,
-	onTableRowMouseOver: PropTypes.func,
-	onTableRowMouseLeave: PropTypes.func,
-	onTableRowClicked: PropTypes.func,
-	centralitySort: PropTypes.string,
-	shouldClickTableTrigger: PropTypes.bool
+	nodes: PropTypes.array.isRequired,
+	onTableRowMouseOver: PropTypes.func.isRequired,
+	onTableRowMouseLeave: PropTypes.func.isRequired,
+	onTableRowClicked: PropTypes.func.isRequired,
+	centralitySort: PropTypes.string.isRequired,
+	shouldClickTableTrigger: PropTypes.bool.isRequired
 };
 
 export default TabNodes;

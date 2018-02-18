@@ -42,7 +42,8 @@ class GraphWindow extends React.Component {
 			actionNode,
 			layoutType,
 			onChangeGraphSize,
-			centralitySort
+			centralitySort,
+			highlightCentralityNodesNum
 		} = this.props;
 
 		let title = (_.isEmpty(graph.nodes) || loading || !selectedArticle) ? "Graph" : selectedArticle.name;
@@ -72,7 +73,8 @@ class GraphWindow extends React.Component {
 								<SigmaExtender graph={graph}
 									dispatchEventName={dispatchEventName}
 									actionNode={actionNode}
-									centralitySort={centralitySort} />
+									centralitySort={centralitySort}
+									highlightCentralityNodesNum={highlightCentralityNodesNum} />
 								<EdgeShapes default={graphSettings.edgeShapes} />
 								<NodeShapes default={graphSettings.nodeShapes} />
 								{this._getGraphLayout(layoutType, graphSettings)}

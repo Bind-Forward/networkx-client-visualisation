@@ -14,7 +14,7 @@ class GraphDetails extends React.Component {
 		this.state = {
 			activeTabKey: 1,
 			shouldHoverTableTrigger: false,
-			shouldClickTableTrigger: true
+			shouldClickTableTrigger: true,
 		};
 	}
 
@@ -178,7 +178,8 @@ class GraphDetails extends React.Component {
 										onTableRowMouseOver={this.onTableRowMouseOver}
 										onTableRowMouseLeave={this.onTableRowMouseLeave}
 										onTableRowClicked={this.onTableRowClicked}
-										shouldClickTableTrigger={this.state.shouldClickTableTrigger} />
+										shouldClickTableTrigger={this.state.shouldClickTableTrigger}
+										handleTableChange={this.handleTableChange} />
 								</Tab>
 								<Tab eventKey={2} title="Edges">
 									<TabEdges
