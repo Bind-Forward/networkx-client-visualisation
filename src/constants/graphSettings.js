@@ -1,4 +1,5 @@
 export default {
+	rendered: 'canvas',
 	nodeShapes: "def", // "def" | "pacman" | "star" | "equilateral" | "cross" | "diamond" | "circle" | "square"
 	edgeShapes: "arrow", // "line" | "arrow" | "curve" | "curvedArrow" | "dashed" | "dotted" | "parallel" | "tapered"
 	drawEdges: true,

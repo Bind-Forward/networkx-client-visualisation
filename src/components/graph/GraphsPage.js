@@ -8,7 +8,6 @@ import * as graphActions from '../../actions/graphActions';
 import GraphWindow from './GraphWindow';
 import TextWindow from './TextWindow';
 import GraphMenu from './GraphMenu';
-import graphSettings from '../../constants/graphSettings';
 import * as utility from '../../utility';
 import GraphDetails from './GraphDetails';
 
@@ -121,8 +120,6 @@ class GraphsPage extends React.Component {
 								<GraphWindow
 									graph={graph}
 									loading={this.state.loading}
-									settings={graphSettings}
-									renderer={"canvas"}
 									selectedArticle={selectedArticle}
 									dispatchEventName={this.state.dispatchEventName}
 									actionNode={this.state.actionNode}
