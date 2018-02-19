@@ -46,7 +46,7 @@ export function setStyleToAdjacentEdges(graph, sourceNode, edgeColor, adjacentNo
 			edge.size = sizeCallback(edge.size);
 			let targetNode = _.find(graph.nodes(), { id: edge.target });
 			if (targetNode) {
-				targetNode.color = adjacentNodeColor;
+				// targetNode.color = adjacentNodeColor;
 				targetNode.size = sizeCallback(targetNode.size);
 			}
 			return edge;
@@ -74,16 +74,20 @@ export function setNodesByCentralitySort(nodes, centralitySort, highlightCentral
 
 	return _.sortBy(nodes, [centrality])
 		.reverse()
-		.map((node, idx) => {			
+		.map((node, idx) => {
+
 			if (idx < highlightCentralityNodesNum) {
-				node.color = graphSettings.highlightCentralityNodeColor;
+				node.color = node.isClicked ? graphSettings.nodeClickColor : graphSettings.highlightCentralityNodeColor;
+				node.defaultColor = graphSettings.highlightCentralityNodeColor; // Use it to mark that it is default color to set after hover or click event
 			} else {
 				node.color = graphSettings.defaultNodeColor;
+				node.defaultColor = graphSettings.defaultNodeColor;
 			}
 
 			node.size = node[centrality] * 20;
+
 			return node;
-		})
+		});
 }
 
 export function setEdgesByWeight(edges, sizeCallback) {

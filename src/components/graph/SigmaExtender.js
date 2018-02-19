@@ -24,10 +24,10 @@ const SigmaExtender = ({ graph, sigma, dispatchEventName, actionNode, centrality
 }
 
 function dispatchNodeEvent(sigma, event, nodeId) {
-	let node = _.find(sigma.graph.nodes(), { id: nodeId });
-	let renderer = sigma.renderers[0];
+	let node = _.find(sigma.graph.nodes(), { id: nodeId });	
 	if (!_.isEmpty(node)) {
-		renderer.dispatchEvent(event, { node: node });		
+		// let renderer = sigma.renderers[0];
+		// renderer.dispatchEvent(event, { node: node });		
 		doAfterDispatchedAfterEvent(sigma, event, node);
 	}	
 }
@@ -40,13 +40,13 @@ function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 			sigma.cameras[0].goTo({x: sigmaNode["read_cam0:x"], y: sigmaNode["read_cam0:y"], ratio: 1});
 			break;
 		case graphEvents.outNode:		
-			utility.setNodeStyle(sigmaNode, graphSettings.defaultNodeColor, sigmaNode.size);
+			utility.setNodeStyle(sigmaNode, sigmaNode.defaultColor || graphSettings.defaultNodeColor, sigmaNode.size);
 			utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.defaultEdgeColor, graphSettings.defaultNodeColor, (size) => size);
 			break;
 		case graphEvents.clickNode:
 			if (sigmaNode.isClicked) {				
-				utility.setNodeStyle(sigmaNode, graphSettings.defaultNodeColor, sigmaNode.size);
-				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.defaultEdgeColor, graphSettings.defaultNodeColor, (size) => size);
+				utility.setNodeStyle(sigmaNode, sigmaNode.defaultColor || graphSettings.defaultNodeColor, sigmaNode.size);
+				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.defaultEdgeColor, sigmaNode.defaultColor || graphSettings.defaultNodeColor, (size) => size);
 			} else {
 				utility.setNodeStyle(sigmaNode, graphSettings.nodeClickColor, sigmaNode.size);
 				utility.setStyleToAdjacentEdges(sigma.graph, sigmaNode, graphSettings.edgeClickColor, graphSettings.nodeClickColor, (size) => size);			

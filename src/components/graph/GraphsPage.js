@@ -29,7 +29,8 @@ class GraphsPage extends React.Component {
 	/* --- Lifecycle methods --- */
 	componentWillReceiveProps = (nextProps) => {
 		this.setState({
-			selectedArticleId: nextProps.selectedArticle.id
+			selectedArticleId: nextProps.selectedArticle.id,
+			dispatchEventName: ''
 		});
 	}
 
@@ -43,7 +44,8 @@ class GraphsPage extends React.Component {
 
 	onSelectedArticle = (event) => {
 		this.setState({
-			selectedArticleId: _.toNumber(event.currentTarget.value)
+			selectedArticleId: _.toNumber(event.currentTarget.value),
+			dispatchEventName: ''
 		});
 	}
 
@@ -77,7 +79,8 @@ class GraphsPage extends React.Component {
 		}
 
 		this.setState({
-			highlightCentralityNodesNum: number
+			highlightCentralityNodesNum: number,
+			dispatchEventName: ''
 		});
 	}
 
@@ -108,7 +111,8 @@ class GraphsPage extends React.Component {
 
 	onChangeGraphSize = (event) => {
 		this.setState(prevState => ({
-			isFullscreen: !prevState.isFullscreen
+			isFullscreen: !prevState.isFullscreen,
+			dispatchEventName: ''
 		}));
 	}
 
