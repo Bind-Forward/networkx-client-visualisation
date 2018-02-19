@@ -80,7 +80,7 @@ export function setNodesByCentralitySort(nodes, centralitySort, highlightCentral
 				node.color = node.isClicked ? graphSettings.nodeClickColor : graphSettings.highlightCentralityNodeColor;
 				node.defaultColor = graphSettings.highlightCentralityNodeColor; // Use it to mark that it is default color to set after hover or click event
 			} else {
-				node.color = graphSettings.defaultNodeColor;
+				node.color = node.isClicked ? graphSettings.nodeClickColor : graphSettings.defaultNodeColor;
 				node.defaultColor = graphSettings.defaultNodeColor;
 			}
 
