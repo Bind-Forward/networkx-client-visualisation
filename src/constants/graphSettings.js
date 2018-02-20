@@ -1,7 +1,9 @@
+import * as constants from "./appConstants";
+
 export default {
 	rendered: 'canvas',
-	nodeShapes: "def", // "def" | "pacman" | "star" | "equilateral" | "cross" | "diamond" | "circle" | "square"
-	edgeShapes: "arrow", // "line" | "arrow" | "curve" | "curvedArrow" | "dashed" | "dotted" | "parallel" | "tapered"
+	nodeShapes: constants.NODE_SHAPE.Default, // "def" | "pacman" | "star" | "equilateral" | "cross" | "diamond" | "circle" | "square"
+	edgeShapes: constants.EDGE_SHAPE.Arrow, // "line" | "arrow" | "curve" | "curvedArrow" | "dashed" | "dotted" | "parallel" | "tapered"
 	drawEdges: true,
 	drawLabels: true,
 	minEdgeSize: 0.5,

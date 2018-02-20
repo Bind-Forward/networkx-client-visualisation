@@ -26,4 +26,26 @@ export const CENTRALITY = {
 	DegreeCentrality: 'Degree Centrality',
 	BetweennessCentrality: 'Betweenness Centrality',
 	Pagerank: 'pagerank'
-} 
+}
+
+export const EDGE_SHAPE = {
+	Line: "line",
+	Arrow: "arrow",
+	Curve: "curve",
+	CurvedArrow: "curvedArrow",
+	Dashed: "dashed",
+	Dotted: "dotted",
+	Parallel: "parallel",
+	Tapered: "tapered"
+}
+
+export const NODE_SHAPE = {
+	Default: "def",
+	Pacman: "pacman",
+	Star: "star",
+	Equilateral: "equilateral",
+	Cross: "cross",
+	Diamond: "diamond",
+	Circle: "circle",
+	Square: "square"
+}

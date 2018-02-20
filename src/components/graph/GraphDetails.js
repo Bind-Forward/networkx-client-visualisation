@@ -133,7 +133,7 @@ class GraphDetails extends React.Component {
 		const {
 			graph,
 			loading,
-			centralitySort
+			centrality
 		} = this.props;
 
 		return (
@@ -175,7 +175,7 @@ class GraphDetails extends React.Component {
 								<Tab eventKey={1} title="Nodes">
 									<TabNodes
 										nodes={graph.nodes}
-										centralitySort={centralitySort}
+										centrality={centrality}
 										onTableRowMouseOver={this.onTableRowMouseOver}
 										onTableRowMouseLeave={this.onTableRowMouseLeave}
 										onTableRowClicked={this.onTableRowClicked}
@@ -211,7 +211,7 @@ GraphDetails.defaultProps = {
 GraphDetails.propTypes = {
 	graph: PropTypes.object.isRequired,
 	loading: PropTypes.bool.isRequired,
-	centralitySort: PropTypes.string.isRequired,
+	centrality: PropTypes.string.isRequired,
 	dispatchGraphEventOnNode: PropTypes.func.isRequired
 };
 

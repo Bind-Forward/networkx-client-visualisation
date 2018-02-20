@@ -1,7 +1,6 @@
 import toastr from 'toastr';
 import _ from 'lodash';
 import * as constants from './constants/appConstants';
-import graphSettings from './constants/graphSettings';
 
 const toastrOptions = {
 	closeButton: true,
@@ -54,25 +53,25 @@ export function setStyleToAdjacentEdges(graph, sourceNode, edgeColor, adjacentNo
 	}
 }
 
-export function setNodesByCentralitySort(nodes, centralitySort, highlightCentralityNodesNum) {
-	let centrality;
+export function setNodesByCentrality(nodes, centrality, graphSettings, highlightCentralityNodesNum) {
+	let centralityType;
 
-	switch (centralitySort) {
+	switch (centrality) {
 		case constants.CENTRALITY.DegreeCentrality:
-			centrality = 'degreeCentrality';
+			centralityType = 'degreeCentrality';
 			break;
 		case constants.CENTRALITY.BetweennessCentrality:
-			centrality = 'betweennessCentrality';
+			centralityType = 'betweennessCentrality';
 			break;
 		case constants.CENTRALITY.Pagerank:
-			centrality = 'pagerank';
+			centralityType = 'pagerank';
 			break;
 		default:
-			alert('Unknown centrality sort type.')
+			alert('Unknown centrality type.')
 			return;
 	}
 
-	return _.sortBy(nodes, [centrality])
+	return _.sortBy(nodes, [centralityType])
 		.reverse()
 		.map((node, idx) => {
 
@@ -84,7 +83,7 @@ export function setNodesByCentralitySort(nodes, centralitySort, highlightCentral
 				node.defaultColor = graphSettings.defaultNodeColor;
 			}
 
-			node.size = node[centrality] * 20;
+			node.size = node[centralityType] * 20;
 
 			return node;
 		});
@@ -102,7 +101,7 @@ export function getWordType(typeCode) {
 	Object.keys(constants.DICTIONARY_TYPE).forEach((key, idx) => {
 		if (constants.DICTIONARY_TYPE[key] === typeCode) {
 			type = key;
-			return;	
+			return;
 		}
 	});
 

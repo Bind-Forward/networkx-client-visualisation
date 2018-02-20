@@ -6,7 +6,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import * as constants from '../../constants/appConstants';
 
-const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centralitySort, shouldClickTableTrigger, handleTableChange }) => {
+const TabNodes = ({ nodes, onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked, centrality, shouldClickTableTrigger, handleTableChange }) => {
 	const rowEvents = setRowEvents(onTableRowMouseOver, onTableRowMouseLeave, onTableRowClicked);
 
 	return (
@@ -79,24 +79,24 @@ function setSelectRow() {
 }
 
 // eslint-disable-next-line
-function setDefaultSort(centralitySort) {
-	let centrality;
-	switch (centralitySort) {
+function setDefaultSort(centrality) {
+	let centralityType;
+	switch (centrality) {
 		case constants.CENTRALITY.DegreeCentrality:
-			centrality = 'degreeCentrality';
+			centralityType = 'degreeCentrality';
 			break;
 		case constants.CENTRALITY.BetweennessCentrality:
-			centrality = 'betweennessCentrality';
+			centralityType = 'betweennessCentrality';
 			break;
 		case constants.CENTRALITY.Pagerank:
-			centrality = 'pagerank';
+			centralityType = 'pagerank';
 			break;
 		default:
 			break;
 	}
 
 	return [{
-		dataField: centrality,
+		dataField: centralityType,
 		order: 'desc'
 	}];
 }
@@ -108,7 +108,7 @@ function setPaginationOptions() {
 			text: '7', value: 7
 		}],
 		hideSizePerPage: true, // Hide the sizePerPage dropdown always
-  	hidePageListOnlyOnePage: true, // Hide the pagination list when only one page
+		hidePageListOnlyOnePage: true, // Hide the pagination list when only one page
 	};
 }
 
@@ -117,7 +117,7 @@ TabNodes.propTypes = {
 	onTableRowMouseOver: PropTypes.func.isRequired,
 	onTableRowMouseLeave: PropTypes.func.isRequired,
 	onTableRowClicked: PropTypes.func.isRequired,
-	centralitySort: PropTypes.string.isRequired,
+	centrality: PropTypes.string.isRequired,
 	shouldClickTableTrigger: PropTypes.bool.isRequired
 };
 

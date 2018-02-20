@@ -6,7 +6,8 @@ import Dropdown from '../common/Dropdown';
 import * as constants from '../../constants/appConstants';
 
 const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selectedArticleId, selectedDictionaryTypes,
-	onDictionaryTypeChange, layoutType, onLayoutChange, centralitySort, onCentralitySortChange, highlightCentralityNodesNum, onHighlightCentralityNodesNumChange }) => {
+	onDictionaryTypeChange, layoutType, onLayoutChange, centrality, onCentralityChange, highlightCentralityNodesNum, onHighlightCentralityNodesNumChange,
+	nodeShapes, onNodeShapesChanged, edgeShapes, onEdgeShapesChanged }) => {
 	return (
 		<Panel bsStyle={"danger"}>
 			<Panel.Heading>
@@ -58,8 +59,6 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 											</Panel.Body>
 										</Panel>
 									</FormGroup>
-								</Col>
-								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
 										<ControlLabel>Select Word Types</ControlLabel>
 										<Panel style={{ maxHeight: '225px', overflow: 'auto' }}>
@@ -82,15 +81,11 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 											</Panel.Body>
 										</Panel>
 									</FormGroup>
-								</Col>
-							</Row>
-							<Row>
-								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
 										<ControlLabel>Centrality</ControlLabel>
 										<Panel>
 											<Panel.Body>
-												<ControlLabel>Number of highlighted nodes</ControlLabel>												
+												<ControlLabel>Number of highlighted nodes</ControlLabel>
 												<FormControl
 													type="number"
 													min="0"
@@ -99,17 +94,63 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 													onChange={onHighlightCentralityNodesNumChange}
 												/>
 												<hr />
-												<ControlLabel>Select Sort By Centrality</ControlLabel>												
+												<ControlLabel>Select Centrality</ControlLabel>
 												{
 													Object.keys(constants.CENTRALITY).map(key => {
 														const value = constants.CENTRALITY[key];
-														const checked = centralitySort === value;
+														const checked = centrality === value;
 														return (
 															<Radio key={key}
 																value={value}
-																name="centralitySort"
+																name="centrality"
 																checked={checked}
-																onChange={onCentralitySortChange}
+																onChange={onCentralityChange}
+																id={value}>
+																{key}
+															</Radio>
+														);
+													})
+												}
+											</Panel.Body>
+										</Panel>
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Select Nodes Shape</ControlLabel>
+										<Panel style={{ maxHeight: '150px', overflow: 'auto' }}>
+											<Panel.Body>
+												{
+													Object.keys(constants.NODE_SHAPE).map(key => {
+														let value = constants.NODE_SHAPE[key];
+														const checked = nodeShapes === value;
+														return (
+															<Radio key={key}
+																value={value}
+																name="nodeShapes"
+																checked={checked}
+																onChange={onNodeShapesChanged}
+																id={value}>
+																{key}
+															</Radio>
+														);
+													})
+												}
+											</Panel.Body>
+										</Panel>
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Select Edges Shape</ControlLabel>
+										<Panel style={{ maxHeight: '150px', overflow: 'auto' }}>
+											<Panel.Body>
+												{
+													Object.keys(constants.EDGE_SHAPE).map(key => {
+														let value = constants.EDGE_SHAPE[key];
+														const checked = edgeShapes === value;
+														return (
+															<Radio key={key}
+																value={value}
+																name="edgeShapes"
+																checked={checked}
+																onChange={onEdgeShapesChanged}
 																id={value}>
 																{key}
 															</Radio>
@@ -138,10 +179,14 @@ GraphMenu.propTypes = {
 	onDictionaryTypeChange: PropTypes.func,
 	layoutType: PropTypes.string,
 	onLayoutChange: PropTypes.func,
-	centralitySort: PropTypes.string,
-	onCentralitySortChange: PropTypes.func,
+	centrality: PropTypes.string,
+	onCentralityChange: PropTypes.func,
 	highlightCentralityNodesNum: PropTypes.number,
-	onHighlightCentralityNodesNumChange: PropTypes.func
+	onHighlightCentralityNodesNumChange: PropTypes.func,
+	nodeShapes: PropTypes.string,
+	onNodeShapesChanged: PropTypes.func,
+	edgeShapes: PropTypes.string,
+	onEdgeShapesChanged: PropTypes.func
 };
 
 export default GraphMenu;

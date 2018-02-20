@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from './store/configureStore';
 import registerServiceWorker from './registerServiceWorker';
 import * as utility from './utility';
-import { loadGraph, addDictionaryType, setLayout, selectCentralitySort } from './actions/graphActions';
+import { loadGraph, addDictionaryType, setLayout, selectCentrality } from './actions/graphActions';
 import { loadArticles } from './actions/articleActions';
 import initialState from './reducers/initialState';
 import App from './components/App';
@@ -27,7 +27,7 @@ store.dispatch(loadGraph(initialState.graph.articleId, initialState.dictionaryTy
 
 store.dispatch(addDictionaryType(initialState.dictionaryTypes));
 store.dispatch(setLayout(initialState.layoutType));
-store.dispatch(selectCentralitySort(initialState.defaultCentralitySort));
+store.dispatch(selectCentrality(initialState.defaultCentrality));
 
 ReactDOM.render(
 	<Provider store={store}>

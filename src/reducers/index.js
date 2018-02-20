@@ -3,14 +3,14 @@ import graph from './graphReducer';
 import articles from './articleReducer';
 import dictionaryTypes from './dictionaryTypesReducer';
 import layoutType from './layoutTypeReducer';
-import centralitySort from './centralitySortReducer';
+import centrality from './centralityReducer';
 
 const rootReducer = combineReducers({
 	graph,
 	articles,
 	dictionaryTypes,
 	layoutType,
-	centralitySort
+	centrality
 });
 
 export default rootReducer;

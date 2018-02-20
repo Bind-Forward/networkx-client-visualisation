@@ -2,37 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import graphEvents from '../../constants/graphEvents';
-import graphSettings from '../../constants/graphSettings';
 import * as utility from '../../utility';
 
-const SigmaExtender = ({ graph, sigma, dispatchEventName, actionNode, centralitySort, highlightCentralityNodesNum }) => {
-	if (!(_.isEmpty(graph) && _.isEmpty(graph.nodes))) {
+const SigmaExtender = ({ graph, graphSettings, sigma, dispatchEventName, actionNode, centrality, highlightCentralityNodesNum }) => {
+	if (!(_.isEmpty(graph) || _.isEmpty(graph.nodes) || _.isEmpty(graphSettings))) {
 		// Remove nodes and edges
 		sigma.graph.clear();
 
 		// Read graph nodes and edges
 		sigma.graph.read({ 
-			nodes: utility.setNodesByCentralitySort(graph.nodes, centralitySort, highlightCentralityNodesNum),
+			nodes: utility.setNodesByCentrality(graph.nodes, centrality, graphSettings, highlightCentralityNodesNum),
 			edges: utility.setEdgesByWeight(graph.edges, (weight) => weight * 0.8)
 		});
 		
-		dispatchNodeEvent(sigma, dispatchEventName, actionNode);
+		dispatchNodeEvent(sigma, dispatchEventName, actionNode, graphSettings);
 		sigma.refresh({ skipIndexation: true });
 	}
 
 	return <div></div>;
 }
 
-function dispatchNodeEvent(sigma, event, nodeId) {
+function dispatchNodeEvent(sigma, event, nodeId, graphSettings) {
 	let node = _.find(sigma.graph.nodes(), { id: nodeId });	
 	if (!_.isEmpty(node)) {
 		// let renderer = sigma.renderers[0];
 		// renderer.dispatchEvent(event, { node: node });		
-		doAfterDispatchedAfterEvent(sigma, event, node);
+		doAfterDispatchedAfterEvent(sigma, event, node, graphSettings);
 	}	
 }
 
-function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
+function doAfterDispatchedAfterEvent(sigma, event, sigmaNode, graphSettings) {
 	switch (event) {
 		case graphEvents.overNode:		
 			utility.setNodeStyle(sigmaNode, graphSettings.nodeHoverColor, sigmaNode.size);
@@ -61,10 +60,11 @@ function doAfterDispatchedAfterEvent(sigma, event, sigmaNode) {
 
 SigmaExtender.propTypes = {
 	graph: PropTypes.object.isRequired,
+	graphSettings: PropTypes.object.isRequired,
 	sigma: PropTypes.object,
 	dispatchEventName: PropTypes.string,
 	actionNode: PropTypes.string,
-	centralitySort: PropTypes.string.isRequired,
+	centrality: PropTypes.string.isRequired,
 	highlightCentralityNodesNum: PropTypes.number.isRequired
 };
 

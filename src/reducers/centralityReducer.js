@@ -1,7 +1,7 @@
 import initialState from './initialState';
 import * as types from '../actions/actionTypes';
 
-const centralitySortReducer = (state = initialState.defaultCentralitySort, action) => {
+const centralityReducer = (state = initialState.defaultCentrality, action) => {
 	switch (action.type) {
 		case types.SELECT_CENTRALITY_SORT:
 			return action.centrality
@@ -13,4 +13,4 @@ const centralitySortReducer = (state = initialState.defaultCentralitySort, actio
 }
 
 
-export default centralitySortReducer;
+export default centralityReducer;

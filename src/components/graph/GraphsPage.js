@@ -10,6 +10,7 @@ import TextWindow from './TextWindow';
 import GraphMenu from './GraphMenu';
 import * as utility from '../../utility';
 import GraphDetails from './GraphDetails';
+import graphSettings from '../../constants/graphSettings';
 
 class GraphsPage extends React.Component {
 
@@ -22,7 +23,8 @@ class GraphsPage extends React.Component {
 			dispatchEventName: '',
 			actionNode: '',
 			isFullscreen: false,
-			highlightCentralityNodesNum: 5
+			highlightCentralityNodesNum: 5,
+			graphSettings: graphSettings
 		};
 	}
 
@@ -116,12 +118,32 @@ class GraphsPage extends React.Component {
 		}));
 	}
 
-	onCentralitySortChange = (event) => {
+	onCentralityChange = (event) => {
 		const el = event.currentTarget;
 		el.checked = true;
-		this.props.actions.selectCentralitySort(el.value);
+		this.props.actions.selectCentrality(el.value);
 	}
 
+	onNodeShapesChanged = (event) => {
+		const el = event.currentTarget;
+		let graphSettings = Object.assign({}, this.state.graphSettings);
+		graphSettings.nodeShapes = el.value;
+
+		this.setState(prevState => ({
+			graphSettings
+		}));
+	}
+
+	onEdgeShapesChanged = (event) => {
+		const el = event.currentTarget;
+		let graphSettings = Object.assign({}, this.state.graphSettings);
+		graphSettings.edgeShapes = el.value;
+
+		this.setState(prevState => ({
+			graphSettings
+		}));
+	}
+	
 	render = () => {
 		const {
 			graph,
@@ -129,7 +151,7 @@ class GraphsPage extends React.Component {
 			selectedArticle,
 			dictionaryTypes,
 			layoutType,
-			centralitySort
+			centrality
 		} = this.props;
 
 		return (
@@ -140,13 +162,14 @@ class GraphsPage extends React.Component {
 							<Row>
 								<GraphWindow
 									graph={graph}
+									graphSettings={this.state.graphSettings}
 									loading={this.state.loading}
 									selectedArticle={selectedArticle}
 									dispatchEventName={this.state.dispatchEventName}
 									actionNode={this.state.actionNode}
 									layoutType={layoutType}
 									onChangeGraphSize={this.onChangeGraphSize}
-									centralitySort={centralitySort}
+									centrality={centrality}
 									highlightCentralityNodesNum={this.state.highlightCentralityNodesNum} />
 							</Row>
 						</Col>
@@ -154,7 +177,7 @@ class GraphsPage extends React.Component {
 							<Row style={{ paddingLeft: '5px' }}>
 								<GraphDetails
 									graph={graph}
-									centralitySort={centralitySort}
+									centrality={centrality}
 									loading={this.state.loading}
 									dispatchGraphEventOnNode={this.dispatchGraphEventOnNode} />
 							</Row>
@@ -174,15 +197,19 @@ class GraphsPage extends React.Component {
 								selectedArticleId={selectedArticle.id}
 								layoutType={layoutType}
 								selectedDictionaryTypes={dictionaryTypes}
-								centralitySort={centralitySort}
+								centrality={centrality}
 								onSelectedArticle={this.onSelectedArticle}
 								onMenuAccept={this.onMenuAccept}
 								loading={this.state.loading}
 								onDictionaryTypeChange={this.onDictionaryTypeChange}
 								onLayoutChange={this.onLayoutChange}
-								onCentralitySortChange={this.onCentralitySortChange}
+								onCentralityChange={this.onCentralityChange}
 								highlightCentralityNodesNum={this.state.highlightCentralityNodesNum}
-								onHighlightCentralityNodesNumChange={this.onHighlightCentralityNodesNumChange} />
+								onHighlightCentralityNodesNumChange={this.onHighlightCentralityNodesNumChange}
+								nodeShapes={this.state.graphSettings.nodeShapes}
+								onNodeShapesChanged={this.onNodeShapesChanged}
+								edgeShapes={this.state.graphSettings.edgeShapes}
+								onEdgeShapesChanged={this.onEdgeShapesChanged} />
 						</Row>
 					</Col>
 				</Row>
@@ -218,7 +245,7 @@ function mapStateToProps(state, ownProps) {
 		selectedArticle: selectedArticle,
 		dictionaryTypes: state.dictionaryTypes,
 		layoutType: state.layoutType,
-		centralitySort: state.centralitySort
+		centrality: state.centrality
 	};
 }
 

@@ -10,5 +10,5 @@ export default {
 	articles: [],	
 	dictionaryTypes: [constants.DICTIONARY_TYPE.NOUN],
 	layoutType: constants.LAYOUT_TYPE.Random,
-	defaultCentralitySort: constants.CENTRALITY.DegreeCentrality
+	defaultCentrality: constants.CENTRALITY.DegreeCentrality
 };

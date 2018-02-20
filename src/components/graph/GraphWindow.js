@@ -7,7 +7,6 @@ import { Panel, Button, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import SigmaExtender from './SigmaExtender';
 import * as constants from '../../constants/appConstants';
-import graphSettings from '../../constants/graphSettings';
 
 class GraphWindow extends React.Component {
 
@@ -36,13 +35,14 @@ class GraphWindow extends React.Component {
 	render() {
 		const {
 			graph,
+			graphSettings,
 			loading,
 			selectedArticle,
 			dispatchEventName,
 			actionNode,
 			layoutType,
 			onChangeGraphSize,
-			centralitySort,
+			centrality,
 			highlightCentralityNodesNum
 		} = this.props;
 
@@ -71,9 +71,10 @@ class GraphWindow extends React.Component {
 								renderer={graphSettings.renderer}
 								settings={graphSettings}>
 								<SigmaExtender graph={graph}
+									graphSettings={graphSettings}
 									dispatchEventName={dispatchEventName}
 									actionNode={actionNode}
-									centralitySort={centralitySort}
+									centrality={centrality}
 									highlightCentralityNodesNum={highlightCentralityNodesNum} />
 								<EdgeShapes default={graphSettings.edgeShapes} />
 								<NodeShapes default={graphSettings.nodeShapes} />
@@ -88,13 +89,14 @@ class GraphWindow extends React.Component {
 
 GraphWindow.propTypes = {
 	graph: PropTypes.object.isRequired,
+	graphSettings: PropTypes.object.isRequired,
 	loading: PropTypes.bool.isRequired,
 	selectedArticle: PropTypes.object,
 	dispatchEventName: PropTypes.string,
 	actionNode: PropTypes.string,
 	layoutType: PropTypes.string,
 	onChangeGraphSize: PropTypes.func,
-	centralitySort: PropTypes.string
+	centrality: PropTypes.string
 }
 
 export default GraphWindow;

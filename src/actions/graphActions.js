@@ -40,7 +40,7 @@ export function setLayout(layoutType) {
 	}
 }
 
-export function selectCentralitySort(centrality) {
+export function selectCentrality(centrality) {
 	return {
 		type: types.SELECT_CENTRALITY_SORT,
 		centrality
