@@ -13,7 +13,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 			<Panel.Heading>
 				<Panel.Title componentClass="h3">Graph Menu</Panel.Title>
 			</Panel.Heading>
-			<Panel.Body style={{ maxHeight: '750px', overflowY: 'auto' }}>
+			<Panel.Body>
 				{
 					_.isEmpty(articles) || loading ?
 						<div className="loader">Loading...</div> :
@@ -26,7 +26,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 								</Button>
 							</Row>
 							<hr />
-							<Row>
+							<Row  style={{ maxHeight: '700px', overflowY: 'auto' }}>
 								<Col xs={12} sm={12} md={12} lg={12}>
 									<FormGroup>
 										<Dropdown
