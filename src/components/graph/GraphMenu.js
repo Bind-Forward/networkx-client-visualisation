@@ -74,7 +74,7 @@ const GraphMenu = ({ articles, onSelectedArticle, onMenuAccept, loading, selecte
 																checked={checked}
 																onChange={onDictionaryTypeChange}
 																id={value}>
-																{key}
+																{key} ({value})
 															</Checkbox>
 														);
 													})

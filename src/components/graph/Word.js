@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
+import * as utility from '../../utility';
 
 const Word = ({ word, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick, node, dataTipId }) => {
 	// todo: Add popover
@@ -24,7 +25,8 @@ const Word = ({ word, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick
 						<ReactTooltip id={dataTipId} data-place="top" aria-haspopup='true' wrapper="span">
 							<span>Degree Centrality: {node.degreeCentrality}</span><br/>
 							<span>Betweenness Centrality: {node.betweennessCentrality}</span><br/>
-							<span>Pagerank: {node.pagerank}</span>
+							<span>Pagerank: {node.pagerank}</span><br/>
+							<span>Word type: {utility.getWordType(node.wordType)}</span>							
 						</ReactTooltip>
 					</span>
 					:

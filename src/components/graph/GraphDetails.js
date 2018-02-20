@@ -5,6 +5,7 @@ import { Panel, Tabs, Tab, Row, Col, Checkbox } from 'react-bootstrap';
 import graphEvents from '../../constants/graphEvents';
 import TabNodes from './TabNodes';
 import TabEdges from './TabEdges';
+import TabDetails from './TabDetails';
 
 class GraphDetails extends React.Component {
 
@@ -25,7 +26,7 @@ class GraphDetails extends React.Component {
 			loading
 		} = this.props;
 
-		if (!_.isEqual(graph, nextProps.graph) || 
+		if (!_.isEqual(graph, nextProps.graph) ||
 			loading !== nextProps.loading ||
 			!_.isEqual(this.state, nextState)) {
 			return true;
@@ -52,7 +53,7 @@ class GraphDetails extends React.Component {
 
 		const id = htmlElement.cells[1].innerText;
 		htmlElement.classList.toggle('node-row-hover');
-		htmlElement.style.cssText = "";				
+		htmlElement.style.cssText = "";
 		this.props.dispatchGraphEventOnNode(graphEvents.outNode, id);
 	}
 
@@ -121,7 +122,7 @@ class GraphDetails extends React.Component {
 			shouldClickTableTrigger: !prevState.shouldClickTableTrigger
 		}));
 	}
-	
+
 	onSelectedTab = (key) => {
 		this.setState({
 			activeTabKey: key
@@ -192,7 +193,8 @@ class GraphDetails extends React.Component {
 
 								</Tab>
 								<Tab eventKey={4} title="Details">
-
+									<TabDetails
+										graph={graph} />
 								</Tab>
 							</Tabs>
 					}

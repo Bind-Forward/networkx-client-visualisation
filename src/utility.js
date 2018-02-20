@@ -96,3 +96,15 @@ export function setEdgesByWeight(edges, sizeCallback) {
 		return edge;
 	})
 }
+
+export function getWordType(typeCode) {
+	let type = undefined;
+	Object.keys(constants.DICTIONARY_TYPE).forEach((key, idx) => {
+		if (constants.DICTIONARY_TYPE[key] === typeCode) {
+			type = key;
+			return;	
+		}
+	});
+
+	return type;
+}

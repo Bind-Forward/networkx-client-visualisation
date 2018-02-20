@@ -48,6 +48,10 @@ function setColumns() {
 		dataField: 'pagerank',
 		text: 'Pagerank',
 		sort: true
+	}, {
+		dataField: 'wordType',
+		text: 'Word Type',
+		sort: true
 	}];
 }
 
