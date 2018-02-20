@@ -129,9 +129,9 @@ class GraphsPage extends React.Component {
 		let graphSettings = Object.assign({}, this.state.graphSettings);
 		graphSettings.nodeShapes = el.value;
 
-		this.setState(prevState => ({
+		this.setState({
 			graphSettings
-		}));
+		});
 	}
 
 	onEdgeShapesChanged = (event) => {
@@ -139,9 +139,9 @@ class GraphsPage extends React.Component {
 		let graphSettings = Object.assign({}, this.state.graphSettings);
 		graphSettings.edgeShapes = el.value;
 
-		this.setState(prevState => ({
+		this.setState({
 			graphSettings
-		}));
+		});
 	}
 	
 	render = () => {

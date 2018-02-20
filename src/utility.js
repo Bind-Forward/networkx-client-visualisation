@@ -84,12 +84,11 @@ export function setNodesByCentrality(nodes, centrality, graphSettings, highlight
 			}
 
 			node.size = node[centralityType] * 20;
-
 			return node;
 		});
 }
 
-export function setEdgesByWeight(edges, sizeCallback) {
+export function setEdges(edges, graphSettings, sizeCallback) {
 	return edges.map(edge => {
 		edge.size = sizeCallback(edge.weight);
 		return edge;

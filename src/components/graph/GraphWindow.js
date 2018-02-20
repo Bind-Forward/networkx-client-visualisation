@@ -68,7 +68,7 @@ class GraphWindow extends React.Component {
 						_.isEmpty(graph.nodes) || loading ?
 							<div className="loader">Loading...</div> :
 							<Sigma style={{ graphWidth: 'inherit', height: '750px' }}
-								renderer={graphSettings.renderer}
+								renderer={"canvas"}
 								settings={graphSettings}>
 								<SigmaExtender graph={graph}
 									graphSettings={graphSettings}
@@ -76,9 +76,9 @@ class GraphWindow extends React.Component {
 									actionNode={actionNode}
 									centrality={centrality}
 									highlightCentralityNodesNum={highlightCentralityNodesNum} />
-								<EdgeShapes default={graphSettings.edgeShapes} />
+								{this._getGraphLayout(layoutType, graphSettings)}								
 								<NodeShapes default={graphSettings.nodeShapes} />
-								{this._getGraphLayout(layoutType, graphSettings)}
+								<EdgeShapes default={graphSettings.edgeShapes} />
 							</Sigma>
 					}
 				</Panel.Body>

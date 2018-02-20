@@ -12,7 +12,7 @@ const SigmaExtender = ({ graph, graphSettings, sigma, dispatchEventName, actionN
 		// Read graph nodes and edges
 		sigma.graph.read({ 
 			nodes: utility.setNodesByCentrality(graph.nodes, centrality, graphSettings, highlightCentralityNodesNum),
-			edges: utility.setEdgesByWeight(graph.edges, (weight) => weight * 0.8)
+			edges: utility.setEdges(graph.edges, graphSettings, (weight) => weight * 0.8)
 		});
 		
 		dispatchNodeEvent(sigma, dispatchEventName, actionNode, graphSettings);
