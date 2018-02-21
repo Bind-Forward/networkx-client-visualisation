@@ -24,20 +24,10 @@ class MockGraphApi {
 				});
 
 				newGraph.edges = newGraph.edges.filter((edge) => {
-					// Filter edges where node id exists as source 
-					let idx = _.findIndex(newGraph.nodes, (node) => {
-						return node.id === edge.source
-					});
-
-					// Filter edges where node id exists as target if node exists in edge.source
-					if (idx > -1) {
-						idx = _.findIndex(newGraph.nodes, (node) => {
-							return node.id === edge.target
-						});
-					}
-
-					return idx > -1;
-				})
+					// Check if edge's source and target exists in filtered nodes
+					return _.some(newGraph.nodes, node => node.id === edge.source) &&
+					_.some(newGraph.nodes, node => node.id === edge.target);
+				});
 
 				resolve(newGraph);
 

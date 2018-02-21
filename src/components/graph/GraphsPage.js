@@ -19,7 +19,6 @@ class GraphsPage extends React.Component {
 
 		this.state = {
 			loading: false,
-			selectedArticleId: -1,
 			dispatchEventName: '',
 			actionNode: '',
 			isFullscreen: false,
@@ -31,7 +30,6 @@ class GraphsPage extends React.Component {
 	/* --- Lifecycle methods --- */
 	componentWillReceiveProps = (nextProps) => {
 		this.setState({
-			selectedArticleId: nextProps.selectedArticle.id,
 			dispatchEventName: ''
 		});
 	}
@@ -44,10 +42,12 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onSelectedArticle = (event) => {
+	updateGraphSettings = (propertyName, value) => {
+		let graphSettings = Object.assign({}, this.state.graphSettings);
+		graphSettings[propertyName] = value;
+
 		this.setState({
-			selectedArticleId: _.toNumber(event.currentTarget.value),
-			dispatchEventName: ''
+			graphSettings
 		});
 	}
 
@@ -86,21 +86,11 @@ class GraphsPage extends React.Component {
 		});
 	}
 
-	onMenuAccept = (event) => {
-		let errorMsgs = [];
-		if (this.state.selectedArticleId < 0) {
-			errorMsgs.push("Select article.")
-		}
-
-		if (!_.isEmpty(errorMsgs)) {
-			utility.displayAlertMessages(errorMsgs);
-			return;
-		}
-
+	changeGraphData = (articleId) => {
 		this.setState({
 			loading: true
 		}, () => {
-			this.props.actions.loadGraph(this.state.selectedArticleId, this.props.dictionaryTypes)
+			this.props.actions.loadGraph(articleId, this.props.dictionaryTypes)
 				.then(() => {
 					this.setState({
 						loading: false
@@ -124,26 +114,6 @@ class GraphsPage extends React.Component {
 		this.props.actions.selectCentrality(el.value);
 	}
 
-	onNodeShapesChanged = (event) => {
-		const el = event.currentTarget;
-		let graphSettings = Object.assign({}, this.state.graphSettings);
-		graphSettings.nodeShapes = el.value;
-
-		this.setState({
-			graphSettings
-		});
-	}
-
-	onEdgeShapesChanged = (event) => {
-		const el = event.currentTarget;
-		let graphSettings = Object.assign({}, this.state.graphSettings);
-		graphSettings.edgeShapes = el.value;
-
-		this.setState({
-			graphSettings
-		});
-	}
-	
 	render = () => {
 		const {
 			graph,
@@ -193,13 +163,13 @@ class GraphsPage extends React.Component {
 					<Col xs={4} sm={4} md={2} lg={2}>
 						<Row>
 							<GraphMenu
+								changeGraphData={this.changeGraphData}
+								updateGraphSettings={this.updateGraphSettings}
 								articles={articles}
-								selectedArticleId={selectedArticle.id}
 								layoutType={layoutType}
+								selectedArticle={selectedArticle}
 								selectedDictionaryTypes={dictionaryTypes}
 								centrality={centrality}
-								onSelectedArticle={this.onSelectedArticle}
-								onMenuAccept={this.onMenuAccept}
 								loading={this.state.loading}
 								onDictionaryTypeChange={this.onDictionaryTypeChange}
 								onLayoutChange={this.onLayoutChange}
@@ -207,9 +177,7 @@ class GraphsPage extends React.Component {
 								highlightCentralityNodesNum={this.state.highlightCentralityNodesNum}
 								onHighlightCentralityNodesNumChange={this.onHighlightCentralityNodesNumChange}
 								nodeShapes={this.state.graphSettings.nodeShapes}
-								onNodeShapesChanged={this.onNodeShapesChanged}
-								edgeShapes={this.state.graphSettings.edgeShapes}
-								onEdgeShapesChanged={this.onEdgeShapesChanged} />
+								edgeShapes={this.state.graphSettings.edgeShapes} />
 						</Row>
 					</Col>
 				</Row>
@@ -225,7 +193,7 @@ GraphsPage.propTypes = {
 	layoutType: PropTypes.string.isRequired
 }
 
-function get_selected_article(articles, graph) {
+function getSelectedArticle(articles, graph) {
 	if (graph && !_.isEmpty(articles)) {
 		let selectedArticle = _.find(articles, { id: graph.articleId });
 		if (selectedArticle) {
@@ -237,7 +205,7 @@ function get_selected_article(articles, graph) {
 }
 
 function mapStateToProps(state, ownProps) {
-	let selectedArticle = get_selected_article(state.articles, state.graph);
+	let selectedArticle = getSelectedArticle(state.articles, state.graph);
 
 	return {
 		graph: state.graph,

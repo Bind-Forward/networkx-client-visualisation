@@ -7,11 +7,16 @@ const TabDetails = ({ graph }) => {
 
 	const dictionaryTypeListSummary = () => {
 		return Object.keys(constants.DICTIONARY_TYPE).map((key, idx) => {
-			return (
-				<ListGroupItem key={idx}>
-					<strong>{key} Count: </strong> {graph.nodes.filter(node => node.wordType === constants.DICTIONARY_TYPE[key]).length}
-				</ListGroupItem>
-			);
+			let count = graph.nodes.filter(node => node.wordType === constants.DICTIONARY_TYPE[key]).length;
+			if (count > 0) {
+				return (
+					<ListGroupItem key={idx}>
+						<strong>{key} Count: </strong> {count}
+					</ListGroupItem>
+				);
+			}
+
+			return undefined;
 		});
 	}
 
