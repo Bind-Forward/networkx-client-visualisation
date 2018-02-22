@@ -23,17 +23,35 @@ class GraphsPage extends React.Component {
 			actionNode: '',
 			isFullscreen: false,
 			highlightCentralityNodesNum: 5,
-			graphSettings: graphSettings
+			graphSettings: graphSettings,
+			articleKeywords: []
 		};
+	}
+
+	/* --- Private methods --- */
+	_setKeywords = (article, nodes) => {
+		if (_.isEmpty(article) || nodes.length === 0) {
+			return [];
+		}
+
+		return article.keywords.map((keyword, idx) => {
+			return {
+				id: idx,
+				word: keyword,
+				isInGraph: (_.some(nodes, (node) => 
+											node.id === keyword || node.original === keyword))
+			}
+		});
 	}
 
 	/* --- Lifecycle methods --- */
 	componentWillReceiveProps = (nextProps) => {
 		this.setState({
-			dispatchEventName: ''
+			dispatchEventName: '',
+			articleKeywords: this._setKeywords(nextProps.selectedArticle, nextProps.graph.nodes)
 		});
 	}
-
+	
 	/* --- Public methods --- */
 	dispatchGraphEventOnNode = (eventName, nodeId) => {
 		this.setState({
@@ -149,7 +167,8 @@ class GraphsPage extends React.Component {
 									graph={graph}
 									centrality={centrality}
 									loading={this.state.loading}
-									dispatchGraphEventOnNode={this.dispatchGraphEventOnNode} />
+									dispatchGraphEventOnNode={this.dispatchGraphEventOnNode}
+									keywords={this.state.articleKeywords} />
 							</Row>
 							<Row style={{ paddingLeft: '5px' }}>
 								<TextWindow
@@ -201,7 +220,7 @@ function getSelectedArticle(articles, graph) {
 		}
 	}
 
-	return { id: -1, url: "", sentences: [], name: "" };
+	return { id: -1, url: "", sentences: [], name: "", keywords: [] };
 }
 
 function mapStateToProps(state, ownProps) {

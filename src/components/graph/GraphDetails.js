@@ -6,6 +6,7 @@ import graphEvents from '../../constants/graphEvents';
 import TabNodes from './TabNodes';
 import TabEdges from './TabEdges';
 import TabDetails from './TabDetails';
+import TabKeywords from './TabKeywords';
 
 class GraphDetails extends React.Component {
 
@@ -23,12 +24,14 @@ class GraphDetails extends React.Component {
 	shouldComponentUpdate = (nextProps, nextState) => {
 		const {
 			graph,
-			loading
+			loading,
+			keywords
 		} = this.props;
-
+		
 		if (!_.isEqual(graph, nextProps.graph) ||
 			loading !== nextProps.loading ||
-			!_.isEqual(this.state, nextState)) {
+			!_.isEqual(this.state, nextState) ||
+			!_.isEqual(keywords, nextProps.keywords)) {
 			return true;
 		}
 		return false;
@@ -129,11 +132,17 @@ class GraphDetails extends React.Component {
 		});
 	}
 
+	onSelectedKeyword = () => {
+
+	}
+
 	render() {
 		const {
 			graph,
 			loading,
-			centrality
+			centrality,
+			keywords,
+			onSelectedKeyword
 		} = this.props;
 
 		return (
@@ -190,7 +199,9 @@ class GraphDetails extends React.Component {
 										onTableRowClicked={this.onTableRowClicked} />
 								</Tab>
 								<Tab eventKey={3} title="Keywords">
-
+									<TabKeywords
+										keywords={keywords}
+										onSelectedKeyword={this.onSelectedKeyword} />
 								</Tab>
 								<Tab eventKey={4} title="Details">
 									<TabDetails
@@ -212,7 +223,9 @@ GraphDetails.propTypes = {
 	graph: PropTypes.object.isRequired,
 	loading: PropTypes.bool.isRequired,
 	centrality: PropTypes.string.isRequired,
-	dispatchGraphEventOnNode: PropTypes.func.isRequired
+	dispatchGraphEventOnNode: PropTypes.func.isRequired,
+	keywords: PropTypes.array,
+	onSelectedKeyword: PropTypes.func
 };
 
 export default GraphDetails;

@@ -42,10 +42,14 @@ class GraphMenu extends React.Component {
 		this.props.updateGraphSettings("edgeShapes", el.value);
 	}
 
-	onMenuAccept = (event) => {
+	onSubmit = (event) => {
 		let errorMsgs = [];
 		if (this.state.selectedArticleId < 0) {
 			errorMsgs.push("Select article.")
+		}
+
+		if (this.props.selectedDictionaryTypes.length === 0) {
+			errorMsgs.push("Select any dictionary type.")
 		}
 
 		if (!_.isEmpty(errorMsgs)) {
@@ -85,7 +89,7 @@ class GraphMenu extends React.Component {
 							<div>
 								<Row>
 									<Button bsStyle={"default"}
-										onClick={this.onMenuAccept}
+										onClick={this.onSubmit}
 										style={{ width: '100%' }}>
 										Submit
 									</Button>
