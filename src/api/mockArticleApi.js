@@ -1,4 +1,5 @@
-import mockData from './mockArticlesData';
+// import mockData from './mockData/mockArticlesData.json';
+import mockData from './mockData/mockArticlesDataSmall.json';
 import _ from 'lodash';
 
 class MockArticleApi {

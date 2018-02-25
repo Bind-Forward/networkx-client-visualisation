@@ -1,5 +1,5 @@
-import mockData from './mockGraphData.json';
-// import mockData from './mockGraphDataSmall.json'; // USed for CodeSandbox
+// import mockData from './mockData/mockGraphData.json';
+import mockData from './mockData/mockGraphDataSmall.json'; // Used for CodeSandbox
 import _ from 'lodash';
 
 class MockGraphApi {
