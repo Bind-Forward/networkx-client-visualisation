@@ -120,10 +120,10 @@ class TextWindow extends React.Component {
 							<div>
 								{
 									article.sentences.map((sentence, idx) => {
-										return <Sentence
-											key={idx}
+										return <Sentence key={idx}
 											sentence={sentence}
 											nodes={nodes}
+											keywords={article.keywords}
 											onWordNodeMouseOver={this.onWordNodeMouseOver}
 											onWordNodeMouseLeave={this.onWordNodeMouseLeave}
 											onWordNodeClick={this.onWordNodeClick} />

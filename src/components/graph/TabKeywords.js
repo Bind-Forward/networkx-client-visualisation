@@ -27,7 +27,7 @@ const TabKeywords = ({ keywords, onSelectedKeyword }) => {
 
 TabKeywords.propTypes = {
 	keywords: PropTypes.array.isRequired,
-	onSelectedKeyword: PropTypes.array.func
+	onSelectedKeyword: PropTypes.func.isRequired
 };
 
 export default TabKeywords;

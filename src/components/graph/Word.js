@@ -4,14 +4,14 @@ import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 import * as utility from '../../utility';
 
-const Word = ({ word, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick, node, dataTipId }) => {
-	// todo: Add popover
+const Word = ({ word, isKeyword, onWordNodeMouseOver, onWordNodeMouseLeave, onWordNodeClick, node, dataTipId }) => {
+	
 	return (
 		<span>
 			{
 				!_.isEmpty(node) ?
 					<span>
-						<a
+						<a style={{textDecoration: isKeyword ? 'underline' : 'none'}}						
 							onMouseOver={onWordNodeMouseOver}
 							onMouseLeave={onWordNodeMouseLeave}
 							onClick={onWordNodeClick}
