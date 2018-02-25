@@ -15,8 +15,10 @@ class GraphDetails extends React.Component {
 
 		this.state = {
 			activeTabKey: 1,
-			shouldHoverTableTrigger: false,
-			shouldClickTableTrigger: true,
+			shouldHoverTrigger: false,
+			shouldClickTrigger: true,
+			hoverTriggerCheckboxEnabled: true,
+			clickTriggerCheckboxEnabled: true,
 		};
 	}
 
@@ -27,7 +29,7 @@ class GraphDetails extends React.Component {
 			loading,
 			keywords
 		} = this.props;
-		
+
 		if (!_.isEqual(graph, nextProps.graph) ||
 			loading !== nextProps.loading ||
 			!_.isEqual(this.state, nextState) ||
@@ -62,7 +64,7 @@ class GraphDetails extends React.Component {
 
 	/* --- Public methods --- */
 	onTableRowMouseOver = (event) => {
-		if (!this.state.shouldHoverTableTrigger) {
+		if (!this.state.shouldHoverTrigger) {
 			return;
 		}
 
@@ -78,7 +80,7 @@ class GraphDetails extends React.Component {
 	}
 
 	onTableRowMouseLeave = (event) => {
-		if (!this.state.shouldHoverTableTrigger) {
+		if (!this.state.shouldHoverTrigger) {
 			return;
 		}
 
@@ -94,7 +96,7 @@ class GraphDetails extends React.Component {
 	}
 
 	onTableRowClicked = (event) => {
-		if (!this.state.shouldClickTableTrigger) {
+		if (!this.state.shouldClickTrigger) {
 			return;
 		}
 
@@ -116,24 +118,58 @@ class GraphDetails extends React.Component {
 		const el = event.currentTarget;
 		el.checked = true;
 		this.setState(prevState => ({
-			shouldHoverTableTrigger: !prevState.shouldHoverTableTrigger
+			shouldHoverTrigger: !prevState.shouldHoverTrigger
 		}));
 	}
 
 	onShouldClickTableChange = (event) => {
 		this.setState(prevState => ({
-			shouldClickTableTrigger: !prevState.shouldClickTableTrigger
+			shouldClickTrigger: !prevState.shouldClickTrigger
 		}));
 	}
 
 	onSelectedTab = (key) => {
+		let hoverCheckboxEnabled = this.state.hoverTriggerCheckboxEnabled;
+		let clickCheckboxEnabled = this.state.clickTriggerCheckboxEnabled;
+
+		switch (key) {
+			case 1:
+				hoverCheckboxEnabled = true;
+				clickCheckboxEnabled = true;
+				break;
+			case 2:
+				hoverCheckboxEnabled = false;
+				clickCheckboxEnabled = false;
+				break;
+			case 3:
+				hoverCheckboxEnabled = false;
+				clickCheckboxEnabled = true;
+				break;
+			case 4:
+				hoverCheckboxEnabled = false;
+				clickCheckboxEnabled = false;
+				break;
+			default:
+				return;
+		}
+
 		this.setState({
-			activeTabKey: key
+			activeTabKey: key,
+			hoverTriggerCheckboxEnabled: hoverCheckboxEnabled,
+			clickTriggerCheckboxEnabled: clickCheckboxEnabled
 		});
 	}
 
-	onSelectedKeyword = () => {
+	onSelectedKeyword = (event) => {
+		if (!this.state.shouldClickTrigger) {
+			return;
+		}
 
+		const el = event.currentTarget;
+		el.classList.toggle('active');
+		const nodeId = el.innerText;
+
+		this.props.dispatchGraphEventOnNode(graphEvents.clickNode, nodeId);
 	}
 
 	render() {
@@ -141,8 +177,7 @@ class GraphDetails extends React.Component {
 			graph,
 			loading,
 			centrality,
-			keywords,
-			onSelectedKeyword
+			keywords
 		} = this.props;
 
 		return (
@@ -156,15 +191,17 @@ class GraphDetails extends React.Component {
 							<Panel style={{ color: '#000' }}>
 								<Checkbox
 									value={1}
-									checked={this.state.shouldHoverTableTrigger}
+									checked={this.state.shouldHoverTrigger}
 									onChange={this.onShouldHoverTableChange}
+									disabled={!this.state.hoverTriggerCheckboxEnabled}
 									inline>
 									Show on mouse hover
 								</Checkbox>
 								<Checkbox
 									value={1}
-									checked={this.state.shouldClickTableTrigger}
+									checked={this.state.shouldClickTrigger}
 									onChange={this.onShouldClickTableChange}
+									disabled={!this.state.clickTriggerCheckboxEnabled}
 									inline>
 									Show on mouse click
 								</Checkbox>
@@ -188,7 +225,7 @@ class GraphDetails extends React.Component {
 										onTableRowMouseOver={this.onTableRowMouseOver}
 										onTableRowMouseLeave={this.onTableRowMouseLeave}
 										onTableRowClicked={this.onTableRowClicked}
-										shouldClickTableTrigger={this.state.shouldClickTableTrigger}
+										shouldClickTrigger={this.state.shouldClickTrigger}
 										handleTableChange={this.handleTableChange} />
 								</Tab>
 								<Tab eventKey={2} title="Edges">
