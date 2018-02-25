@@ -1,4 +1,4 @@
 
 ### networkx-client-visualisation
 
-CodeSandbox example: [graph-app](https://codesandbox.io/s/xv91wlko6q)
+CodeSandbox example: [graph-app](https://codesandbox.io/s/3105yy6n65)
